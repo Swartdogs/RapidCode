@@ -1,9 +1,9 @@
 package frc.robot.commands.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
@@ -15,7 +15,7 @@ public class CmdPickupReverseTests
     private MockPickup _pickup;
     private CmdPickupReverse _command;
 
-    @Before
+    @BeforeEach
     public void init()
     {
         _pickup  = new MockPickup();

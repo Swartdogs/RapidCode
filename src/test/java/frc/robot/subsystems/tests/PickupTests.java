@@ -1,9 +1,9 @@
 package frc.robot.subsystems.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
@@ -13,7 +13,7 @@ public class PickupTests
 {
     private MockPickup _pickup;
 
-    @Before
+    @BeforeEach
     public void init()
     {
         _pickup = new MockPickup();
