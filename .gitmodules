@@ -1,6 +1,12 @@
 [submodule "src\\main\\java\\frc\\robot\\abstraction"]
-	path = src\\main\\java\\frc\\robot\\abstraction
+	path = src/main/java/frc/robot/abstraction
 	url = https://github.com/Swartdogs/Hardware-Abstraction.git
 [submodule "src\\test\\java\\frc\\robot\\abstraction"]
-	path = src\\test\\java\\frc\\robot\\abstraction
+	path = src/test/java/frc/robot/abstraction
 	url = https://github.com/Swartdogs/Hardware-Abstraction-Tests.git
+[submodule "src/main/java/frc/robot/subsystems/drive"]
+	path = src/main/java/frc/robot/subsystems/drive
+	url = https://github.com/Swartdogs/SwerveDrive.git
+[submodule "src/main/java/PIDControl"]
+	path = src/main/java/PIDControl
+	url = https://github.com/Swartdogs/PIDControl.git
