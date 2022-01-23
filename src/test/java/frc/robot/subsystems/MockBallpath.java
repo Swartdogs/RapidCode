@@ -7,11 +7,11 @@ public class MockBallpath extends Ballpath
 {
     public MockBallpath()
     {
-        _lowerTrack       = new MockMotor();
-        _upperTrack       = new MockMotor();
+        _lowerTrack    = new MockMotor();
+        _upperTrack    = new MockMotor();
 
-        _pickupSensor     = new MockSwitch();
-        _upperTrackSensor = new MockSwitch();
+        _pickupSensor  = new MockSwitch();
+        _shooterSensor = new MockSwitch();
     }
 
     public MockMotor getLowerTrackMotor()
@@ -29,8 +29,8 @@ public class MockBallpath extends Ballpath
         return (MockSwitch)_pickupSensor;
     }
 
-    public MockSwitch getUpperTrackSensor()
+    public MockSwitch getShooterSensor()
     {
-        return (MockSwitch)_upperTrackSensor;
+        return (MockSwitch)_shooterSensor;
     }
 }

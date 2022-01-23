@@ -14,16 +14,16 @@ public abstract class Ballpath extends SwartdogSubsystem
     protected Motor _upperTrack;
 
     protected Switch _pickupSensor;
-    protected Switch _upperTrackSensor;
+    protected Switch _shooterSensor;
 
-    private State _lastPickupSensorState     = State.Off;
-    private State _lastUpperTrackSensorState = State.Off;
+    private State _lastPickupSensorState  = State.Off;
+    private State _lastShooterSensorState = State.Off;
 
     @Override
     public void periodic()
     {
-        _lastPickupSensorState     = _pickupSensor.get();
-        _lastUpperTrackSensorState = _upperTrackSensor.get();
+        _lastPickupSensorState  = _pickupSensor.get();
+        _lastShooterSensorState = _shooterSensor.get();
     }
 
     public void enable()
@@ -54,13 +54,13 @@ public abstract class Ballpath extends SwartdogSubsystem
         return _pickupSensor.get() == state && _lastPickupSensorState != state;
     }
 
-    public State getUpperTrackSensorState()
+    public State getShooterSensorState()
     {
-        return _upperTrackSensor.get();
+        return _shooterSensor.get();
     }
 
-    public boolean hasUpperTrackSensorTransitionedTo(State state)
+    public boolean hasShooterSensorTransitionedTo(State state)
     {
-        return _upperTrackSensor.get() == state && _lastUpperTrackSensorState != state;
+        return _shooterSensor.get() == state && _lastShooterSensorState != state;
     }
 }

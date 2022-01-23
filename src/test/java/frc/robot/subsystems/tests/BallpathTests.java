@@ -2,8 +2,14 @@ package frc.robot.subsystems.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.State;
@@ -12,6 +18,22 @@ import frc.robot.subsystems.MockBallpath;
 public class BallpathTests 
 {
     private MockBallpath _ballpath;
+
+    private static Stream<Arguments> stateTestCases()
+    {
+        return Stream.of
+        (
+            Arguments.of(State.On,      State.On),
+            Arguments.of(State.On,      State.Off),
+            Arguments.of(State.On,      State.Reverse),
+            Arguments.of(State.Off,     State.On),
+            Arguments.of(State.Off,     State.Off),
+            Arguments.of(State.Off,     State.Reverse),
+            Arguments.of(State.Reverse, State.On),
+            Arguments.of(State.Reverse, State.Off),
+            Arguments.of(State.Reverse, State.Reverse)
+        );
+    }
 
     @BeforeEach
     public void init()
@@ -46,111 +68,43 @@ public class BallpathTests
         assertEquals(-Constants.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
     }
 
-    @Test
-    public void testPickupSensorOn()
+    @ParameterizedTest
+    @EnumSource(State.class)
+    public void testGetPickupSensor(State state)
     {
-        _ballpath.getPickupSensor().set(State.On);
+        _ballpath.getPickupSensor().set(state);
 
-        assertEquals(State.On, _ballpath.getPickupSensorState());
+        assertEquals(state, _ballpath.getPickupSensorState());
     }
 
-    @Test
-    public void testPickupSensorOff()
+    @ParameterizedTest
+    @EnumSource(State.class)
+    public void testGetShooterSensor(State state)
     {
-        _ballpath.getPickupSensor().set(State.Off);
+        _ballpath.getShooterSensor().set(state);
 
-        assertEquals(State.Off, _ballpath.getPickupSensorState());
+        assertEquals(state, _ballpath.getShooterSensorState());
     }
 
-    @Test
-    public void testPickupSensorReverse()
+    @ParameterizedTest
+    @MethodSource("stateTestCases")
+    public void testPickupSensorTransitionedTo(State first, State second)
     {
-        _ballpath.getPickupSensor().set(State.Reverse);
-
-        assertEquals(State.Reverse, _ballpath.getPickupSensorState());
-    }
-
-    @Test
-    public void testPickupSensorTransitionToOn()
-    {
-        _ballpath.getPickupSensor().set(State.Off);
+        _ballpath.getPickupSensor().set(first);
         _ballpath.periodic();
-        _ballpath.getPickupSensor().set(State.On);
+        _ballpath.getPickupSensor().set(second);
 
-        assertEquals(true, _ballpath.hasPickupSensorTransitionedTo(State.On));
+        assertEquals(first != second, _ballpath.hasPickupSensorTransitionedTo(second));
     }
 
-    @Test
-    public void testPickupSensorTransitionToOff()
+    @ParameterizedTest
+    @MethodSource("stateTestCases")
+    public void testShooterSensorTranstitionedTo(State first, State second)
     {
-        _ballpath.getPickupSensor().set(State.On);
+        _ballpath.getShooterSensor().set(first);
         _ballpath.periodic();
-        _ballpath.getPickupSensor().set(State.Off);
+        _ballpath.getShooterSensor().set(second);
 
-        assertEquals(true, _ballpath.hasPickupSensorTransitionedTo(State.Off));
-    }
-
-    @Test
-    public void testPickupSensorTransitionToReverse()
-    {
-        _ballpath.getPickupSensor().set(State.Off);
-        _ballpath.periodic();
-        _ballpath.getPickupSensor().set(State.Reverse);
-
-        assertEquals(true, _ballpath.hasPickupSensorTransitionedTo(State.Reverse));
-    }
-
-    @Test
-    public void testUpperTrackSensorOn()
-    {
-        _ballpath.getUpperTrackSensor().set(State.On);
-
-        assertEquals(State.On, _ballpath.getUpperTrackSensorState());
-    }
-
-    @Test
-    public void testUpperTrackSensorOff()
-    {
-        _ballpath.getUpperTrackSensor().set(State.Off);
-
-        assertEquals(State.Off, _ballpath.getUpperTrackSensorState());
-    }
-
-    @Test
-    public void testUpperTrackSensorReverse()
-    {
-        _ballpath.getUpperTrackSensor().set(State.Reverse);
-
-        assertEquals(State.Reverse, _ballpath.getUpperTrackSensorState());
-    }
-
-    @Test
-    public void testUpperTrackSensorTransitionToOn()
-    {
-        _ballpath.getUpperTrackSensor().set(State.Off);
-        _ballpath.periodic();
-        _ballpath.getUpperTrackSensor().set(State.On);
-
-        assertEquals(true, _ballpath.hasUpperTrackSensorTransitionedTo(State.On));
-    }
-
-    @Test
-    public void testUpperTrackSensorTransitionToOff()
-    {
-        _ballpath.getUpperTrackSensor().set(State.On);
-        _ballpath.periodic();
-        _ballpath.getUpperTrackSensor().set(State.Off);
-
-        assertEquals(true, _ballpath.hasUpperTrackSensorTransitionedTo(State.Off));
-    }
-
-    @Test
-    public void testUpperTrackSensorTransitionToReverse()
-    {
-        _ballpath.getUpperTrackSensor().set(State.Off);
-        _ballpath.periodic();
-        _ballpath.getUpperTrackSensor().set(State.Reverse);
-
-        assertEquals(true, _ballpath.hasUpperTrackSensorTransitionedTo(State.Reverse));
+        assertEquals(first != second, _ballpath.hasShooterSensorTransitionedTo(second));
     }
 }
