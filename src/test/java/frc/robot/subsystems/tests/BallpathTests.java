@@ -21,18 +21,22 @@ public class BallpathTests
 
     private static Stream<Arguments> stateTestCases()
     {
-        return Stream.of
-        (
-            Arguments.of(State.On,      State.On),
-            Arguments.of(State.On,      State.Off),
-            Arguments.of(State.On,      State.Reverse),
-            Arguments.of(State.Off,     State.On),
-            Arguments.of(State.Off,     State.Off),
-            Arguments.of(State.Off,     State.Reverse),
-            Arguments.of(State.Reverse, State.On),
-            Arguments.of(State.Reverse, State.Off),
-            Arguments.of(State.Reverse, State.Reverse)
-        );
+        State[] states = 
+        {
+            State.On, State.Off, State.Reverse
+        };
+
+        Stream<Arguments> stream = Stream.of();
+
+        for (State first : states) {
+            for (State second : states) {
+                for (State third : states) {
+                    stream = Stream.concat(Stream.of(Arguments.of(first, second, third)), stream);
+                }
+            }
+        }
+
+        return stream;
     }
 
     @BeforeEach
@@ -88,23 +92,23 @@ public class BallpathTests
 
     @ParameterizedTest
     @MethodSource("stateTestCases")
-    public void testPickupSensorTransitionedTo(State first, State second)
+    public void testPickupSensorTransitionedTo(State first, State second, State third)
     {
         _ballpath.getPickupSensor().set(first);
         _ballpath.periodic();
         _ballpath.getPickupSensor().set(second);
 
-        assertEquals(first != second, _ballpath.hasPickupSensorTransitionedTo(second));
+        assertEquals(first != second && second == third, _ballpath.hasPickupSensorTransitionedTo(third));
     }
 
     @ParameterizedTest
     @MethodSource("stateTestCases")
-    public void testShooterSensorTranstitionedTo(State first, State second)
+    public void testShooterSensorTranstitionedTo(State first, State second, State third)
     {
         _ballpath.getShooterSensor().set(first);
         _ballpath.periodic();
         _ballpath.getShooterSensor().set(second);
 
-        assertEquals(first != second, _ballpath.hasShooterSensorTransitionedTo(second));
+        assertEquals(first != second && second == third, _ballpath.hasShooterSensorTransitionedTo(third));
     }
 }

@@ -1,6 +1,7 @@
 package frc.robot.commands.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,5 +30,13 @@ public class CmdPickupDeployTests
 
         assertEquals(ExtendState.Extended, _pickup.getDeploySolenoid().get());
         assertEquals(Constants.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.EPSILON);
+    }
+
+    @Test
+    public void testIsFinished()
+    {
+        _command.initialize();
+
+        assertTrue(_command.isFinished());
     }
 }
