@@ -3,12 +3,15 @@ package frc.robot.subsystems;
 import PIDControl.PIDControl;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
+import frc.robot.abstraction.Solenoid;
 import frc.robot.abstraction.SwartdogSubsystem;
 
 public abstract class Hanger extends SwartdogSubsystem
 {
     protected Motor          _armMotor;
     protected Motor          _winchMotor;
+
+    protected Solenoid       _hookSolenoid;
 
     protected PositionSensor _armSensor;
     protected PositionSensor _winchSensor;
@@ -44,6 +47,16 @@ public abstract class Hanger extends SwartdogSubsystem
     public boolean winchAtPostition() 
     {
         return _winchPID.atSetpoint();
+    }
+
+    public void hook()
+    {
+        _hookSolenoid.extend();
+    }
+
+    public void unhook()
+    {
+        _hookSolenoid.retract();
     }
 
     @Override

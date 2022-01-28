@@ -5,12 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
+import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.subsystems.MockHanger;
 
 public class HangerTests 
@@ -61,6 +63,22 @@ public class HangerTests
         _hanger.periodic();
 
         assertEquals(clamp(target - start, -1.0, 1.0), _hanger.getWinchMotor().get(), Constants.EPSILON);
+    }
+
+    @Test
+    public void testHook()
+    {
+        _hanger.hook();
+
+        assertEquals(ExtendState.Extended, _hanger.getHookSolenoid().get());
+    }
+
+    @Test
+    public void testUnhook()
+    {
+        _hanger.unhook();
+
+        assertEquals(ExtendState.Retracted, _hanger.getHookSolenoid().get());
     }
 
     @ParameterizedTest
