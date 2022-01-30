@@ -46,29 +46,50 @@ public class BallpathTests
     }
 
     @Test
-    public void testBallpathEnable()
+    public void testLowerTrackEnable()
     {
-        _ballpath.enable();
+        _ballpath.enableLowerTrack();
 
         assertEquals(Constants.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
+    }
+    
+    @Test
+    public void testUpperTrackEnable()
+    {
+        _ballpath.enableUpperTrack();
+
         assertEquals(Constants.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
     }
 
     @Test
-    public void testBallpathDisable()
+    public void testLowerTrackDisable()
     {
-        _ballpath.disable();
+        _ballpath.disableLowerTrack();
         
         assertEquals(0.0, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
+    }
+
+    @Test
+    public void testUpperTrackDisable()
+    {
+        _ballpath.disableUpperTrack();
+        
         assertEquals(0.0, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
     }
 
     @Test
-    public void testBallpathReverse()
+    public void testLowerTrackReverse()
     {
-        _ballpath.reverse();
+        _ballpath.reverseLowerTrack();
 
         assertEquals(-Constants.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
+    }
+
+    @Test
+    public void testUpperTrackReverse()
+    {
+        _ballpath.reverseUpperTrack();
+
         assertEquals(-Constants.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
     }
 
