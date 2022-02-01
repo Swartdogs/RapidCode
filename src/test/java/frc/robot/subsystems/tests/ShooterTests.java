@@ -45,7 +45,7 @@ public class ShooterTests
     {
         _shooter.setShooterMotorSpeed(speed);
         
-        assertEquals(speed, _shooter.getShooterMotor().get(), Constants.EPSILON);
+        assertEquals(speed, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -56,7 +56,7 @@ public class ShooterTests
         _shooter.setHoodPosition(target);
         _shooter.periodic();
 
-        assertEquals(clamp(target - start, -1.0, 1.0), _shooter.getHoodMotor().get(), Constants.EPSILON);
+        assertEquals(clamp(target - start, -1.0, 1.0), _shooter.getHoodMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -76,7 +76,7 @@ public class ShooterTests
         _shooter.setHoodPosition(position);
         _shooter.periodic();
 
-        assertEquals(0.0, _shooter.getHoodMotor().get(), Constants.EPSILON);
+        assertEquals(0.0, _shooter.getHoodMotor().get(), Constants.Testing.EPSILON);
         assertTrue(_shooter.hoodAtPosition());
     }
 }

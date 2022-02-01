@@ -40,7 +40,7 @@ public class PickupTests
     {
         _pickup.startMotor();
 
-        assertEquals(Constants.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.EPSILON);
+        assertEquals(Constants.Pickup.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class PickupTests
     {
         _pickup.stopMotor();
 
-        assertEquals(0.0, _pickup.getPickupMotor().get(), Constants.EPSILON);
+        assertEquals(0.0, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
     }
 
     @Test
@@ -56,6 +56,6 @@ public class PickupTests
     {
         _pickup.reverseMotor();
 
-        assertEquals(-Constants.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.EPSILON);
+        assertEquals(-Constants.Pickup.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
     }
 }

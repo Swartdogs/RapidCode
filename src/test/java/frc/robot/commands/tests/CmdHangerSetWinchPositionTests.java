@@ -59,7 +59,7 @@ public class CmdHangerSetWinchPositionTests
         _command.initialize();
         _hanger.periodic();
 
-        assertEquals(Utils.clamp(Constants.HANGER_WINCH_POSITION_LOOKUP.apply(state) - position, -1, 1), _hanger.getWinchMotor().get(), Constants.EPSILON);
+        assertEquals(Utils.clamp(Constants.Hanger.HANGER_WINCH_POSITION_LOOKUP.apply(state) - position, -1, 1), _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -68,11 +68,11 @@ public class CmdHangerSetWinchPositionTests
     {
         _command = new CmdHangerSetWinchPosition(_hanger, state);
 
-        _hanger.getWinchSensor().set(Constants.HANGER_WINCH_POSITION_LOOKUP.apply(state));
+        _hanger.getWinchSensor().set(Constants.Hanger.HANGER_WINCH_POSITION_LOOKUP.apply(state));
         _command.initialize();
         _hanger.periodic();
 
-        assertEquals(0.0, _hanger.getWinchMotor().get(), Constants.EPSILON);
+        assertEquals(0.0, _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
         assertTrue(_command.isFinished());
     }
 }

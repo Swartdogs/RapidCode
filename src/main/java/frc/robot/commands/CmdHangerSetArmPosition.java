@@ -19,7 +19,7 @@ public class CmdHangerSetArmPosition extends SwartdogCommand
     @Override
     public void initialize()
     {
-        _hanger.setArmPosition(Constants.HANGER_ARM_POSITION_LOOKUP.apply(_state));
+        _hanger.setArmPosition(Constants.Hanger.HANGER_ARM_POSITION_LOOKUP.apply(_state));
     }
 
     @Override

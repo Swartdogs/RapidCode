@@ -51,7 +51,7 @@ public class HangerTests
         _hanger.setArmPosition(target);
         _hanger.periodic();
 
-        assertEquals(clamp(target - start, -1.0, 1.0), _hanger.getArmMotor().get(), Constants.EPSILON);
+        assertEquals(clamp(target - start, -1.0, 1.0), _hanger.getArmMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -62,7 +62,7 @@ public class HangerTests
         _hanger.setWinchPosition(target);
         _hanger.periodic();
 
-        assertEquals(clamp(target - start, -1.0, 1.0), _hanger.getWinchMotor().get(), Constants.EPSILON);
+        assertEquals(clamp(target - start, -1.0, 1.0), _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class HangerTests
     {
         _hanger.getArmSensor().set(position);
 
-        assertEquals(position, _hanger.getArmPosition(), Constants.EPSILON);
+        assertEquals(position, _hanger.getArmPosition(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -96,6 +96,6 @@ public class HangerTests
     {
         _hanger.getWinchSensor().set(position);
 
-        assertEquals(position, _hanger.getWinchPosition(), Constants.EPSILON);
+        assertEquals(position, _hanger.getWinchPosition(), Constants.Testing.EPSILON);
     }
 }

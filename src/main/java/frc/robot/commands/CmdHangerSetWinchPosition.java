@@ -18,7 +18,7 @@ public class CmdHangerSetWinchPosition extends SwartdogCommand
     @Override
     public void initialize()
     {
-        _hanger.setWinchPosition(Constants.HANGER_WINCH_POSITION_LOOKUP.apply(_state));
+        _hanger.setWinchPosition(Constants.Hanger.HANGER_WINCH_POSITION_LOOKUP.apply(_state));
     }
 
     @Override

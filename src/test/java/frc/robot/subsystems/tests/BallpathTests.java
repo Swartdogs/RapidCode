@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -45,52 +44,54 @@ public class BallpathTests
         _ballpath = new MockBallpath();
     }
 
-    @Test
-    public void testLowerTrackEnable()
+    @ParameterizedTest
+    @EnumSource(State.class)
+    public void testSetUpperTrack(State state)
     {
-        _ballpath.enableLowerTrack();
+        double speed = 0.0;
 
-        assertEquals(Constants.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
-    }
-    
-    @Test
-    public void testUpperTrackEnable()
-    {
-        _ballpath.enableUpperTrack();
+        _ballpath.setUpperTrackTo(state);
 
-        assertEquals(Constants.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
-    }
+        switch (state)
+        {
+            case On:
+                speed = Constants.Ballpath.BALLPATH_SPEED;
+                break;
+            
+            case Reverse:
+                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                break;
 
-    @Test
-    public void testLowerTrackDisable()
-    {
-        _ballpath.disableLowerTrack();
-        
-        assertEquals(0.0, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
-    }
+            default:
+                speed = 0.0;            
+        }
 
-    @Test
-    public void testUpperTrackDisable()
-    {
-        _ballpath.disableUpperTrack();
-        
-        assertEquals(0.0, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
+        assertEquals(speed, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
     }
 
-    @Test
-    public void testLowerTrackReverse()
+    @ParameterizedTest
+    @EnumSource(State.class)
+    public void testSetLowerTrack(State state)
     {
-        _ballpath.reverseLowerTrack();
+        double speed = 0.0;
 
-        assertEquals(-Constants.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
-    }
+        _ballpath.setLowerTrackTo(state);
 
-    @Test
-    public void testUpperTrackReverse()
-    {
-        _ballpath.reverseUpperTrack();
+        switch (state)
+        {
+            case On:
+                speed = Constants.Ballpath.BALLPATH_SPEED;
+                break;
+            
+            case Reverse:
+                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                break;
 
-        assertEquals(-Constants.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
+            default:
+                speed = 0.0;            
+        }
+
+        assertEquals(speed, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest

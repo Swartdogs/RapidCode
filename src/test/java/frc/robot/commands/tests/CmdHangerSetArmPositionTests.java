@@ -59,7 +59,7 @@ public class CmdHangerSetArmPositionTests
         _command.initialize();
         _hanger.periodic();
 
-        assertEquals(Utils.clamp(Constants.HANGER_ARM_POSITION_LOOKUP.apply(state) - position, -1, 1), _hanger.getArmMotor().get(), Constants.EPSILON);
+        assertEquals(Utils.clamp(Constants.Hanger.HANGER_ARM_POSITION_LOOKUP.apply(state) - position, -1, 1), _hanger.getArmMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -68,11 +68,11 @@ public class CmdHangerSetArmPositionTests
     {
         _command = new CmdHangerSetArmPosition(_hanger, state);
 
-        _hanger.getArmSensor().set(Constants.HANGER_ARM_POSITION_LOOKUP.apply(state));
+        _hanger.getArmSensor().set(Constants.Hanger.HANGER_ARM_POSITION_LOOKUP.apply(state));
         _command.initialize();
         _hanger.periodic();
 
-        assertEquals(0.0, _hanger.getArmMotor().get(), Constants.EPSILON);
+        assertEquals(0.0, _hanger.getArmMotor().get(), Constants.Testing.EPSILON);
         assertTrue(_command.isFinished());
     }
 }

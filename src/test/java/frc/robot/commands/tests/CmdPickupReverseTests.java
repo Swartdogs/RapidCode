@@ -29,7 +29,7 @@ public class CmdPickupReverseTests
         _command.initialize();
 
         assertEquals(ExtendState.Extended, _pickup.getDeploySolenoid().get());
-        assertEquals(-Constants.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.EPSILON);
+        assertEquals(-Constants.Pickup.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
     }
 
     @Test

@@ -43,13 +43,13 @@ public class CmdBallpathLoadTests {
         switch(initialCargoCount)
         {
             case 0:
-                expectedLowerTrackSpeed = Constants.BALLPATH_SPEED;
-                expectedUpperTrackSpeed = Constants.BALLPATH_SPEED;
+                expectedLowerTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
+                expectedUpperTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
                 expectedCargoCount      = 1;
                 break;
 
             case 1:
-                expectedLowerTrackSpeed = Constants.BALLPATH_SPEED;
+                expectedLowerTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
                 expectedUpperTrackSpeed = 0;
                 expectedCargoCount      = 2;
                 break;
@@ -61,8 +61,8 @@ public class CmdBallpathLoadTests {
                 break;
         }
 
-        assertEquals(expectedLowerTrackSpeed, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
-        assertEquals(expectedUpperTrackSpeed, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
+        assertEquals(expectedLowerTrackSpeed, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(expectedUpperTrackSpeed, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
         assertEquals(expectedCargoCount,      _ballpath.getCargoCount());
     }
 
@@ -108,7 +108,7 @@ public class CmdBallpathLoadTests {
                 break;
         }
 
-        assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.EPSILON);
-        assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.EPSILON);
+        assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
     }
 }

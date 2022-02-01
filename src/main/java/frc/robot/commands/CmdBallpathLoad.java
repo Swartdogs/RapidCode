@@ -20,14 +20,14 @@ public class CmdBallpathLoad extends SwartdogCommand
     @Override
     public void initialize()
     {
-        if(_ballpath.getCargoCount() < Constants.MAX_CARGO_COUNT)
+        if(_ballpath.getCargoCount() < Constants.Ballpath.MAX_CARGO_COUNT)
         {
-            _ballpath.enableLowerTrack();
+            _ballpath.setLowerTrackTo(State.On);
         }
 
         if(_ballpath.getCargoCount() == 0)
         {
-            _ballpath.enableUpperTrack();
+            _ballpath.setUpperTrackTo(State.On);
         }
 
         _initialCargoCount = _ballpath.getCargoCount();
@@ -37,8 +37,8 @@ public class CmdBallpathLoad extends SwartdogCommand
     @Override
     public void end(boolean interrupted)
     {
-        _ballpath.disableLowerTrack();
-        _ballpath.disableUpperTrack();
+        _ballpath.setUpperTrackTo(State.Off);
+        _ballpath.setLowerTrackTo(State.Off);
     }
 
     @Override

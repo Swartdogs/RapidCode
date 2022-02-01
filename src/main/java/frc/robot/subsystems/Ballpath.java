@@ -31,34 +31,46 @@ public abstract class Ballpath extends SwartdogSubsystem
         }
     }
 
-    public void enableLowerTrack()
+    public void setUpperTrackTo(State state)
     {
-        _lowerTrack.set(Constants.BALLPATH_SPEED);
+        double speed = 0.0;
+
+        switch (state)
+        {
+            case On:
+                speed = Constants.Ballpath.BALLPATH_SPEED;
+                break;
+            
+            case Reverse:
+                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                break;
+
+            default:
+                speed = 0.0; 
+        }
+
+        _upperTrack.set(speed);
     }
 
-    public void enableUpperTrack()
+    public void setLowerTrackTo(State state)
     {
-        _upperTrack.set(Constants.BALLPATH_SPEED);
-    }
+        double speed = 0.0;
 
-    public void disableLowerTrack()
-    {
-        _lowerTrack.set(0.0);
-    }
+        switch (state)
+        {
+            case On:
+                speed = Constants.Ballpath.BALLPATH_SPEED;
+                break;
+            
+            case Reverse:
+                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                break;
 
-    public void disableUpperTrack()
-    {
-        _upperTrack.set(0.0);
-    }
-
-    public void reverseLowerTrack()
-    {
-        _lowerTrack.set(-Constants.BALLPATH_SPEED);
-    }
-
-    public void reverseUpperTrack()
-    {
-        _upperTrack.set(-Constants.BALLPATH_SPEED);
+            default:
+                speed = 0.0; 
+        }
+        
+        _lowerTrack.set(speed);
     }
     
     public State getPickupSensorState()
@@ -93,9 +105,9 @@ public abstract class Ballpath extends SwartdogSubsystem
             _cargoCount = 0;
         }
 
-        else if (count > Constants.MAX_CARGO_COUNT)
+        else if (count > Constants.Ballpath.MAX_CARGO_COUNT)
         {
-            _cargoCount = Constants.MAX_CARGO_COUNT;
+            _cargoCount = Constants.Ballpath.MAX_CARGO_COUNT;
         }
 
         else

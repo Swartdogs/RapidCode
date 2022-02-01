@@ -22,7 +22,7 @@ public abstract class Pickup extends SwartdogSubsystem
 
     public void startMotor()
     {
-        _pickupMotor.set(Constants.PICKUP_SPEED);
+        _pickupMotor.set(Constants.Pickup.PICKUP_SPEED);
     }
 
     public void stopMotor()
@@ -32,6 +32,6 @@ public abstract class Pickup extends SwartdogSubsystem
 
     public void reverseMotor()
     {
-        _pickupMotor.set(-Constants.PICKUP_SPEED);
+        _pickupMotor.set(-Constants.Pickup.PICKUP_SPEED);
     }
 }
