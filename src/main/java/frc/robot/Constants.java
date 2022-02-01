@@ -73,6 +73,14 @@ public final class Constants
         public static final double FLYWHEEL_SPEED = 5800;
     }
     
+    public static class Vision
+    {
+        public static final double TARGET_HEIGHT = 96;
+        public static final double CAMERA_HEIGHT = 36;
+        public static final double HEIGHT_DELTA  = TARGET_HEIGHT - CAMERA_HEIGHT;
+        public static final double CAMERA_ANGLE  = 30;
+    }
+
     public static class Testing
     {
         public static final double EPSILON = 1e-6;
