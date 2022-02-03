@@ -35,9 +35,4 @@ public class MockVision extends Vision
     {
         return (MockSolenoid)_lightRing;
     }
-
-    public PIDControl getRotatePID()
-    {
-        return (PIDControl)_rotatePID;
-    }
 }
