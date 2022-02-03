@@ -72,6 +72,11 @@ public final class Constants
     {
         public static final double FLYWHEEL_SPEED = 5800;
     }
+
+    public static class RobotLog
+    {
+        public static final double LOOPS_PER_SECOND = 50;
+    }
     
     public static class Testing
     {
