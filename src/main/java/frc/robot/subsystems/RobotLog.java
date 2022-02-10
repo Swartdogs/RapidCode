@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,7 +27,8 @@ public class RobotLog extends SwartdogSubsystem
         Disabled,
         Autonomous,
         Teleop,
-        Test
+        Test,
+        Unknown
     }
 
     private int         _robotTime;
@@ -36,9 +38,23 @@ public class RobotLog extends SwartdogSubsystem
 
     private boolean     _fileOpen;
 
+    private GameMode    _mode;
+
     private RobotLog()
     {
+        _robotTime = 0;
+        _modeTime  = 0;
 
+        _fileOpen  = false;
+
+        _mode      = GameMode.Unknown;
+    }
+
+    @Override
+    public void periodic()
+    {
+        _robotTime++;
+        _modeTime++;
     }
 
     private String toSeconds(int counter)
@@ -52,7 +68,9 @@ public class RobotLog extends SwartdogSubsystem
         {
             try
             {
-                _writer = new PrintWriter(new FileWriter(filePath));
+                File file = new File(filePath);
+                _writer   = new PrintWriter(new FileWriter(filePath));
+                _fileOpen = true;
             }
             catch (IOException e)
             {
@@ -75,6 +93,7 @@ public class RobotLog extends SwartdogSubsystem
         {
             _writer.close();
             _fileOpen = false;
+            _mode     = GameMode.Unknown;
         }
     }
 
@@ -89,7 +108,7 @@ public class RobotLog extends SwartdogSubsystem
         
         if (printTimeStamps)
         {
-            line += toSeconds(_robotTime) + " " + toSeconds(_modeTime) + " ";
+            line += "| " + toSeconds(_robotTime) + " | " + toSeconds(_modeTime) + " | ";
         } 
 
         line += message;
@@ -100,7 +119,7 @@ public class RobotLog extends SwartdogSubsystem
     public void printHeading(String heading)
     {
         int len         = heading.length();
-        int frontSpaces = len / 2;
+        int frontSpaces = (78 - len) / 2;
         int backSpaces  = frontSpaces;
 
         if (len % 2 == 1)
@@ -108,10 +127,26 @@ public class RobotLog extends SwartdogSubsystem
             backSpaces++;
         }
 
+        if (_mode != GameMode.Unknown)
+        {
+            _writer.println("+" + "-".repeat(10) + "+" + "-".repeat(10) + "+");
+        }
+
         _writer.println();
-        _writer.println("+" + "-".repeat(78) + "+");
-        _writer.println("| " + " ".repeat(frontSpaces) + heading + " ".repeat(backSpaces) + " |");
-        _writer.println("+" + "-".repeat(78) + "+");
+        _writer.println(" ".repeat(24) + "+" + "-".repeat(78) + "+");
+        _writer.println(" ".repeat(24) + "|" + " ".repeat(frontSpaces) + heading + " ".repeat(backSpaces) + "|");
+        _writer.println(" ".repeat(24) + "+" + "-".repeat(78) + "+");
         _writer.println();
+    }
+
+    public void setGameMode(GameMode mode)
+    {
+        printHeading("Game Mode: " + mode.toString());
+        _writer.println("+----------+----------+");
+        _writer.println("| Game     | Mode     |");
+        _writer.println("+----------+----------+");
+        
+        _modeTime = 0;
+        _mode     = mode;
     }
 }
