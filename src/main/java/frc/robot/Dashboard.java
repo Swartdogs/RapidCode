@@ -1,6 +1,5 @@
 package frc.robot;
 
-import java.lang.instrument.ClassFileTransformer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.DecimalFormat;
@@ -433,6 +432,8 @@ public class Dashboard
         String clientMsg;
         String recMesg = "";
         int    position = 0;
+        int    replySize;
+        int    index;
 
         Socket socket;
         ServerSocket server;
@@ -471,7 +472,84 @@ public class Dashboard
                         if ((position = clientMsg.indexOf(":")) >= 0)
                         {
                             command = clientMsg.substring(0, position);
-                            
+                            clientMsg = clientMsg.substring(position + 1);
+                            reply = "";
+
+                            if (command == commandCOUNT)
+                            {
+                                reply = host.countReply();
+                            }
+
+                            else if (command == commandGET)
+                            {
+                                reply = host.getReply();
+                            }
+
+                            else if (command == commandPULL)
+                            {
+                                reply = host.pullReply();
+                            }
+
+                            else if (command == commandPUT)
+                            {
+                                reply = "PUT:";
+                                boolean saveFile = false;
+
+                                while ((position = clientMsg.indexOf("|")) >= 0)
+                                {
+                                    command = clientMsg.substring(0, position);
+                                    clientMsg = clientMsg.substring(position + 1);
+
+                                    if ((position = command.indexOf(",")) >= 0)
+                                    {
+                                        String group = command.substring(0, position);
+                                        command = command.substring(position + 1);
+
+                                        if ((position = command.indexOf(",")) >= 0)
+                                        {
+                                            index = Integer.parseInt(command.substring(0, position));
+
+                                            if (group == "V")
+                                            {
+                                                if (host.setDashValue(index, Double.parseDouble(command.substring((position + 1)))))
+                                                {
+                                                    reply += "V," + host.dataString(index, 2);
+                                                    saveFile = true;
+                                                }
+                                            }
+
+                                            else if (group == "B")
+                                            {
+                                                if (host.setDashButton(index, Integer.parseInt(command.substring(position + 1))))
+                                                {
+                                                    reply += "B," + host.dataString(index, 2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                reply += "\r\n";
+
+                                if (saveFile)
+                                {
+                                    host.saveDashValues();
+                                }
+                            }
+
+                            else if (command == commandSET)
+                            {
+                                host.writeToLog("New Robot Setting(s) from Dashboard");
+                            }
+
+                            replySize = reply.length();
+
+                            if (replySize > 0)
+                            {
+                                sendBuffer = reply.getBytes();
+
+                                socket.getOutputStream().write(sendBuffer);
+                            }
                         }
                     }
                 }
