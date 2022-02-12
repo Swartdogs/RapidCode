@@ -17,8 +17,8 @@ public class Robot extends TimedRobot
     public void   robotInit()
     {
         _joystick = Joystick.joystick(0);
-        _shooter = Motor.compose(Motor.falconFlywheel(10,MAX_RPM),Motor.falconFlywheel(11, MAX_RPM));
-        _ballpath = Motor.compose(Motor.victorSP(0),Motor.victorSP(1),Motor.neo(12));
+        _shooter = Motor.compose(Motor.falconFlywheel(3,MAX_RPM),Motor.falconFlywheel(4, MAX_RPM));
+        _ballpath = Motor.compose(Motor.invert(Motor.victorSP(0)),Motor.victorSP(1),Motor.neo(2));
     }
 
     @Override
@@ -59,7 +59,11 @@ public class Robot extends TimedRobot
     @Override
     public void teleopPeriodic()
     {
-        _shooter.set((((-_joystick.getThrottle())+1)/2)*MAX_RPM);
+        double speedMult = (((_joystick.getZ()) * -1) + 1) / 2;
+
+        System.out.println(speedMult);
+
+        _shooter.set(speedMult * MAX_RPM);
 
         if(_joystick.getButton(11).get() == State.On) 
         {
