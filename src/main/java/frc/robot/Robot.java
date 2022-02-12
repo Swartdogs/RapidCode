@@ -1,25 +1,27 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.abstraction.Joystick;
+import frc.robot.abstraction.Motor;
+import frc.robot.abstraction.Enumerations.State;
 
 public class Robot extends TimedRobot
 {
-    private Command _autonomousCommand;
+    private Joystick _joystick;
 
-    private RobotContainer _robotContainer;
+    private Motor _motor;
 
     @Override
     public void robotInit()
     {
-        _robotContainer = new RobotContainer();
+        _joystick = Joystick.joystick(0);
+        _motor    = Motor.neo(2);
     }
 
     @Override
     public void robotPeriodic()
     {
-        CommandScheduler.getInstance().run();
+
     }
 
     @Override
@@ -33,12 +35,7 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        _autonomousCommand = _robotContainer.getAutonomousCommand();
 
-        if (_autonomousCommand != null)
-        {
-            _autonomousCommand.schedule();
-        }
     }
 
     @Override
@@ -48,20 +45,32 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-        if (_autonomousCommand != null)
-        {
-            _autonomousCommand.cancel();
-        }
+
     }
 
     @Override
     public void teleopPeriodic()
-    {}
+    {
+        if (_joystick.getButton(11).get() == State.On)
+        {
+            _motor.set(1);
+        }
+
+        else if (_joystick.getButton(10).get() == State.On)
+        {
+            _motor.set(0.5);
+        }
+
+        else
+        {
+            _motor.set(0);
+        }
+    }
 
     @Override
     public void testInit()
     {
-        CommandScheduler.getInstance().cancelAll();
+
     }
 
     @Override
