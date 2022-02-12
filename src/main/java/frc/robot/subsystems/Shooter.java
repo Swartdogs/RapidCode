@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import PIDControl.PIDControl;
+import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
 import frc.robot.abstraction.SwartdogSubsystem;
@@ -23,6 +24,16 @@ public abstract class Shooter extends SwartdogSubsystem
     public void setShooterMotorSpeed(double speed)
     {
         _shooterMotor.set(speed);
+    }
+
+    public boolean isShooterReady()
+    {
+        double actual  = _shooterMotor.getVelocitySensor().get();
+        double target  = _shooterMotor.get();
+
+        return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
+               (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&
+               (target > 0);
     }
 
     // Hood

@@ -70,7 +70,10 @@ public final class Constants
 
     public static class Shooter
     {
-        public static final double FLYWHEEL_SPEED = 5800;
+        public static final double MANUAL_HOOD_POSITION  = 0;
+        public static final double MANUAL_SHOOTER_RPM    = 4200;
+        public static final double FLYWHEEL_SPEED        = 5800;
+        public static final double SHOOTER_RPM_THRESHOLD = 0.05;
     }
     
     public static class Drive
