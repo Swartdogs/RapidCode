@@ -1,30 +1,38 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.abstraction.Joystick;
+import frc.robot.abstraction.Motor;
+import frc.robot.abstraction.Enumerations.State;
 
 public class Robot extends TimedRobot
 {
-    private Command _autonomousCommand;
 
-    private RobotContainer _robotContainer;
+    private       Motor    _shooter;
+    private       Motor    _ballpath;
+    private       Joystick _joystick;
+    private final double   MAX_RPM = 5398;
 
     @Override
-    public void robotInit()
+    public void   robotInit()
     {
-        _robotContainer = new RobotContainer();
+        _joystick = Joystick.joystick(0);
+        _shooter = Motor.compose(Motor.falconFlywheel(10,MAX_RPM),Motor.falconFlywheel(11, MAX_RPM));
+        _ballpath = Motor.compose(Motor.victorSP(0),Motor.victorSP(1),Motor.neo(12));
     }
 
     @Override
     public void robotPeriodic()
     {
-        CommandScheduler.getInstance().run();
+
     }
 
     @Override
     public void disabledInit()
-    {}
+    {
+        _shooter.set(0);
+        _ballpath.set(0);
+    }
 
     @Override
     public void disabledPeriodic()
@@ -33,12 +41,9 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        _autonomousCommand = _robotContainer.getAutonomousCommand();
 
-        if (_autonomousCommand != null)
-        {
-            _autonomousCommand.schedule();
-        }
+
+
     }
 
     @Override
@@ -48,20 +53,32 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-        if (_autonomousCommand != null)
-        {
-            _autonomousCommand.cancel();
-        }
+
     }
 
     @Override
     public void teleopPeriodic()
-    {}
+    {
+        _shooter.set((((-_joystick.getThrottle())+1)/2)*MAX_RPM);
+
+        if(_joystick.getButton(11).get() == State.On) 
+        {
+            _ballpath.set(1);
+        }
+        else if(_joystick.getButton(10).get() == State.On)
+        {
+            _ballpath.set(0.5);
+        }
+        else
+        {
+            _ballpath.set(0);
+        }
+    }
 
     @Override
     public void testInit()
     {
-        CommandScheduler.getInstance().cancelAll();
+
     }
 
     @Override
