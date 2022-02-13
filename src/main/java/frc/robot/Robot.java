@@ -10,7 +10,9 @@ public class Robot extends TimedRobot
 
     private       Motor    _shooter;
     private       Motor    _ballpath;
+    private       Motor    _pickup;
     private       Joystick _joystick;
+
     private final double   MAX_RPM = 5398;
 
     @Override
@@ -19,6 +21,7 @@ public class Robot extends TimedRobot
         _joystick = Joystick.joystick(0);
         _shooter = Motor.compose(Motor.falconFlywheel(3,MAX_RPM),Motor.falconFlywheel(4, MAX_RPM));
         _ballpath = Motor.compose(Motor.invert(Motor.victorSP(0)),Motor.victorSP(1),Motor.neo(2));
+        _pickup = Motor.neo(5);
     }
 
     @Override
@@ -32,6 +35,7 @@ public class Robot extends TimedRobot
     {
         _shooter.set(0);
         _ballpath.set(0);
+        _pickup.set(0);
     }
 
     @Override
@@ -76,6 +80,26 @@ public class Robot extends TimedRobot
         else
         {
             _ballpath.set(0);
+        }
+
+        if (_joystick.getButton(6).get() == State.On)
+        {
+            _pickup.set(0.375);
+        }
+
+        else if (_joystick.getButton(7).get() == State.On)
+        {
+            _pickup.set(0.25);
+        }
+
+        else if (_joystick.getButton(8).get() == State.On)
+        {
+            _pickup.set(-0.375);
+        }
+
+        else
+        {
+            _pickup.set(0);
         }
     }
 
