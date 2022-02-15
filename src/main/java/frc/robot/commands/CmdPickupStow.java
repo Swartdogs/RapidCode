@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Pickup;
+import frc.robot.subsystems.RobotLog;
 
 public class CmdPickupStow extends SwartdogCommand
 {
@@ -17,6 +18,7 @@ public class CmdPickupStow extends SwartdogCommand
     {
         _pickup.stow();
         _pickup.stopMotor();
+        RobotLog.getInstance().log("Reversing Pickup");
     }
 
     @Override

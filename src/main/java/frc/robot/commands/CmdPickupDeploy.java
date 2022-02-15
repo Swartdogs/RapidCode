@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Pickup;
+import frc.robot.subsystems.RobotLog;
 
 public class CmdPickupDeploy extends SwartdogCommand
 {
@@ -17,6 +18,7 @@ public class CmdPickupDeploy extends SwartdogCommand
     {
         _pickup.deploy();
         _pickup.startMotor();
+        RobotLog.getInstance().log("Deploying Pickup");
     }
 
     @Override
