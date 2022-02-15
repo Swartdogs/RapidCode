@@ -3,14 +3,13 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.ExtendState;
-import frc.robot.subsystems.Hanger;
-import frc.robot.subsystems.RobotLog;
+import frc.robot.subsystems.*;
 
 public class CmdHangerSetWinchPosition extends SwartdogCommand
 {
     private Hanger      _hanger;
     private ExtendState _state;
-    
+
     public CmdHangerSetWinchPosition(Hanger hanger, ExtendState state)
     {
         _hanger = hanger; 

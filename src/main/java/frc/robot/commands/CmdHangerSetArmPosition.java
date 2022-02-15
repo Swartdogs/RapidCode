@@ -3,8 +3,7 @@ package frc.robot.commands;
 import frc.robot.Constants;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.ExtendState;
-import frc.robot.subsystems.Hanger;
-import frc.robot.subsystems.RobotLog;
+import frc.robot.subsystems.*;
 
 public class CmdHangerSetArmPosition extends SwartdogCommand
 {

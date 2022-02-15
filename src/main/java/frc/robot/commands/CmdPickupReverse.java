@@ -1,8 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.abstraction.SwartdogCommand;
-import frc.robot.subsystems.Pickup;
-import frc.robot.subsystems.RobotLog;
+import frc.robot.subsystems.*;
 
 public class CmdPickupReverse extends SwartdogCommand
 {
