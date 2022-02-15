@@ -33,7 +33,8 @@ public abstract class Shooter extends SwartdogSubsystem
 
         return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
                (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&
-               (target > 0);
+               (target > 0)                                                       &&
+               (_hoodPID.atSetpoint());
     }
 
     // Hood
