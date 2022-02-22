@@ -1,0 +1,84 @@
+package frc.robot.commands.tests;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import frc.robot.Constants;
+import frc.robot.abstraction.MockVelocitySensor;
+import frc.robot.commands.CmdShootWithOdometry;
+import frc.robot.subsystems.MockBallpath;
+import frc.robot.subsystems.MockShooter;
+import frc.robot.subsystems.drive.MockDrive;
+import frc.robot.subsystems.drive.Vector;
+
+public class CmdShootWithOdometryTests {
+    private MockDrive    _drive;
+    private MockShooter  _shooter;
+    private MockBallpath _ballpath;
+
+    private CmdShootWithOdometry _command;
+
+    @BeforeEach
+    public void init()
+    {
+        _drive    = new MockDrive();
+        _shooter  = new MockShooter();
+        _ballpath = new MockBallpath();
+
+        _command = new CmdShootWithOdometry(_drive, _shooter, _ballpath);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2 })
+    public void testStart (int initialCargoCount)
+    {
+        _drive.resetOdometer(new Vector(120, 0));
+        _drive.getGyro().set(270);                                          
+        _shooter.getHoodSensor().set(Constants.Shooter.MANUAL_HOOD_POSITION);
+        _ballpath.setCargoCount(initialCargoCount);
+        
+        _command.initialize();
+
+        assertTrue(_drive.rotateIsFinished());
+        assertEquals(initialCargoCount > 0 ? Constants.Shooter.MANUAL_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2 })
+    public void testEnd (int initialCargoCount)
+    {
+        _drive.resetOdometer(new Vector(120, 0));
+        _drive.getGyro().set(270);                                          
+        _shooter.getHoodSensor().set(Constants.Shooter.MANUAL_HOOD_POSITION);
+        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(Constants.Shooter.MANUAL_SHOOTER_RPM);
+        _ballpath.setCargoCount(initialCargoCount);
+        
+        _command.initialize();
+        _ballpath.setCargoCount(0);
+      
+        if (_command.isFinished())
+        {
+            _command.end(false);
+        }
+
+        // Collin thinks we don't need to test stopping the rotation
+        assertEquals(0, _shooter.getShooterMotor().get(),     Constants.Testing.EPSILON);
+        assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2 })
+    public void testIsFinished (int initialCargoCount)
+    {
+        _ballpath.setCargoCount(initialCargoCount);
+
+        _command.initialize();
+
+        assertEquals(initialCargoCount <= 0, _command.isFinished());
+    }
+}
