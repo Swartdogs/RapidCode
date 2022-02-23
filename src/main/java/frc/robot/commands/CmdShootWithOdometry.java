@@ -32,6 +32,11 @@ public class CmdShootWithOdometry extends SwartdogCommand
             _shooter.setHoodPosition(Constants.Shooter.SHOOTER_HOOD_LOOKUP.applyAsDouble(distance));
 
             _drive.rotateInit(target.getTheta(), Constants.Drive.ALIGN_ROTATE_SPEED);
+            RobotLog.getInstance().log(String.format("Expected Shooter RPM: %4.0f, Expected Hood Positon: %4.0f, Cargo Count: %2.0f", Constants.Shooter.SHOOTER_SPEED_LOOKUP, Constants.Shooter.SHOOTER_HOOD_LOOKUP, _ballpath.getCargoCount()));
+        }
+        else
+        {
+            RobotLog.getInstance().log("No Cargo, Not Shooting");
         }
     }
 
@@ -59,6 +64,8 @@ public class CmdShootWithOdometry extends SwartdogCommand
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
         _drive.drive(0, 0, 0);
+
+        RobotLog.getInstance().log("Shooter Off, Current Cargo Count: " + _ballpath.getCargoCount());
     }
 
     @Override

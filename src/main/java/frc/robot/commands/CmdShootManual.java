@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.Ballpath;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.Shooter;
 
 public class CmdShootManual extends SwartdogCommand 
@@ -26,7 +27,15 @@ public class CmdShootManual extends SwartdogCommand
         {
             _shooter.setShooterMotorSpeed(Constants.Shooter.MANUAL_SHOOTER_RPM);
             _shooter.setHoodPosition(Constants.Shooter.MANUAL_HOOD_POSITION);
+
+            RobotLog.getInstance().log(String.format("Expected Shooter RPM: %4.0f, Expected Hood Position: %4.0f, Cargo Count: %2.0f" , Constants.Shooter.MANUAL_SHOOTER_RPM, Constants.Shooter.MANUAL_HOOD_POSITION, _ballpath.getCargoCount()));
+        } 
+        else 
+        {
+            RobotLog.getInstance().log("No Cargo, Not Shooting");
         }
+
+        
     }
 
     @Override
@@ -50,6 +59,8 @@ public class CmdShootManual extends SwartdogCommand
         _shooter.setShooterMotorSpeed(0);
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
+
+        RobotLog.getInstance().log("Shooter Off, Current Cargo Count: " + _ballpath.getCargoCount());
     }
 
     @Override
