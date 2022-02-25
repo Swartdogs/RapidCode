@@ -84,17 +84,22 @@ public class Robot extends TimedRobot
 
         if (_joystick.getButton(6).get() == State.On)
         {
-            _pickup.set(0.375);
+            _pickup.set(0.75);
         }
 
         else if (_joystick.getButton(7).get() == State.On)
         {
-            _pickup.set(0.25);
+            _pickup.set(0.6);
         }
 
         else if (_joystick.getButton(8).get() == State.On)
         {
-            _pickup.set(-0.375);
+            _pickup.set(-0.5);
+        }
+
+        else if (_joystick.getButton(9).get() == State.On)
+        {
+            _pickup.set(0.5);
         }
 
         else
