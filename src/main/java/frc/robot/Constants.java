@@ -1,8 +1,10 @@
 package frc.robot;
 
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
 import frc.robot.abstraction.Enumerations.ExtendState;
+import frc.robot.subsystems.drive.Vector;
 
 public final class Constants
 {
@@ -70,7 +72,31 @@ public final class Constants
 
     public static class Shooter
     {
-        public static final double FLYWHEEL_SPEED = 5800;
+        public static final double MANUAL_HOOD_POSITION  = 0;
+        public static final double MANUAL_SHOOTER_RPM    = 4200;
+        public static final double FLYWHEEL_SPEED        = 5800;
+        public static final double SHOOTER_RPM_THRESHOLD = 0.05;
+        public static final Vector HUB_POSITION          = new Vector(0,0); // the center of the coordinate system is at the hub
+
+        public static final DoubleUnaryOperator SHOOTER_SPEED_LOOKUP = (distance) ->
+        {
+            double speed = 0;
+            if (distance > 0)
+            {
+                speed = MANUAL_SHOOTER_RPM;
+            }
+            return speed;
+        }; 
+
+        public static final DoubleUnaryOperator SHOOTER_HOOD_LOOKUP = (distance) ->
+        {
+            double position = 0;
+            if (distance > 0)
+            {
+                position = MANUAL_HOOD_POSITION;
+            }
+            return position;
+        }; 
     }
     
     public static class Drive
@@ -83,6 +109,8 @@ public final class Constants
         public static final double MODULE_ROTATE_SCALE  = 360 / 0.92;
         public static final double MODULE_ROTATE_OFFSET = (360 - MODULE_ROTATE_SCALE) / 2.0;
         public static final double ODOMETRY_SCALE       = (48.75) /* inches */ / (55854.18) /* encoder counts */;
+
+        public static final double ALIGN_ROTATE_SPEED   = 0.7;
     }
 
     public static class Testing

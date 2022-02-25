@@ -26,10 +26,10 @@ public class MockDrive extends Drive
 
         _swerveModules = new SwerveModule[] 
         { 
-            new MockSwerveModule( 10,  12, 0, 1),
-            new MockSwerveModule(-10,  12, 0, 1),
-            new MockSwerveModule( 10, -12, 0, 1),
-            new MockSwerveModule(-10, -12, 0, 1)
+            new MockSwerveModule( 10,  10, 0, 1),
+            new MockSwerveModule(-10,  10, 0, 1),
+            new MockSwerveModule( 10, -10, 0, 1),
+            new MockSwerveModule(-10, -10, 0, 1)
         };
 
         init();

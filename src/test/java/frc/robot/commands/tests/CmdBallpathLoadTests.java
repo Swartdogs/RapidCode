@@ -11,7 +11,8 @@ import frc.robot.abstraction.Enumerations.State;
 import frc.robot.commands.CmdBallpathLoad;
 import frc.robot.subsystems.MockBallpath;
 
-public class CmdBallpathLoadTests {
+public class CmdBallpathLoadTests 
+{
     private MockBallpath    _ballpath;
     private CmdBallpathLoad _command;
 
