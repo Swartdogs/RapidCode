@@ -10,17 +10,20 @@ import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.commands.CmdBallpathLoad;
 import frc.robot.subsystems.MockBallpath;
+import frc.robot.subsystems.MockPickup;
 
 public class CmdBallpathLoadTests 
 {
     private MockBallpath    _ballpath;
+    private MockPickup      _pickup;
     private CmdBallpathLoad _command;
 
     @BeforeEach
     public void init()
     {
         _ballpath = new MockBallpath();
-        _command  = new CmdBallpathLoad(_ballpath);
+        _pickup   = new MockPickup();
+        _command  = new CmdBallpathLoad(_ballpath, _pickup);
     }
 
     @ParameterizedTest

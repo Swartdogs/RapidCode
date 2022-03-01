@@ -18,7 +18,10 @@ public abstract class Shooter extends SwartdogSubsystem
     @Override
     public void periodic()
     {
-        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));
+        double hoodMotorPower = _hoodPID.calculate(getHoodPosition());
+        _hoodMotor.set(hoodMotorPower);
+        //System.out.println(String.format("Hood Position: %d, PID Output: %5.2f, Actual Hood Motor Speed: %5.2f", (int)getHoodPosition(), hoodMotorPower, _hoodMotor.get()));
+        
     }
 
     public void setShooterMotorSpeed(double speed)
@@ -51,5 +54,6 @@ public abstract class Shooter extends SwartdogSubsystem
     public void setHoodPosition(double position)
     {
         _hoodPID.setSetpoint(position, getHoodPosition());
+        System.out.println(position);
     }
 }

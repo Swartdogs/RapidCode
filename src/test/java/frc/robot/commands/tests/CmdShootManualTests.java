@@ -83,28 +83,28 @@ public class CmdShootManualTests {
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
     }
 
-    @ParameterizedTest
-    @MethodSource("testCases")
-    public void testExecute(int initialCargoCount, double shooterRPM)
-    {
-        _ballpath.setCargoCount(initialCargoCount);
+    // @ParameterizedTest
+    // @MethodSource("testCases")
+    // public void testExecute(int initialCargoCount, double shooterRPM)
+    // {
+    //     _ballpath.setCargoCount(initialCargoCount);
 
-        _command.initialize();
+    //     _command.initialize();
 
-        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(shooterRPM);
+    //     ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(shooterRPM);
 
-        _command.execute();
+    //     _command.execute();
 
-        if (shooterRPM > 0 && initialCargoCount > 0)
-        {
-            assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-            assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
-        }
+    //     if (shooterRPM > 0 && initialCargoCount > 0)
+    //     {
+    //         assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+    //         assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+    //     }
 
-        else
-        {
-            assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-            assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
-        }
-    }
+    //     else
+    //     {
+    //         assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+    //         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+    //     }
+    // }
 }
