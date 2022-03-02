@@ -1,5 +1,7 @@
 package frc.robot.subsystems.hardware;
 
+import PIDControl.PIDControl;
+import PIDControl.PIDControl.Coefficient;
 import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
@@ -12,7 +14,7 @@ public class HardwareDrive extends Drive
     public HardwareDrive()
     {
         _gyro                           = PositionSensor.navX(IMUAxis.Yaw);
-        _drivePID                       = null;
+        _translatePID                   = null;
         _rotatePID                      = null;
 
         Motor rotateFLMotor             = Motor.neo(4);
@@ -42,6 +44,23 @@ public class HardwareDrive extends Drive
             bl, 
             br 
         };
+
+        _translatePID = new PIDControl();
+        _rotatePID = new PIDControl();
+
+        _translatePID.setCoefficient(Coefficient.P, 0, 1, 0);
+        _translatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _translatePID.setCoefficient(Coefficient.D, 0, 0, 0);
+        _translatePID.setInputRange(-1000.0, 1000.0);
+        _translatePID.setOutputRange(0, 1.0);
+        _translatePID.setSetpointDeadband(1);
+
+        _rotatePID.setCoefficient(Coefficient.P, 0, 1, 0);
+        _rotatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _rotatePID.setCoefficient(Coefficient.D, 0, 0, 0);
+        _rotatePID.setInputRange(-1000.0, 1000.0);
+        _rotatePID.setOutputRange(-1.0, 1.0);
+        _rotatePID.setSetpointDeadband(Math.sin(Math.toRadians(5)));
 
         init();
     }
