@@ -1,27 +1,39 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Dashboard.DashValue;
+import frc.robot.Dashboard.RobotValue;
 import frc.robot.abstraction.Joystick;
-import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.Enumerations.State;
 
 public class Robot extends TimedRobot
 {
     private Joystick _joystick;
-
-    private Motor _motor;
+    private Dashboard _dashboard;
 
     @Override
     public void robotInit()
     {
         _joystick = Joystick.joystick(0);
-        _motor    = Motor.neo(2);
+        _dashboard = new Dashboard("2019", 1, 20, 1, 63);
     }
 
     @Override
     public void robotPeriodic()
     {
+        if (_joystick.getButton(6).get() == State.On)
+        {
+            _dashboard.setRobotValue(RobotValue.rvDriveGyro, 6);
+        }
 
+        else if (_joystick.getButton(7).get() == State.On)
+        {
+            _dashboard.setRobotValue(RobotValue.rvDriveGyro, 7);        }
+
+        else
+        {
+            _dashboard.setRobotValue(RobotValue.rvDriveGyro, 0);
+        }
     }
 
     @Override
@@ -51,20 +63,6 @@ public class Robot extends TimedRobot
     @Override
     public void teleopPeriodic()
     {
-        if (_joystick.getButton(11).get() == State.On)
-        {
-            _motor.set(1);
-        }
-
-        else if (_joystick.getButton(10).get() == State.On)
-        {
-            _motor.set(0.5);
-        }
-
-        else
-        {
-            _motor.set(0);
-        }
     }
 
     @Override

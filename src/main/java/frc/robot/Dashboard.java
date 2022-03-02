@@ -165,21 +165,27 @@ public class Dashboard
         _dashboardButtonCount = dashButtonCount;
         _dashboardValueCount = dashValueCount;
 
-        _robotStatus = new ArrayList<Integer>(_robotStatusCount);
-        _robotValue  = new ArrayList<Double>(_robotValueCount);
-        _dashboardButton = new ArrayList<Button>(_dashboardButtonCount);
-        _dashboardValue  = new ArrayList<Double>(_dashboardValueCount);
+        _robotStatus = new ArrayList<Integer>();
+        _robotValue  = new ArrayList<Double>();
+        _dashboardButton = new ArrayList<Button>();
+        _dashboardValue  = new ArrayList<Double>();
 
-        for (int i = 0; i < _robotStatusCount; i++) _robotStatus.set(i, 0);
-        for (int i = 0; i < _robotValueCount; i++) _robotValue.set(i, 0.0);
+        for (int i = 0; i < _robotStatusCount; i++) _robotStatus.add(0);
+        for (int i = 0; i < _robotValueCount; i++) _robotValue.add(0.0);
         for (int i = 0; i < _dashboardButtonCount; i++)
         {
             Button button = new Button();
             button.state = 0;
             button.pressed = 0;
 
-            _dashboardButton.set(i, button);
+            _dashboardButton.add(button);
         }
+        for (int i = 0; i < _dashboardValueCount; i++)
+        {
+            _dashboardValue.add(0.0);
+        }
+
+        startHost();
 
         /* TODO: read settings file */
     }
@@ -266,7 +272,11 @@ public class Dashboard
     {
         if (valueIndex.ordinal() < _dashboardValueCount)
         {
-            return _dashboardValue.get(valueIndex.ordinal());
+            double value = _dashboardValue.get(valueIndex.ordinal());
+
+            writeToLog("Get Dash Value: " + value);
+
+            return value;
         }
 
         return 0;
@@ -356,6 +366,8 @@ public class Dashboard
         }
 
         _dashboardValue.set(valueIndex, value);
+
+        writeToLog("value set: " + value);
 
         return false;
     }
@@ -464,6 +476,8 @@ public class Dashboard
                     recMesg += new String(recBuffer);
                     host.clearBuffer(recBuffer);
 
+                    host.writeToLog(recMesg);
+
                     while ((position = recMesg.indexOf(commandEnd, 0)) >= 0)
                     {
                         clientMsg = recMesg.substring(0, position);
@@ -475,22 +489,25 @@ public class Dashboard
                             clientMsg = clientMsg.substring(position + 1);
                             reply = "";
 
-                            if (command == commandCOUNT)
+                            host.writeToLog(String.format("command: %s, clientMsg: %s", command, clientMsg));
+
+                            if (command.equals(commandCOUNT))
                             {
                                 reply = host.countReply();
                             }
 
-                            else if (command == commandGET)
+                            else if (command.equals(commandGET))
                             {
                                 reply = host.getReply();
                             }
 
-                            else if (command == commandPULL)
+                            else if (command.equals(commandPULL))
                             {
+                                host.writeToLog("pull request received");
                                 reply = host.pullReply();
                             }
 
-                            else if (command == commandPUT)
+                            else if (command.equals(commandPUT))
                             {
                                 reply = "PUT:";
                                 boolean saveFile = false;
@@ -537,7 +554,7 @@ public class Dashboard
                                 }
                             }
 
-                            else if (command == commandSET)
+                            else if (command.equals(commandSET))
                             {
                                 host.writeToLog("New Robot Setting(s) from Dashboard");
                             }
