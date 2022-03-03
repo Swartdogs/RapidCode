@@ -569,6 +569,8 @@ public class Dashboard
                             }
                         }
                     }
+
+                    recMesg = "";
                 }
 
                 socket.close();
