@@ -18,7 +18,7 @@ public abstract class Shooter extends SwartdogSubsystem
     @Override
     public void periodic()
     {
-        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));
+        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));        
     }
 
     public void setShooterMotorSpeed(double speed)
@@ -30,6 +30,8 @@ public abstract class Shooter extends SwartdogSubsystem
     {
         double actual  = _shooterMotor.getVelocitySensor().get();
         double target  = _shooterMotor.get();
+
+        System.out.println(String.format("target: %d, actual: %d", (int)target, (int)actual));
 
         return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
                (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&

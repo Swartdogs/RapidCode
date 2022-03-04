@@ -38,13 +38,13 @@ public class CmdShootWithOdometryTests {
     {
         _drive.resetOdometer(new Vector(120, 0));
         _drive.getGyro().set(270);                                          
-        _shooter.getHoodSensor().set(Constants.Shooter.MANUAL_HOOD_POSITION);
+        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
         _ballpath.setCargoCount(initialCargoCount);
         
         _command.initialize();
 
         assertTrue(_drive.rotateIsFinished());
-        assertEquals(initialCargoCount > 0 ? Constants.Shooter.MANUAL_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(initialCargoCount > 0 ? Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -53,8 +53,8 @@ public class CmdShootWithOdometryTests {
     {
         _drive.resetOdometer(new Vector(120, 0));
         _drive.getGyro().set(270);                                          
-        _shooter.getHoodSensor().set(Constants.Shooter.MANUAL_HOOD_POSITION);
-        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(Constants.Shooter.MANUAL_SHOOTER_RPM);
+        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM);
         _ballpath.setCargoCount(initialCargoCount);
         
         _command.initialize();

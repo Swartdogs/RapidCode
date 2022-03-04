@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.Ballpath;
@@ -8,13 +9,15 @@ import frc.robot.subsystems.Shooter;
 
 public class CmdShootManual extends SwartdogCommand 
 {
-    private Shooter  _shooter;
-    private Ballpath _ballpath;
+    private Shooter       _shooter;
+    private Ballpath      _ballpath;
+    private ShootPosition _position;
 
-    public CmdShootManual(Shooter shooter, Ballpath ballpath) 
+    public CmdShootManual(Shooter shooter, Ballpath ballpath, ShootPosition position) 
     {
         _shooter  = shooter;
         _ballpath = ballpath;
+        _position = position;
 
         addRequirements(_shooter, _ballpath);
     }
@@ -24,8 +27,19 @@ public class CmdShootManual extends SwartdogCommand
     {
         if (_ballpath.getCargoCount() > 0) 
         {
-            _shooter.setShooterMotorSpeed(Constants.Shooter.MANUAL_SHOOTER_RPM);
-            _shooter.setHoodPosition(Constants.Shooter.MANUAL_HOOD_POSITION);
+            
+            switch (_position)
+            {
+                case NearLaunchpad:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+                    break;
+                    
+                case Fender:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.FENDER_HOOD_POSITION);
+                    break;
+            }
         }
     }
 
@@ -41,6 +55,11 @@ public class CmdShootManual extends SwartdogCommand
         {
             _ballpath.setUpperTrackTo(State.Off);
             _ballpath.setLowerTrackTo(State.Off);
+        }
+
+        if (_ballpath.hasShooterSensorTransitionedTo(State.Off))
+        {
+            _ballpath.modifyCargoCount(-1);
         }
     }
 

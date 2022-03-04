@@ -100,6 +100,8 @@ public class BallpathTests
     {
         _ballpath.getPickupSensor().set(state);
 
+        _ballpath.periodic();
+
         assertEquals(state, _ballpath.getPickupSensorState());
     }
 
@@ -108,6 +110,8 @@ public class BallpathTests
     public void testGetShooterSensor(State state)
     {
         _ballpath.getShooterSensor().set(state);
+
+        _ballpath.periodic();
 
         assertEquals(state, _ballpath.getShooterSensorState());
     }
@@ -119,6 +123,7 @@ public class BallpathTests
         _ballpath.getPickupSensor().set(first);
         _ballpath.periodic();
         _ballpath.getPickupSensor().set(second);
+        _ballpath.periodic();
 
         assertEquals(first != second && second == third, _ballpath.hasPickupSensorTransitionedTo(third));
     }
@@ -130,6 +135,7 @@ public class BallpathTests
         _ballpath.getShooterSensor().set(first);
         _ballpath.periodic();
         _ballpath.getShooterSensor().set(second);
+        _ballpath.periodic();
 
         assertEquals(first != second && second == third, _ballpath.hasShooterSensorTransitionedTo(third));
     }

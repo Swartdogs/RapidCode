@@ -10,17 +10,20 @@ import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.commands.CmdBallpathLoad;
 import frc.robot.subsystems.MockBallpath;
+import frc.robot.subsystems.MockPickup;
 
 public class CmdBallpathLoadTests 
 {
     private MockBallpath    _ballpath;
+    private MockPickup      _pickup;
     private CmdBallpathLoad _command;
 
     @BeforeEach
     public void init()
     {
         _ballpath = new MockBallpath();
-        _command  = new CmdBallpathLoad(_ballpath);
+        _pickup   = new MockPickup();
+        _command  = new CmdBallpathLoad(_ballpath, _pickup);
     }
 
     @ParameterizedTest
@@ -50,7 +53,7 @@ public class CmdBallpathLoadTests
                 break;
 
             case 1:
-                expectedLowerTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
+                expectedLowerTrackSpeed = 0;
                 expectedUpperTrackSpeed = 0;
                 expectedCargoCount      = 2;
                 break;
@@ -85,28 +88,21 @@ public class CmdBallpathLoadTests
         {
             case 0:
                 _ballpath.getShooterSensor().set(State.On);
-                
-                if(_command.isFinished())
-                {
-                    _command.end(false);
-                }
                 break;
             
             case 1:
                 _ballpath.getPickupSensor().set(State.Off);
-
-                if(_command.isFinished())
-                {
-                    _command.end(false);
-                }
                 break;
             
-            case 2:
-                if(_command.isFinished())
-                {
-                    _command.end(false);
-                }
+            default:
                 break;
+        }
+
+        _ballpath.periodic();
+
+        if(_command.isFinished())
+        {
+            _command.end(false);
         }
 
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);

@@ -4,6 +4,8 @@ import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.Solenoid;
 import frc.robot.abstraction.SwartdogSubsystem;
+import frc.robot.abstraction.Enumerations.ExtendState;
+import frc.robot.abstraction.Enumerations.State;
 
 public abstract class Pickup extends SwartdogSubsystem
 {
@@ -33,5 +35,22 @@ public abstract class Pickup extends SwartdogSubsystem
     public void reverseMotor()
     {
         _pickupMotor.set(-Constants.Pickup.PICKUP_SPEED);
+    }
+
+    public State getState()
+    {
+        State state = State.Off;
+
+        if (_deploySolenoid.get() == ExtendState.Extended && _pickupMotor.get() > 0)
+        {
+            state = State.On;
+        }
+
+        if (_deploySolenoid.get() == ExtendState.Extended && _pickupMotor.get() < 0)
+        {
+            state = State.Reverse;
+        }
+
+        return state;
     }
 }

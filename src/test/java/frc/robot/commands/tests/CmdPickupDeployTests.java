@@ -9,18 +9,21 @@ import org.junit.jupiter.api.Test;
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.commands.CmdPickupDeploy;
+import frc.robot.subsystems.MockBallpath;
 import frc.robot.subsystems.MockPickup;
 
 public class CmdPickupDeployTests 
 {
     private MockPickup      _pickup;
+    private MockBallpath    _ballpath;
     private CmdPickupDeploy _command;
 
     @BeforeEach
     public void init()
     {
-        _pickup  = new MockPickup();
-        _command = new CmdPickupDeploy(_pickup);
+        _pickup   = new MockPickup();
+        _ballpath = new MockBallpath();
+        _command  = new CmdPickupDeploy(_pickup, _ballpath);
     }
 
     @Test

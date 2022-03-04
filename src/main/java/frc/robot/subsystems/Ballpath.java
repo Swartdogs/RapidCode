@@ -14,21 +14,21 @@ public abstract class Ballpath extends SwartdogSubsystem
     protected Switch _pickupSensor;
     protected Switch _shooterSensor;
 
-    private State _lastPickupSensorState = State.Off;
-    private State _lastShooterSensorState = State.Off;
+    private State _lastPickupSensorState     = State.Off;
+    private State _lastShooterSensorState    = State.Off;
+    private State _currentPickupSensorState  = State.Off;
+    private State _currentShooterSensorState = State.Off;
 
     private int _cargoCount = 0;
 
     @Override
     public void periodic()
     {
-        _lastPickupSensorState = _pickupSensor.get();
-        _lastShooterSensorState = _shooterSensor.get();
-        
-        if (hasShooterSensorTransitionedTo(State.Off))
-        {
-            modifyCargoCount(-1);
-        }
+        _lastPickupSensorState  = _currentPickupSensorState;
+        _lastShooterSensorState = _currentShooterSensorState;
+      
+        _currentPickupSensorState  = _pickupSensor.get();
+        _currentShooterSensorState = _shooterSensor.get();
     }
 
     public void setUpperTrackTo(State state)
@@ -75,22 +75,22 @@ public abstract class Ballpath extends SwartdogSubsystem
     
     public State getPickupSensorState()
     {
-        return _pickupSensor.get();
+        return _currentPickupSensorState;
     }
 
     public boolean hasPickupSensorTransitionedTo(State state)
     {
-        return _pickupSensor.get() == state && _lastPickupSensorState != state;
+        return _currentPickupSensorState == state && _lastPickupSensorState != state;
     }
 
     public State getShooterSensorState()
     {
-        return _shooterSensor.get();
+        return _currentShooterSensorState;
     }
 
     public boolean hasShooterSensorTransitionedTo(State state)
     {
-        return _shooterSensor.get() == state && _lastShooterSensorState != state;
+        return _currentShooterSensorState == state && _lastShooterSensorState != state;
     }
 
     public int getCargoCount()
