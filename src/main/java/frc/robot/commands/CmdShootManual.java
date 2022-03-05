@@ -12,12 +12,14 @@ public class CmdShootManual extends SwartdogCommand
     private Shooter       _shooter;
     private Ballpath      _ballpath;
     private ShootPosition _position;
+    private boolean       _atSpeed;
 
     public CmdShootManual(Shooter shooter, Ballpath ballpath, ShootPosition position) 
     {
         _shooter  = shooter;
         _ballpath = ballpath;
         _position = position;
+        _atSpeed  = false;
 
         addRequirements(_shooter, _ballpath);
     }
@@ -25,9 +27,10 @@ public class CmdShootManual extends SwartdogCommand
     @Override
     public void initialize() 
     {
+        _atSpeed = false;
+        
         if (_ballpath.getCargoCount() > 0) 
         {
-            
             switch (_position)
             {
                 case NearLaunchpad:
@@ -48,18 +51,24 @@ public class CmdShootManual extends SwartdogCommand
     {
         if (_shooter.isShooterReady()) 
         {
-            _ballpath.setUpperTrackTo(State.On);
-            _ballpath.setLowerTrackTo(State.On);
+            _atSpeed = true;
         }
-        else 
-        {
-            _ballpath.setUpperTrackTo(State.Off);
-            _ballpath.setLowerTrackTo(State.Off);
-        }
-
+        
         if (_ballpath.hasShooterSensorTransitionedTo(State.Off))
         {
             _ballpath.modifyCargoCount(-1);
+            _atSpeed = false;
+        }
+
+        if (_atSpeed)
+        {
+            _ballpath.setUpperTrackTo(State.On);
+            _ballpath.setLowerTrackTo(State.On);
+        }
+        else
+        {
+            _ballpath.setUpperTrackTo(State.Off);
+            _ballpath.setLowerTrackTo(State.Off);
         }
     }
 

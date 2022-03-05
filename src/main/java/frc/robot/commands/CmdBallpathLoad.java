@@ -18,6 +18,8 @@ public class CmdBallpathLoad extends SwartdogCommand
         _ballpath          = ballpath; 
         _pickup            = pickup;
         _initialCargoCount = 0;
+
+        addRequirements(_ballpath);
     }
 
     @Override
@@ -33,14 +35,6 @@ public class CmdBallpathLoad extends SwartdogCommand
 
         
         _ballpath.modifyCargoCount(1);
-
-        System.out.println("loading, new cargo count: " + _initialCargoCount);
-    }
-
-    @Override
-    public void execute()
-    {
-        System.out.println(String.format("State: %s, transitioned: %b",_ballpath.getShooterSensorState(), _ballpath.hasShooterSensorTransitionedTo(State.On)));
     }
 
     @Override

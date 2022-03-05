@@ -10,7 +10,7 @@ public final class Constants
 {
     public static class Ballpath
     {
-        public static final double BALLPATH_SPEED  = 0.5;
+        public static final double BALLPATH_SPEED  = 1.0;
         public static final int    MAX_CARGO_COUNT = 2;
     }
 
@@ -74,13 +74,14 @@ public final class Constants
     {
         public static final double NEAR_LAUNCHPAD_HOOD_POSITION  = 1198;
         public static final double NEAR_LAUNCHPAD_SHOOTER_RPM    = 5086;
-        public static final double FENDER_HOOD_POSITION          = 2040;
+        public static final double FENDER_HOOD_POSITION          = 2038;
         public static final double FENDER_SHOOTER_RPM            = 4200;
         public static final double FLYWHEEL_SPEED                = 6379;
-        public static final double SHOOTER_RPM_THRESHOLD         = 0.05;
+        public static final double EJECT_SPEED                   = 2000;
+        public static final double SHOOTER_RPM_THRESHOLD         = 0.06;
         public static final Vector HUB_POSITION                  = new Vector(0,0); // the center of the coordinate system is at the hub
 
-        public static final double HOOD_MAX_POSITION = 2048;
+        public static final double HOOD_MAX_POSITION = 2040;
         public static final double HOOD_MIN_POSITION = 695;
 
         public enum ShootPosition

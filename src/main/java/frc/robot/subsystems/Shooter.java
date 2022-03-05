@@ -18,7 +18,7 @@ public abstract class Shooter extends SwartdogSubsystem
     @Override
     public void periodic()
     {
-        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));        
+        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));      
     }
 
     public void setShooterMotorSpeed(double speed)

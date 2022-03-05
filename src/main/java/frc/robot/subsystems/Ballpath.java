@@ -119,5 +119,7 @@ public abstract class Ballpath extends SwartdogSubsystem
     public void modifyCargoCount(int mod)
     {
         setCargoCount(getCargoCount() + mod);
+
+        System.out.println("Cargo count: " + getCargoCount());
     }
 }
