@@ -12,11 +12,19 @@ public class CmdShootWithOdometry extends SwartdogCommand
     private Shooter  _shooter;
     private Ballpath _ballpath;
 
+    private boolean  _atSpeed;
+
+    private double _target;
+
     public CmdShootWithOdometry(Drive drive, Shooter shooter, Ballpath ballpath)
     {
         _drive    = drive;
         _shooter  = shooter;
         _ballpath = ballpath;
+
+        _atSpeed  = false;
+
+        addRequirements(_drive, _shooter, _ballpath);
     }
 
     @Override
@@ -31,7 +39,9 @@ public class CmdShootWithOdometry extends SwartdogCommand
             _shooter.setShooterMotorSpeed(Constants.Shooter.SHOOTER_SPEED_LOOKUP.applyAsDouble(distance));
             _shooter.setHoodPosition(Constants.Shooter.SHOOTER_HOOD_LOOKUP.applyAsDouble(distance));
 
-            _drive.rotateInit(target.getTheta(), Constants.Drive.ALIGN_ROTATE_SPEED);
+            _target = target.getTheta();
+
+            _drive.rotateInit(_target, Constants.Drive.ALIGN_ROTATE_SPEED);
         }
     }
 
@@ -40,7 +50,22 @@ public class CmdShootWithOdometry extends SwartdogCommand
     {
         _drive.drive(0, 0, _drive.rotateExec());
         
+        /* 
+         * The "_atSpeed" variable is used to prevent a problem where the cargo would slow the wheel down,
+         * causing the ballpath to shut off while the cargo is contacting the wheel.
+         */
         if (_shooter.isShooterReady() && _drive.rotateIsFinished())
+        {
+            _atSpeed = true;
+        }
+
+        if (_ballpath.hasShooterSensorTransitionedTo(State.Off)) 
+        {
+            _atSpeed = false;
+            _ballpath.modifyCargoCount(-1);
+        }
+
+        if (_atSpeed) 
         {
             _ballpath.setUpperTrackTo(State.On);
             _ballpath.setLowerTrackTo(State.On);
@@ -50,6 +75,8 @@ public class CmdShootWithOdometry extends SwartdogCommand
             _ballpath.setUpperTrackTo(State.Off);
             _ballpath.setLowerTrackTo(State.Off);
         }
+
+        // System.out.println("Target: " + _target + ", Actual: " + _drive.getHeading());
     }
 
     @Override
@@ -59,6 +86,8 @@ public class CmdShootWithOdometry extends SwartdogCommand
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
         _drive.drive(0, 0, 0);
+
+        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
     }
 
     @Override

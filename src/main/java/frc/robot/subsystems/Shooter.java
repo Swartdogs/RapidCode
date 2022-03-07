@@ -31,8 +31,6 @@ public abstract class Shooter extends SwartdogSubsystem
         double actual  = _shooterMotor.getVelocitySensor().get();
         double target  = _shooterMotor.get();
 
-        System.out.println(String.format("target: %d, actual: %d", (int)target, (int)actual));
-
         return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
                (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&
                (target > 0)                                                       &&

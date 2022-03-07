@@ -93,19 +93,27 @@ public final class Constants
         public static final DoubleUnaryOperator SHOOTER_SPEED_LOOKUP = (distance) ->
         {
             double speed = 0;
-            if (distance > 0)
+            if (distance > 90)
             {
                 speed = NEAR_LAUNCHPAD_SHOOTER_RPM;
+            }
+            else
+            {
+                speed = FENDER_SHOOTER_RPM;
             }
             return speed;
         }; 
 
-        public static final DoubleUnaryOperator SHOOTER_HOOD_LOOKUP = (distance) ->
-        {
+        public static final DoubleUnaryOperator SHOOTER_HOOD_LOOKUP = (distance) -> 
+        { 
             double position = 0;
-            if (distance > 0)
+            if (distance > 90)
             {
                 position = NEAR_LAUNCHPAD_HOOD_POSITION;
+            }
+            else
+            {
+                distance = FENDER_HOOD_POSITION;
             }
             return position;
         }; 
@@ -123,6 +131,9 @@ public final class Constants
         public static final double ODOMETRY_SCALE       = (48.75) /* inches */ / (55854.18) /* encoder counts */;
 
         public static final double ALIGN_ROTATE_SPEED   = 0.7;
+
+        public static final double FIELD_ANGLE          = 21;
+        public static final Vector FIELD_RESET_POSITION = new Vector(-18.47, -48.23);
     }
 
     public static class Testing

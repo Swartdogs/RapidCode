@@ -49,6 +49,10 @@ public class CmdShootManual extends SwartdogCommand
     @Override
     public void execute() 
     {
+        /* 
+         * The "_atSpeed" variable is used to prevent a problem where the cargo would slow the wheel down,
+         * causing the ballpath to shut off while the cargo is contacting the wheel.
+         */
         if (_shooter.isShooterReady()) 
         {
             _atSpeed = true;
@@ -78,6 +82,8 @@ public class CmdShootManual extends SwartdogCommand
         _shooter.setShooterMotorSpeed(0);
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
+
+        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
     }
 
     @Override

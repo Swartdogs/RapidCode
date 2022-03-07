@@ -16,6 +16,7 @@ import frc.robot.commands.CmdPickupDeploy;
 import frc.robot.commands.CmdPickupReverse;
 import frc.robot.commands.CmdPickupStow;
 import frc.robot.commands.CmdShootManual;
+import frc.robot.commands.CmdShootWithOdometry;
 import frc.robot.subsystems.Ballpath;
 import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.Shooter;
@@ -88,41 +89,41 @@ public class RobotContainer extends SubsystemBase
 
     private void configureButtonBindings()
     {
-        CmdShootManual shootNearLaunchpad = new CmdShootManual(_shooter, _ballpath, ShootPosition.NearLaunchpad);
-        CmdShootManual shootFender        = new CmdShootManual(_shooter, _ballpath, ShootPosition.Fender);
-
-        // Deploy/stow the pickup
-        _coDriveJoystick.getButton( 8).whenActivated(new CmdPickupDeploy(_pickup, _ballpath));
-        // _coDriveJoystick.getButton( 9).whenActivated(new CmdPickupReverse(_pickup));
-        _coDriveJoystick.getButton(10).whenActivated(new CmdPickupStow(_pickup));
+        CmdShootManual       shootNearLaunchpad = new CmdShootManual(_shooter, _ballpath, ShootPosition.NearLaunchpad);
+        CmdShootManual       shootFender        = new CmdShootManual(_shooter, _ballpath, ShootPosition.Fender);
+        CmdShootWithOdometry shootWithOdometry  = new CmdShootWithOdometry(_drive, _shooter, _ballpath);
         
-        // Sets "forward" to the direction the robot is currently facing
-        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() -> _drive.setGyro(0)));
+        // Driver joystick button bindings
+        _driveJoystick.getButton( 7).whenActivated(shootWithOdometry);                                                                  // Shoot using odometry-based aiming
+        _driveJoystick.getButton( 8).whenActivated(shootFender);                                                                        // Shoot without aiming from the Fender
+        _driveJoystick.getButton( 9).whenActivated(SwartdogCommand.run(() -> System.out.println("Odometer: " + _drive.getOdometer()))); // Print odometer
+        _driveJoystick.getButton(10).cancelWhenActivated(shootNearLaunchpad);                                                           // Cancel shooting
+        _driveJoystick.getButton(10).cancelWhenActivated(shootFender);                                                                  // Cancel shooting
+        _driveJoystick.getButton(10).cancelWhenActivated(shootWithOdometry);                                                            // Cancel shooting
+        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                                            // Reset the gyroscope and odometer
+        {
+            _drive.setGyro(Constants.Drive.FIELD_ANGLE); 
+            _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION.clone()); 
+        }));
+        _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);                                                                 // Shoot without aiming from the Launchpad
+        
+        // Co-Driver joystick button bindings
+        _coDriveJoystick.getButton(7).whenActivated(new CmdBallpathEjectHigh(_ballpath, _shooter));             // Eject upper cargo via shooter, and load lower cargo into upper area if it is present
+        _coDriveJoystick.getButton(5).whenActivated(new CmdPickupDeploy(_pickup, _ballpath));                   // Deploy the pickup
+        _coDriveJoystick.getButton(9).whenActivated(new CmdBallpathEjectLow(_ballpath, _pickup));               // Eject lower cargo via pickup
+        _coDriveJoystick.getButton(3).whenActivated(new CmdPickupStow(_pickup));                                // Stow the pickup
+        _coDriveJoystick.getButton(4).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1))); // Manually decrement cargo count
+        _coDriveJoystick.getButton(6).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1)));  // Manually increment cargo count 
+        
+        // Various unused bindings for testing things
+        // _coDriveJoystick.getButton( 9).whenActivated(new CmdPickupReverse(_pickup));
 
-        // Manually adjust cargo count
-        _coDriveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1)));
-        _coDriveJoystick.getButton(12).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1)));
-
-        // Begin shooting
-        _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);
-        _driveJoystick.getButton( 8).whenActivated(shootFender);
-
-        // Cancel shooting
-        _driveJoystick.getButton(10).cancelWhenActivated(shootNearLaunchpad);
-        _driveJoystick.getButton(10).cancelWhenActivated(shootFender);
-
-        // Eject cargo
-        _coDriveJoystick.getButton(9).whenActivated(new CmdBallpathEjectLow(_ballpath, _pickup));
-        _coDriveJoystick.getButton(7).whenActivated(new CmdBallpathEjectHigh(_ballpath, _shooter));
-
-
-        // Various test code
         // _coDriveJoystick.getButton(10).whileActive(new CmdRunBallPath(_ballpath));
 
         // _driveJoystick.getButton( 9).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(1198)));
         // _driveJoystick.getButton(10).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(1618)));
-        // _driveJoystick.getButton(8).whenActivated(SwartdogCommand.run(() -> _shooter.setShooterMotorSpeed(Constants.Shooter.MANUAL_SHOOTER_RPM)));
-        // _driveJoystick.getButton(9).whenActivated(SwartdogCommand.run(() -> _shooter.setShooterMotorSpeed(0)));
+        // _driveJoystick.getButton( 8).whenActivated(SwartdogCommand.run(() -> _shooter.setShooterMotorSpeed(Constants.Shooter.MANUAL_SHOOTER_RPM)));
+        // _driveJoystick.getButton( 9).whenActivated(SwartdogCommand.run(() -> _shooter.setShooterMotorSpeed(0)));
 
         // _driveJoystick.getButton(11).whileActive(new CmdRunBallPath(_ballpath));
     }
