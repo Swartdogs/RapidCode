@@ -36,7 +36,7 @@ public class CmdShootWithOdometryTests {
     @ValueSource(ints = { 0, 1, 2 })
     public void testStart (int initialCargoCount)
     {
-        _drive.resetOdometer(new Vector(120, 0));
+        _drive.resetOdometer(new Vector(10, 0));
         _drive.getGyro().set(270);                                          
         _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
         _ballpath.setCargoCount(initialCargoCount);
@@ -44,7 +44,7 @@ public class CmdShootWithOdometryTests {
         _command.initialize();
 
         assertTrue(_drive.rotateIsFinished());
-        assertEquals(initialCargoCount > 0 ? Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(initialCargoCount > 0 ? 4200 : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest

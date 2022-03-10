@@ -37,4 +37,11 @@ public class MockShooter extends Shooter
     {
         return (MockPositionSensor)_hoodSensor;
     }
+
+    public void initialize() {}
+
+    public boolean isInitialized()
+    {
+        return true;
+    }
 }

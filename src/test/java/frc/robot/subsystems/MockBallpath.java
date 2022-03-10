@@ -33,4 +33,11 @@ public class MockBallpath extends Ballpath
     {
         return (MockSwitch)_shooterSensor;
     }
+
+    public void initialize() {}
+
+    public boolean isInitialized()
+    {
+        return true;
+    }
 }

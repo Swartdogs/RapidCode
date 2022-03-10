@@ -44,4 +44,11 @@ public class MockDrive extends Drive
     {
         return (MockSwerveModule)_swerveModules[index];
     }
+
+    public void initialize() {}
+
+    public boolean isInitialized()
+    {
+        return true;
+    }
 }

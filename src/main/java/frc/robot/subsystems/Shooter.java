@@ -8,7 +8,7 @@ import frc.robot.abstraction.SwartdogSubsystem;
 
 public abstract class Shooter extends SwartdogSubsystem
 {
-    protected Motor          _shooterMotor;
+    public Motor          _shooterMotor;
     protected Motor          _hoodMotor;
 
     protected PositionSensor _hoodSensor;

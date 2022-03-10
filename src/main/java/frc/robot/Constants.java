@@ -1,5 +1,9 @@
 package frc.robot;
 
+import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
@@ -90,33 +94,71 @@ public final class Constants
             Fender
         }
 
+        private static final Map<Double, Double> SHOOTER_SPEEDS = Map.of
+        (
+            51.65,  4200.0,
+            71.74,  4000.0, 
+            138.04, 4100.0, 
+            168.92, 4300.0, 
+            206.16, 4600.0, 
+            243.59, 4950.0, 
+            259.03, 5100.0
+        );
+        
         public static final DoubleUnaryOperator SHOOTER_SPEED_LOOKUP = (distance) ->
         {
-            double speed = 0;
-            if (distance > 90)
-            {
-                speed = NEAR_LAUNCHPAD_SHOOTER_RPM;
-            }
-            else
-            {
-                speed = FENDER_SHOOTER_RPM;
-            }
-            return speed;
+            TreeMap<Double, Double> map = new TreeMap<Double, Double>(SHOOTER_SPEEDS);
+
+            return lookup(distance, map);
         }; 
+        
+        private static final Map<Double, Double> SHOOTER_HOOD_POSITIONS = Map.of
+        (
+            51.65,  2038.0,
+            71.74,  1518.0, 
+            138.04, 1400.0, 
+            168.92, 1277.0, 
+            206.16, 1136.0, 
+            243.59, 1136.0, 
+            259.03, 1140.0
+        );
 
         public static final DoubleUnaryOperator SHOOTER_HOOD_LOOKUP = (distance) -> 
-        { 
-            double position = 0;
-            if (distance > 90)
+        {
+            TreeMap<Double, Double> map = new TreeMap<Double, Double>(SHOOTER_HOOD_POSITIONS);
+
+            return lookup(distance, map);
+        }; 
+    
+        private static double lookup(double distance, NavigableMap<Double, Double> table) 
+        {
+            Entry<Double, Double> start = table.floorEntry(distance);
+            Entry<Double, Double> end   = table.ceilingEntry(distance);
+
+            double output = 0;
+
+            if (start == null)
             {
-                position = NEAR_LAUNCHPAD_HOOD_POSITION;
+                output = table.firstEntry().getValue();
             }
+
+            else if (end == null)
+            {
+                output = table.lastEntry().getValue();
+            }
+            
+            else if (start.getKey() == end.getKey())
+            {
+                output = start.getValue();
+            }
+
             else
             {
-                distance = FENDER_HOOD_POSITION;
+                output = ((start.getValue() * (end.getKey() - distance)) + (end.getValue() * (distance - start.getKey()))) / (end.getKey() - start.getKey());
             }
-            return position;
-        }; 
+
+            return output;
+        }
     }
     
     public static class Drive

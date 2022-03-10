@@ -58,4 +58,11 @@ public class MockHanger extends Hanger
     {
         return (MockPositionSensor)_winchSensor;
     }
+
+    public void initialize() {}
+
+    public boolean isInitialized()
+    {
+        return true;
+    }
 }

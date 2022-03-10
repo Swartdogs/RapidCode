@@ -15,8 +15,10 @@ import frc.robot.commands.CmdDriveWithJoystick;
 import frc.robot.commands.CmdPickupDeploy;
 import frc.robot.commands.CmdPickupReverse;
 import frc.robot.commands.CmdPickupStow;
+import frc.robot.commands.CmdRunBallPath;
 import frc.robot.commands.CmdShootManual;
 import frc.robot.commands.CmdShootWithOdometry;
+import frc.robot.commands.CmdShooterDefault;
 import frc.robot.subsystems.Ballpath;
 import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.Shooter;
@@ -57,6 +59,8 @@ public class RobotContainer extends SubsystemBase
     @Override
     public void periodic()
     {
+        // System.out.println(String.format("Distance: %6.2f, Hood position: %4d, Shooter RPM: %4d", _drive.getOdometer().getR(), (int)_shooter.getHoodPosition(), (int)_shooter._shooterMotor.get()));
+
         if(_ballpath.hasPickupSensorTransitionedTo(State.On))
         {
             CommandScheduler.getInstance().schedule(false, new CmdBallpathLoad(_ballpath, _pickup));
@@ -85,6 +89,11 @@ public class RobotContainer extends SubsystemBase
                 () -> _driveJoystick.getZ()
             )
         );
+
+        // _shooter.setDefaultCommand
+        // (
+        //     new CmdShooterDefault(_shooter, () -> ((-_driveJoystick.getThrottle()) + 1) / 2.0)
+        // );
     }
 
     private void configureButtonBindings()
@@ -107,6 +116,11 @@ public class RobotContainer extends SubsystemBase
         }));
         _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);                                                                 // Shoot without aiming from the Launchpad
         
+        // _driveJoystick.getButton(3).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 10)));
+        // _driveJoystick.getButton(5).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 10)));
+
+        // _coDriveJoystick.getButton(1).whileActive(new CmdRunBallPath(_ballpath));
+
         // Co-Driver joystick button bindings
         _coDriveJoystick.getButton(7).whenActivated(new CmdBallpathEjectHigh(_ballpath, _shooter));             // Eject upper cargo via shooter, and load lower cargo into upper area if it is present
         _coDriveJoystick.getButton(5).whenActivated(new CmdPickupDeploy(_pickup, _ballpath));                   // Deploy the pickup

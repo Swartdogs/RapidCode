@@ -20,4 +20,11 @@ public class MockPickup extends Pickup
     {
         return (MockSolenoid)_deploySolenoid;
     }
+
+    public void initialize() {}
+
+    public boolean isInitialized()
+    {
+        return true;
+    }
 }

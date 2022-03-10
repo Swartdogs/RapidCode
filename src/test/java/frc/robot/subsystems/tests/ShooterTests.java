@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -78,5 +79,16 @@ public class ShooterTests
 
         assertEquals(0.0, _shooter.getHoodMotor().get(), Constants.Testing.EPSILON);
         assertTrue(_shooter.hoodAtPosition());
+    }
+
+    @Test
+    public void test()
+    {
+        double distance = 5000;
+
+        double rpm      = Constants.Shooter.SHOOTER_SPEED_LOOKUP.applyAsDouble(distance);
+        double hood     = Constants.Shooter.SHOOTER_HOOD_LOOKUP.applyAsDouble(distance);
+
+        return;
     }
 }

@@ -32,8 +32,7 @@ public class CmdShootWithOdometry extends SwartdogCommand
     {
         if (_ballpath.getCargoCount() > 0)
         {
-            Vector target   = Constants.Shooter.HUB_POSITION.clone();
-            target.subtract(_drive.getOdometer());
+            Vector target   = Constants.Shooter.HUB_POSITION.subtract(_drive.getOdometer());
             double distance = target.getR();
             
             _shooter.setShooterMotorSpeed(Constants.Shooter.SHOOTER_SPEED_LOOKUP.applyAsDouble(distance));
@@ -42,6 +41,8 @@ public class CmdShootWithOdometry extends SwartdogCommand
             _target = target.getTheta();
 
             _drive.rotateInit(_target, Constants.Drive.ALIGN_ROTATE_SPEED);
+
+            _atSpeed = false;
         }
     }
 
