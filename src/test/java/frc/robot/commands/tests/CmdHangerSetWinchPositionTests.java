@@ -1,19 +1,16 @@
 package frc.robot.commands.tests;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
 import frc.robot.Utils;
-import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.commands.CmdHangerSetWinchPosition;
 import frc.robot.subsystems.MockHanger;
 
@@ -24,19 +21,16 @@ public class CmdHangerSetWinchPositionTests
 
     private static Stream<Arguments> testCases()
     {
-        ExtendState[] states =
-        { ExtendState.Extended, ExtendState.Retracted };
-
-        double[] starts =
+        double[] positions =
         { 78.14, 5, 617.478, 34, 92.7 };
 
         Stream<Arguments> args = Stream.of();
 
-        for (double d : starts)
+        for (double start : positions)
         {
-            for (ExtendState e : states)
+            for (double target : positions)
             {
-                args = Stream.concat(args, Stream.of(Arguments.of(e, d)));
+                args = Stream.concat(args, Stream.of(Arguments.of(start, target)));
             }
         }
 
@@ -51,28 +45,29 @@ public class CmdHangerSetWinchPositionTests
 
     @ParameterizedTest
     @MethodSource("testCases")
-    public void testHangerSetWinchPosition(ExtendState state, double position)
+    public void testHangerSetWinchPosition(double start, double target)
     {
-        _command = new CmdHangerSetWinchPosition(_hanger, state);
+        _command = new CmdHangerSetWinchPosition(_hanger, target);
         
-        _hanger.getWinchSensor().set(position);
+        _hanger.getWinchSensor().set(start);
         _command.initialize();
         _hanger.periodic();
+        _command.execute();
 
-        assertEquals(Utils.clamp(Constants.Hanger.HANGER_WINCH_POSITION_LOOKUP.apply(state) - position, -1, 1), _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(Utils.clamp(target - start, -1, 1), _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
-    @EnumSource(ExtendState.class)
-    public void testHangerWinchAtPosition(ExtendState state)
+    @MethodSource("testCases")
+    public void testHangerWinchAtPosition(double start, double target)
     {
-        _command = new CmdHangerSetWinchPosition(_hanger, state);
+        _command = new CmdHangerSetWinchPosition(_hanger, target);
 
-        _hanger.getWinchSensor().set(Constants.Hanger.HANGER_WINCH_POSITION_LOOKUP.apply(state));
+        _hanger.getWinchSensor().set(start);
         _command.initialize();
         _hanger.periodic();
+        _command.execute();
 
-        assertEquals(0.0, _hanger.getWinchMotor().get(), Constants.Testing.EPSILON);
-        assertTrue(_command.isFinished());
+        assertEquals(target == start, _command.isFinished());
     }
 }

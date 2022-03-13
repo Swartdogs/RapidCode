@@ -52,6 +52,8 @@ public class HardwareDrive extends Drive
         _rotatePID.setOutputRamp(0.1, 0.05);
         _rotatePID.setSetpointDeadband(2.0);
 
+        _gyro.setScalingFunction((angle) -> angle * 1.0308);
+
         init();
     }
 }

@@ -5,21 +5,26 @@ import PIDControl.PIDControl.Coefficient;
 import frc.robot.abstraction.MockMotor;
 import frc.robot.abstraction.MockPositionSensor;
 import frc.robot.abstraction.MockSolenoid;
+import frc.robot.abstraction.MockSwitch;
 
 public class MockHanger extends Hanger 
 {
     public MockHanger() 
     {
-        _armMotor     = new MockMotor();
-        _winchMotor   = new MockMotor();
+        _armMotor        = new MockMotor();
+        _winchMotor      = new MockMotor();
 
-        _hookSolenoid = new MockSolenoid();
+        _hookSolenoid    = new MockSolenoid();
+        _ratchetSolenoid = new MockSolenoid();
 
-        _armSensor    = new MockPositionSensor();
-        _winchSensor  = new MockPositionSensor();
+        _armSensor       = new MockPositionSensor();
+        _winchSensor     = new MockPositionSensor();
 
-        _armPID       = new PIDControl();
-        _winchPID     = new PIDControl();
+        _armPID          = new PIDControl();
+        _winchPID        = new PIDControl();
+
+        _leftSwitch      = new MockSwitch();
+        _rightSwitch     = new MockSwitch();
 
         _armPID.setCoefficient(Coefficient.P, 0, 1, 0);
         _armPID.setCoefficient(Coefficient.I, 0, 0, 0);
@@ -49,6 +54,11 @@ public class MockHanger extends Hanger
         return (MockSolenoid)_hookSolenoid;
     }
 
+    public MockSolenoid getRatchetSolenoid()
+    {
+        return (MockSolenoid)_ratchetSolenoid;
+    }
+
     public MockPositionSensor getArmSensor() 
     {
         return (MockPositionSensor)_armSensor;
@@ -57,6 +67,16 @@ public class MockHanger extends Hanger
     public MockPositionSensor getWinchSensor() 
     {
         return (MockPositionSensor)_winchSensor;
+    }
+
+    public MockSwitch getLeftSwitch()
+    {
+        return (MockSwitch)_leftSwitch;
+    }
+
+    public MockSwitch getRightSwitch()
+    {
+        return (MockSwitch)_rightSwitch;
     }
 
     public void initialize() {}

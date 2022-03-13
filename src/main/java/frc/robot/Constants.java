@@ -5,9 +5,7 @@ import java.util.NavigableMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
 
-import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.subsystems.drive.Vector;
 
 public final class Constants
@@ -20,53 +18,9 @@ public final class Constants
 
     public static class Hanger
     {
-        public static final double HANGER_ARM_EXTENDED_POSITION  = 1000.0;
-        public static final double HANGER_ARM_RETRACTED_POSITION = 0.0;
-
-        public static final Function<ExtendState, Double> HANGER_ARM_POSITION_LOOKUP = (state) ->
-        {
-            double position;
-
-            switch (state)
-            {
-                case Extended:
-                    position = HANGER_ARM_EXTENDED_POSITION;
-                    break;
-
-                case Retracted:
-                    position = HANGER_ARM_RETRACTED_POSITION;
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Invalid Hanger Arm State: " + state);
-            }
-
-            return position;
-        };
-
-        public static final double HANGER_WINCH_EXTENDED_POSITION  = 1000.0;
-        public static final double HANGER_WINCH_RETRACTED_POSITION = 0.0;
-
-        public static final Function<ExtendState, Double> HANGER_WINCH_POSITION_LOOKUP = (state) ->
-        {
-            double position;
-
-            switch (state)
-            {
-                case Extended:
-                    position = HANGER_WINCH_EXTENDED_POSITION;
-                    break;
-
-                case Retracted:
-                    position = HANGER_WINCH_RETRACTED_POSITION;
-                    break;
-
-                default:
-                    throw new IllegalArgumentException("Invalid Winch Arm State: " + state);
-            }
-
-            return position;
-        };
+        public static final double WINCH_SPEED      = 1.0;
+        public static final double HOOK_WAIT_TIME   = 0.3;
+        public static final double LOOPS_PER_SECOND = 50;
     }
     
     public static class Pickup

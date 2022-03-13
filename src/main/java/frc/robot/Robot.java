@@ -7,7 +7,9 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.abstraction.Motor;
+import frc.robot.abstraction.PositionSensor;
 import frc.robot.abstraction.Solenoid;
+import frc.robot.abstraction.Switch;
 import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.abstraction.Joystick;
@@ -22,8 +24,11 @@ public class Robot extends TimedRobot
     private Motor    _arms;
     private Solenoid _hooks;
     private Solenoid _locks;
+    private Solenoid _pickup;
     private Joystick _joystick;
+    private PositionSensor _armPosition;
     private PowerDistribution _pdh;
+    private Switch _switch;
 
     @Override
     public void robotInit()
@@ -33,8 +38,11 @@ public class Robot extends TimedRobot
         // _winch          = Motor.neo(18);
         // _arms           = Motor.neo(19);
         // _hooks          = Solenoid.invert(Solenoid.solenoid(2, PneumaticsModuleType.REVPH, 15));
-        // _locks          = Solenoid.invert(Solenoid.solenoid(2, PneumaticsModuleType.REVPH, 9));
+        // _locks          = Solenoid.invert(Solenoid.solenoid(2, PneumaticsModuleType.REVPH, 13));
+        // _pickup         = Solenoid.solenoid(2, PneumaticsModuleType.REVPH, 14);
         // _joystick       = Joystick.joystick(0);
+        // _armPosition    = PositionSensor.dutyCycleEncoder(2);
+        // _switch            = Switch.limitSwitch(0);
 
         // _joystick.setXDeadband(0.05);
         // _joystick.setYDeadband(0.05);
@@ -44,6 +52,7 @@ public class Robot extends TimedRobot
     public void robotPeriodic()
     {
         CommandScheduler.getInstance().run();
+        // System.out.println(_armPosition.get());
     }
 
     @Override
@@ -77,6 +86,7 @@ public class Robot extends TimedRobot
             _autonomousCommand.cancel();
         }
 
+    //    _pickup.extend();
     }
 
     @Override
@@ -111,7 +121,7 @@ public class Robot extends TimedRobot
         //     _locks.retract();
         // }
 
-        // System.out.println(_pdh.getCurrent(5) + " " + _winch.get());
+        // System.out.println(_switch.get());
     }
 
     @Override

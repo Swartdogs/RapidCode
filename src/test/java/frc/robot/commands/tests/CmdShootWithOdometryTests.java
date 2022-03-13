@@ -65,7 +65,6 @@ public class CmdShootWithOdometryTests {
             _command.end(false);
         }
 
-        // Collin thinks we don't need to test stopping the rotation
         assertEquals(0, _shooter.getShooterMotor().get(),     Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);

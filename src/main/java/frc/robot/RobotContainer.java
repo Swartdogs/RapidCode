@@ -1,11 +1,14 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.Hanger;
 import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.Joystick;
+import frc.robot.abstraction.NetworkTableString;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.commands.CmdBallpathEjectHigh;
@@ -30,6 +33,10 @@ import frc.robot.subsystems.hardware.HardwareShooter;
 
 public class RobotContainer extends SubsystemBase
 {
+    private UsbCamera _driverCamera;
+    private UsbCamera _hangerCamera;
+    private NetworkTableString _cameraSource;
+
     private Joystick _driveJoystick;
     private Joystick _coDriveJoystick;
 
@@ -38,6 +45,8 @@ public class RobotContainer extends SubsystemBase
     private Hanger   _hanger;
     private Pickup   _pickup;
     private Shooter  _shooter;
+
+    private boolean  _usingDriverCamera;
 
     public RobotContainer()
     {
@@ -49,6 +58,11 @@ public class RobotContainer extends SubsystemBase
         // _hanger   = new HardwareHanger();
         _pickup   = new HardwarePickup();
         _shooter  = new HardwareShooter();
+
+        _driverCamera = CameraServer.startAutomaticCapture(0);
+        _hangerCamera = CameraServer.startAutomaticCapture(1);
+        _cameraSource = NetworkTableString.networkTableString("", "CameraSelection");
+        _usingDriverCamera = true;
 
         configureControls();
         configureDefaultCommands();
@@ -75,6 +89,7 @@ public class RobotContainer extends SubsystemBase
 
         _driveJoystick.setSquareX(true);
         _driveJoystick.setSquareY(true);
+        _driveJoystick.setSquareZ(true);
     }
 
     private void configureDefaultCommands()
@@ -116,6 +131,8 @@ public class RobotContainer extends SubsystemBase
         }));
         _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);                                                                 // Shoot without aiming from the Launchpad
         
+        _driveJoystick.getButton(1).whenActivated(SwartdogCommand.run(() -> _cameraSource.set(_usingDriverCamera ? _hangerCamera.getName() : _driverCamera.getName())));
+
         // _driveJoystick.getButton(3).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 10)));
         // _driveJoystick.getButton(5).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 10)));
 
@@ -145,6 +162,7 @@ public class RobotContainer extends SubsystemBase
     private void init()
     {
         _shooter.setHoodPosition(1198);
+        _cameraSource.set(_driverCamera.getName());
     }
 
     public Command getAutonomousCommand()
