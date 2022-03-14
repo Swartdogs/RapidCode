@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive.tests;
+package frc.robot.subsystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.drive.MockDrive;
-import frc.robot.subsystems.drive.MockSwerveModule;
+import frc.robot.subsystems.hardware.MockDrive;
+import frc.robot.subsystems.hardware.MockSwerveModule;
 import frc.robot.subsystems.drive.Vector;
 
 public class DriveTests 

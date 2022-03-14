@@ -1,8 +1,10 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.hardware;
 
 import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
-import frc.robot.abstraction.MockPositionSensor;
+import frc.robot.abstraction.PositionSensor.MockPositionSensor;
+import frc.robot.subsystems.drive.Drive;
+import frc.robot.subsystems.drive.SwerveModule;
 
 public class MockDrive extends Drive 
 {
@@ -43,12 +45,5 @@ public class MockDrive extends Drive
     public MockSwerveModule getSwerveModule(int index)
     {
         return (MockSwerveModule)_swerveModules[index];
-    }
-
-    public void initialize() {}
-
-    public boolean isInitialized()
-    {
-        return true;
     }
 }

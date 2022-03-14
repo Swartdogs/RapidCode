@@ -1,9 +1,10 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.hardware;
 
 import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
-import frc.robot.abstraction.MockMotor;
-import frc.robot.abstraction.MockPositionSensor;
+import frc.robot.abstraction.Motor.MockMotor;
+import frc.robot.abstraction.PositionSensor.MockPositionSensor;
+import frc.robot.subsystems.Shooter;
 
 public class MockShooter extends Shooter
 {
@@ -36,12 +37,5 @@ public class MockShooter extends Shooter
     public MockPositionSensor getHoodSensor()
     {
         return (MockPositionSensor)_hoodSensor;
-    }
-
-    public void initialize() {}
-
-    public boolean isInitialized()
-    {
-        return true;
     }
 }

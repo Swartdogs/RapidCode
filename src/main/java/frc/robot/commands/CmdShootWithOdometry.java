@@ -68,13 +68,11 @@ public class CmdShootWithOdometry extends SwartdogCommand
 
         if (_atSpeed) 
         {
-            _ballpath.setUpperTrackTo(State.On);
-            _ballpath.setLowerTrackTo(State.On);
+            _ballpath.shoot();
         }
         else
         {
-            _ballpath.setUpperTrackTo(State.Off);
-            _ballpath.setLowerTrackTo(State.Off);
+            _ballpath.stop();
         }
 
         // System.out.println("Target: " + _target + ", Actual: " + _drive.getHeading());
@@ -84,8 +82,7 @@ public class CmdShootWithOdometry extends SwartdogCommand
     public void end(boolean interrupted)
     {
         _shooter.setShooterMotorSpeed(0);
-        _ballpath.setUpperTrackTo(State.Off);
-        _ballpath.setLowerTrackTo(State.Off);
+        _ballpath.stop();
         _drive.drive(0, 0, 0);
 
         _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);

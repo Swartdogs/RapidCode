@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,17 +7,20 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
 import frc.robot.Constants.Shooter.ShootPosition;
-import frc.robot.commands.CmdShootManual;
-import frc.robot.subsystems.MockBallpath;
-import frc.robot.subsystems.MockShooter;
+import frc.robot.subsystems.hardware.MockBallpath;
+import frc.robot.subsystems.hardware.MockShooter;
+import frc.robot.subsystems.hardware.MockPickup;
+import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
 
 public class CmdShootManualTests {
     private MockShooter    _shooter;
     private MockBallpath   _ballpath;
+    private MockPickup     _pickup;
     private CmdShootManual _command;
     
     public static Stream<Arguments> testCases()
@@ -43,7 +46,8 @@ public class CmdShootManualTests {
     {
         _shooter  = new MockShooter();
         _ballpath = new MockBallpath();
-        _command  = new CmdShootManual(_shooter, _ballpath, ShootPosition.NearLaunchpad);
+        _pickup   = new MockPickup();
+        _command  = new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.NearLaunchpad);
     }
 
     @ParameterizedTest
@@ -82,28 +86,30 @@ public class CmdShootManualTests {
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
     }
 
-    // @ParameterizedTest
-    // @MethodSource("testCases")
-    // public void testExecute(int initialCargoCount, double shooterRPM)
-    // {
-    //     _ballpath.setCargoCount(initialCargoCount);
+    @ParameterizedTest
+    @MethodSource("testCases")
+    public void testExecute(int initialCargoCount, double shooterRPM)
+    {
+        _ballpath.setCargoCount(initialCargoCount);
 
-    //     _command.initialize();
+        _command.initialize();
 
-    //     ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(shooterRPM);
+        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(shooterRPM);
+        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
 
-    //     _command.execute();
+        _shooter.periodic();
+        _command.execute();
 
-    //     if (shooterRPM > 0 && initialCargoCount > 0)
-    //     {
-    //         assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-    //         assertEquals(Constants.Ballpath.BALLPATH_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
-    //     }
+        if (shooterRPM > 0 && initialCargoCount > 0)
+        {
+            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+        }
 
-    //     else
-    //     {
-    //         assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-    //         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
-    //     }
-    // }
+        else
+        {
+            assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+        }
+    }
 }

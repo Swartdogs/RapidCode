@@ -12,7 +12,8 @@ public final class Constants
 {
     public static class Ballpath
     {
-        public static final double BALLPATH_SPEED  = 1.0;
+        public static final double BALLPATH_LOAD_SPEED  = 1.0;
+        public static final double BALLPATH_SHOOT_SPEED = 1.0;
         public static final int    MAX_CARGO_COUNT = 2;
     }
 
@@ -32,10 +33,13 @@ public final class Constants
     {
         public static final double NEAR_LAUNCHPAD_HOOD_POSITION  = 1198;
         public static final double NEAR_LAUNCHPAD_SHOOTER_RPM    = 5086;
-        public static final double FENDER_HOOD_POSITION          = 2038;
-        public static final double FENDER_SHOOTER_RPM            = 4200;
+        public static final double FENDER_LOW_GOAL_HOOD_POSITION = 1700;
+        public static final double FENDER_LOW_GOAL_SHOOTER_RPM   = 2500;
+        public static final double FENDER_HOOD_POSITION          = 2000;
+        public static final double FENDER_SHOOTER_RPM            = 4000;
         public static final double FLYWHEEL_SPEED                = 6379;
-        public static final double EJECT_SPEED                   = 2000;
+        public static final double EJECT_SPEED                   = 2500;
+        public static final double EJECT_HOOD_POSITION           = 1400;
         public static final double SHOOTER_RPM_THRESHOLD         = 0.06;
         public static final Vector HUB_POSITION                  = new Vector(0,0); // the center of the coordinate system is at the hub
 
@@ -45,7 +49,8 @@ public final class Constants
         public enum ShootPosition
         {
             NearLaunchpad, 
-            Fender
+            Fender,
+            FenderLowGoal
         }
 
         private static final Map<Double, Double> SHOOTER_SPEEDS = Map.of
@@ -117,6 +122,11 @@ public final class Constants
     
     public static class Drive
     {
+        public static final int    FL_INDEX             = 0;
+        public static final int    FR_INDEX             = 1;
+        public static final int    BL_INDEX             = 2;
+        public static final int    BR_INDEX             = 3;
+
         public static final double FL_MOTOR_OFFSET      = 234;
         public static final double FR_MOTOR_OFFSET      =  34;
         public static final double BL_MOTOR_OFFSET      = -37;

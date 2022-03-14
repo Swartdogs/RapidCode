@@ -1,9 +1,10 @@
-package frc.robot.subsystems.drive;
+package frc.robot.subsystems.hardware;
 
 import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
-import frc.robot.abstraction.MockMotor;
-import frc.robot.abstraction.MockPositionSensor;
+import frc.robot.abstraction.Motor.MockMotor;
+import frc.robot.abstraction.PositionSensor.MockPositionSensor;
+import frc.robot.subsystems.drive.SwerveModule;
 
 public class MockSwerveModule extends SwerveModule 
 {

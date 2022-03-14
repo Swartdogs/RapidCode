@@ -33,6 +33,7 @@ public class CmdBallpathEjectHigh extends SwartdogCommand
         {
             _ballpath.setUpperTrackTo(State.On);
             _shooter.setShooterMotorSpeed(Constants.Shooter.EJECT_SPEED);
+            _shooter.setHoodPosition(Constants.Shooter.EJECT_HOOD_POSITION);
         }
     }
 
@@ -68,6 +69,7 @@ public class CmdBallpathEjectHigh extends SwartdogCommand
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
         _shooter.setShooterMotorSpeed(0);
+        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
     }
 
     @Override

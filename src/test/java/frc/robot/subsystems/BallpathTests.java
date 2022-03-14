@@ -1,4 +1,4 @@
-package frc.robot.subsystems.tests;
+package frc.robot.subsystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.State;
-import frc.robot.subsystems.MockBallpath;
+import frc.robot.subsystems.hardware.MockBallpath;
 
 public class BallpathTests 
 {
@@ -55,11 +55,11 @@ public class BallpathTests
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_SPEED;
+                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
 
             default:
@@ -80,11 +80,11 @@ public class BallpathTests
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_SPEED;
+                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
 
             default:

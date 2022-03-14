@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,8 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
 import frc.robot.Utils;
-import frc.robot.commands.CmdHangerSetWinchPosition;
-import frc.robot.subsystems.MockHanger;
+import frc.robot.subsystems.hardware.MockHanger;
 
 public class CmdHangerSetWinchPositionTests
 {

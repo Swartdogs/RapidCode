@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,11 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.abstraction.MockVelocitySensor;
-import frc.robot.commands.CmdShootWithOdometry;
-import frc.robot.subsystems.MockBallpath;
-import frc.robot.subsystems.MockShooter;
-import frc.robot.subsystems.drive.MockDrive;
+import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
+import frc.robot.subsystems.hardware.MockBallpath;
+import frc.robot.subsystems.hardware.MockShooter;
+import frc.robot.subsystems.hardware.MockDrive;
 import frc.robot.subsystems.drive.Vector;
 
 public class CmdShootWithOdometryTests {

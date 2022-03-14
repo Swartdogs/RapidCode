@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,9 +8,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.State;
-import frc.robot.commands.CmdBallpathLoad;
-import frc.robot.subsystems.MockBallpath;
-import frc.robot.subsystems.MockPickup;
+import frc.robot.subsystems.hardware.MockBallpath;
+import frc.robot.subsystems.hardware.MockPickup;
 
 public class CmdBallpathLoadTests 
 {
@@ -47,8 +46,8 @@ public class CmdBallpathLoadTests
         switch(initialCargoCount)
         {
             case 0:
-                expectedLowerTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
-                expectedUpperTrackSpeed = Constants.Ballpath.BALLPATH_SPEED;
+                expectedLowerTrackSpeed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
+                expectedUpperTrackSpeed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 expectedCargoCount      = 1;
                 break;
 

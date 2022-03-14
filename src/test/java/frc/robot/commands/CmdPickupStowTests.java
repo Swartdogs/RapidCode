@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
-import frc.robot.commands.CmdPickupStow;
-import frc.robot.subsystems.MockPickup;
+import frc.robot.subsystems.hardware.MockPickup;
 
 public class CmdPickupStowTests
 {

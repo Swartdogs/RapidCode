@@ -1,11 +1,12 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.hardware;
 
 import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
-import frc.robot.abstraction.MockMotor;
-import frc.robot.abstraction.MockPositionSensor;
-import frc.robot.abstraction.MockSolenoid;
-import frc.robot.abstraction.MockSwitch;
+import frc.robot.abstraction.Motor.MockMotor;
+import frc.robot.abstraction.PositionSensor.MockPositionSensor;
+import frc.robot.abstraction.Solenoid.MockSolenoid;
+import frc.robot.abstraction.Switch.MockSwitch;
+import frc.robot.subsystems.Hanger;
 
 public class MockHanger extends Hanger 
 {
@@ -77,12 +78,5 @@ public class MockHanger extends Hanger
     public MockSwitch getRightSwitch()
     {
         return (MockSwitch)_rightSwitch;
-    }
-
-    public void initialize() {}
-
-    public boolean isInitialized()
-    {
-        return true;
     }
 }
