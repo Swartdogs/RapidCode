@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.stream.Stream;
 
@@ -15,12 +16,15 @@ import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockShooter;
 import frc.robot.subsystems.hardware.MockPickup;
+import frc.robot.abstraction.Enumerations.State;
+import frc.robot.abstraction.Switch.MockSwitch;
 import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
 
 public class CmdShootManualTests {
     private MockShooter    _shooter;
     private MockBallpath   _ballpath;
     private MockPickup     _pickup;
+    private MockSwitch     _compressor;
     private CmdShootManual _command;
     
     public static Stream<Arguments> testCases()
@@ -44,10 +48,11 @@ public class CmdShootManualTests {
     @BeforeEach
     public void init()
     {
-        _shooter  = new MockShooter();
-        _ballpath = new MockBallpath();
-        _pickup   = new MockPickup();
-        _command  = new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.NearLaunchpad);
+        _shooter    = new MockShooter();
+        _ballpath   = new MockBallpath();
+        _pickup     = new MockPickup();
+        _compressor = new MockSwitch(State.On);
+        _command    = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.NearLaunchpad);
     }
 
     @ParameterizedTest
@@ -59,6 +64,7 @@ public class CmdShootManualTests {
         _command.initialize();
 
         assertEquals(initialCargoCount > 0 ? Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(initialCargoCount == 0, _compressor.get() == State.On);
     }
 
     @ParameterizedTest
@@ -84,6 +90,7 @@ public class CmdShootManualTests {
         assertEquals(0, _shooter.getShooterMotor().get(),     Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+        assertTrue(_compressor.get() == State.On);
     }
 
     @ParameterizedTest

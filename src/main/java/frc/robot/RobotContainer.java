@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,6 +13,7 @@ import frc.robot.abstraction.Joystick;
 import frc.robot.abstraction.NetworkTableString;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
+import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.commands.CmdBallpathEjectHigh;
 import frc.robot.commands.CmdBallpathEjectLow;
 import frc.robot.commands.CmdBallpathLoad;
@@ -52,6 +54,7 @@ public class RobotContainer extends SubsystemBase
     private Hanger    _hanger;
     private Pickup    _pickup;
     private Shooter   _shooter;
+    private SettableSwitch _compressor;
     private Dashboard _dashboard;
 
     private boolean  _usingDriverCamera;
@@ -71,6 +74,7 @@ public class RobotContainer extends SubsystemBase
         // _hanger    = new MockHanger();
         // _pickup    = new MockPickup();
         // _shooter   = new MockShooter();
+        _compressor = SettableSwitch.compressor(2, PneumaticsModuleType.REVPH);
         _dashboard = new Dashboard(_drive, _ballpath, _hanger, _pickup, _shooter);
 
         _driverCamera = CameraServer.startAutomaticCapture(0);
@@ -127,9 +131,9 @@ public class RobotContainer extends SubsystemBase
 
     private void configureButtonBindings()
     {
-        CmdShootManual       shootNearLaunchpad = new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.NearLaunchpad);
-        CmdShootManual       shootFender        = new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.Fender);
-        CmdShootManual       shootFenderLowGoal = new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.FenderLowGoal);
+        CmdShootManual       shootNearLaunchpad = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.NearLaunchpad);
+        CmdShootManual       shootFender        = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.Fender);
+        CmdShootManual       shootFenderLowGoal = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.FenderLowGoal);
         CmdShootWithOdometry shootWithOdometry  = new CmdShootWithOdometry(_drive, _shooter, _ballpath);
         
         // Driver joystick button bindings
@@ -204,6 +208,6 @@ public class RobotContainer extends SubsystemBase
     {
         _ballpath.setCargoCount(1);
 
-        return new CmdShootManual(_shooter, _ballpath, _pickup, ShootPosition.FenderLowGoal);
+        return new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.FenderLowGoal);
     }
 }

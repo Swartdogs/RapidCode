@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
+import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.subsystems.Ballpath;
 import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.Shooter;
@@ -13,16 +14,18 @@ public class CmdShootManual extends SwartdogCommand
     private Shooter       _shooter;
     private Ballpath      _ballpath;
     private Pickup        _pickup;
+    private SettableSwitch _compressor;
     private ShootPosition _position;
     private boolean       _atSpeed;
 
-    public CmdShootManual(Shooter shooter, Ballpath ballpath, Pickup pickup, ShootPosition position) 
+    public CmdShootManual(Shooter shooter, Ballpath ballpath, Pickup pickup, SettableSwitch compressor, ShootPosition position) 
     {
-        _shooter  = shooter;
-        _ballpath = ballpath;
-        _position = position;
-        _pickup   = pickup;
-        _atSpeed  = false;
+        _shooter    = shooter;
+        _ballpath   = ballpath;
+        _pickup     = pickup;
+        _compressor = compressor;
+        _position   = position;
+        _atSpeed    = false;
 
         addRequirements(_shooter, _ballpath);
     }
@@ -34,6 +37,8 @@ public class CmdShootManual extends SwartdogCommand
         
         if (_ballpath.getCargoCount() > 0) 
         {
+            _compressor.set(State.Off);
+
             switch (_position)
             {
                 case NearLaunchpad:
@@ -94,6 +99,7 @@ public class CmdShootManual extends SwartdogCommand
         _shooter.setShooterMotorSpeed(0);
         _ballpath.stop();
         _pickup.stopMotor();
+        _compressor.set(State.On);
 
         _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
     }
