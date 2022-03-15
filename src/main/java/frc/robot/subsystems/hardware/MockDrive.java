@@ -11,20 +11,21 @@ public class MockDrive extends Drive
     public MockDrive()
     {
         _gyro = new MockPositionSensor();
-        _drivePID = new PIDControl();
+        _translatePID = new PIDControl();
         _rotatePID = new PIDControl();
 
-        _drivePID.setCoefficient(Coefficient.P, 0, 1, 0);
-        _drivePID.setCoefficient(Coefficient.I, 0, 0, 0);
-        _drivePID.setCoefficient(Coefficient.D, 0, 0, 0);
-        _drivePID.setInputRange(-1000.0, 1000.0);
-        _drivePID.setOutputRange(-1.0, 1.0);
+        _translatePID.setCoefficient(Coefficient.P, 0, 1, 0);
+        _translatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _translatePID.setCoefficient(Coefficient.D, 0, 0, 0);
+        _translatePID.setInputRange(-1000.0, 1000.0);
+        _translatePID.setOutputRange(-1.0, 1.0);
 
         _rotatePID.setCoefficient(Coefficient.P, 0, 1, 0);
         _rotatePID.setCoefficient(Coefficient.I, 0, 0, 0);
         _rotatePID.setCoefficient(Coefficient.D, 0, 0, 0);
         _rotatePID.setInputRange(-1000.0, 1000.0);
         _rotatePID.setOutputRange(-1.0, 1.0);
+        _rotatePID.setSetpointDeadband(Math.sin(Math.toRadians(1)));
 
         _swerveModules = new SwerveModule[] 
         { 

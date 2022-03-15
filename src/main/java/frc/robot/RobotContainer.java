@@ -91,8 +91,6 @@ public class RobotContainer extends SubsystemBase
     @Override
     public void periodic()
     {
-        // System.out.println(String.format("Distance: %6.2f, Hood position: %4d, Shooter RPM: %4d", _drive.getOdometer().getR(), (int)_shooter.getHoodPosition(), (int)_shooter._shooterMotor.get()));
-
         if(_ballpath.hasPickupSensorTransitionedTo(State.On))
         {
             CommandScheduler.getInstance().schedule(false, new CmdBallpathLoad(_ballpath, _pickup));
@@ -122,11 +120,6 @@ public class RobotContainer extends SubsystemBase
                 () -> _driveJoystick.getZ()
             )
         );
-
-        // _shooter.setDefaultCommand
-        // (
-        //     new CmdShooterDefault(_shooter, () -> ((-_driveJoystick.getThrottle()) + 1) / 2.0)
-        // );
     }
 
     private void configureButtonBindings()

@@ -68,4 +68,21 @@ public abstract class Pickup extends SwartdogSubsystem
 
         return state;
     }
+
+    public State getState()
+    {
+        State state = State.Off;
+
+        if (_deploySolenoid.get() == ExtendState.Extended && _pickupMotor.get() > 0)
+        {
+            state = State.On;
+        }
+
+        if (_deploySolenoid.get() == ExtendState.Extended && _pickupMotor.get() < 0)
+        {
+            state = State.Reverse;
+        }
+
+        return state;
+    }
 }

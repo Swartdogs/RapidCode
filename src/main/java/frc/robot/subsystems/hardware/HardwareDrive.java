@@ -14,8 +14,6 @@ public class HardwareDrive extends Drive
     public HardwareDrive()
     {
         _gyro                           = PositionSensor.navX(IMUAxis.Yaw);
-        _drivePID                       = null;
-        _rotatePID                      = new PIDControl();
 
         Motor rotateFLMotor             = Motor.neo(4);
         Motor rotateFRMotor             = Motor.neo(6);
@@ -45,14 +43,22 @@ public class HardwareDrive extends Drive
             br 
         };
 
-        _rotatePID.setCoefficient(Coefficient.P, 0,  0.015, 0);
-        _rotatePID.setCoefficient(Coefficient.I, 20, 0,     0.001);
-        _rotatePID.setCoefficient(Coefficient.D, 0,  0,     0);
-        _rotatePID.setInputRange(-360, 360);
-        _rotatePID.setOutputRamp(0.1, 0.05);
-        _rotatePID.setSetpointDeadband(2.0);
+        _translatePID = new PIDControl();
+        _rotatePID = new PIDControl();
 
-        _gyro.setScalingFunction((angle) -> angle * 1.0308);
+        _translatePID.setCoefficient(Coefficient.P, 0, 1, 0);
+        _translatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _translatePID.setCoefficient(Coefficient.D, 0, 0, 0);
+        _translatePID.setInputRange(-1000.0, 1000.0);
+        _translatePID.setOutputRange(0, 1.0);
+        _translatePID.setSetpointDeadband(1);
+
+        _rotatePID.setCoefficient(Coefficient.P, 0, 1, 0);
+        _rotatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _rotatePID.setCoefficient(Coefficient.D, 0, 0, 0);
+        _rotatePID.setInputRange(-1000.0, 1000.0);
+        _rotatePID.setOutputRange(-1.0, 1.0);
+        _rotatePID.setSetpointDeadband(Math.sin(Math.toRadians(5)));
 
         init();
     }

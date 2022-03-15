@@ -129,6 +129,7 @@ public abstract class Ballpath extends SwartdogSubsystem
 
     public void setCargoCount(int count) 
     {
+        System.out.println("Current count: " + _cargoCount + " Setting to: " + count);
         if (count < 0)
         {
             _cargoCount = 0;
