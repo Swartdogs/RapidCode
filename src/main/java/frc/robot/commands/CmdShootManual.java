@@ -27,7 +27,7 @@ public class CmdShootManual extends SwartdogCommand
         _position   = position;
         _atSpeed    = false;
 
-        addRequirements(_shooter, _ballpath);
+        addRequirements(_shooter);
     }
 
     @Override
@@ -55,6 +55,11 @@ public class CmdShootManual extends SwartdogCommand
                     _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_LOW_GOAL_SHOOTER_RPM);
                     _shooter.setHoodPosition(Constants.Shooter.FENDER_LOW_GOAL_HOOD_POSITION);
                     break;
+
+                case FenderLowGoalPosition1:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_LOW_GOAL_POSITION_1_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.FENDER_LOW_GOAL_POSITION_1_HOOD_POSITION);
+                    break;
             }
         }
     }
@@ -75,15 +80,21 @@ public class CmdShootManual extends SwartdogCommand
         {
             _ballpath.modifyCargoCount(-1);
 
-            if (_position != ShootPosition.FenderLowGoal)
+            switch (_position)
             {
-                _atSpeed = false;
+                case FenderLowGoal:
+                case FenderLowGoalPosition1:
+                    break;
+
+                default:
+                    _atSpeed = false;
+                    break;
             } 
         }
 
         if (_atSpeed)
         {
-            _ballpath.shoot();
+            _ballpath.shoot(_position);
             _pickup.startMotor();
         }
         else

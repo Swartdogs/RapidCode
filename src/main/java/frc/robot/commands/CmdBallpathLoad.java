@@ -32,17 +32,8 @@ public class CmdBallpathLoad extends SwartdogCommand
             _ballpath.setLowerTrackTo(State.On);
             _ballpath.setUpperTrackTo(State.On);
         }
-
         
         _ballpath.modifyCargoCount(1);
-
-        System.out.println("loading, new cargo count: " + _initialCargoCount);
-    }
-
-    @Override
-    public void execute()
-    {
-        System.out.println(String.format("State: %s, transitioned: %b",_ballpath.getShooterSensorState(), _ballpath.hasShooterSensorTransitionedTo(State.On)));
     }
 
     @Override

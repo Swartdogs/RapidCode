@@ -148,6 +148,21 @@ public class Dashboard extends SwartdogSubsystem
         // _driveBRModuleOffset = driveSetting.addDoubleWidget("Drive BR Module Offset", Constants.DEFAULT_BR_MODULE_OFFSET, BuiltInWidgets.kTextView, null);
     }
 
+    public void addDefaultAutonomous(String name, SwartdogCommand command)
+    {
+        _dashTab.addDefaultAutonomous(name, command);
+    }
+
+    public void addAutonomous(String name, SwartdogCommand command)
+    {
+        _dashTab.addAutonomous(name, command);
+    }
+
+    public SwartdogCommand getSelectedAutonomous()
+    {
+        return _dashTab.getSelectedAutonomous();
+    }
+
     public void addCamera(VideoSource videoSource)
     {
         _dashTab.addCamera(11, 2, 11, 10, videoSource, Map.of("Show crosshair", false, "Show controls", false, "Title", "Camera"));

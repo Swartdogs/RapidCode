@@ -46,19 +46,19 @@ public class HardwareDrive extends Drive
         _translatePID = new PIDControl();
         _rotatePID = new PIDControl();
 
-        _translatePID.setCoefficient(Coefficient.P, 0, 1, 0);
-        _translatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _translatePID.setCoefficient(Coefficient.P, 0, 0.015, 0);
+        _translatePID.setCoefficient(Coefficient.I, 5, 0, 0.001);
         _translatePID.setCoefficient(Coefficient.D, 0, 0, 0);
-        _translatePID.setInputRange(-1000.0, 1000.0);
-        _translatePID.setOutputRange(0, 1.0);
-        _translatePID.setSetpointDeadband(1);
+        _translatePID.setInputRange(0, 500.0);
+        _translatePID.setOutputRamp(0.1, 0.05);
+        _translatePID.setSetpointDeadband(2);
 
-        _rotatePID.setCoefficient(Coefficient.P, 0, 1, 0);
-        _rotatePID.setCoefficient(Coefficient.I, 0, 0, 0);
+        _rotatePID.setCoefficient(Coefficient.P, 0, 0.9, 0);
+        _rotatePID.setCoefficient(Coefficient.I, Math.sin(Math.toRadians(20)), 0, 0.09);
         _rotatePID.setCoefficient(Coefficient.D, 0, 0, 0);
-        _rotatePID.setInputRange(-1000.0, 1000.0);
-        _rotatePID.setOutputRange(-1.0, 1.0);
-        _rotatePID.setSetpointDeadband(Math.sin(Math.toRadians(5)));
+        _rotatePID.setInputRange(-1.0, 1.0);
+        _rotatePID.setOutputRamp(0.1, 0.05);
+        _rotatePID.setSetpointDeadband(Math.sin(Math.toRadians(2)));
 
         init();
     }

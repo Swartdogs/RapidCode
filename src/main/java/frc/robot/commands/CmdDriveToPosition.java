@@ -11,14 +11,22 @@ public class CmdDriveToPosition extends SwartdogCommand
     private Vector  _finalTranslation;
     private double  _finalHeading;
 
+    private double _maxRotateSpeed;
+    private double _maxDriveSpeed;
+    private double _minDriveSpeed;
+
     private boolean _absolute;
 
-    public CmdDriveToPosition(Drive drive, Vector finalPosition, double finalRotation, boolean absolute)
+    public CmdDriveToPosition(Drive drive, Vector finalPosition, double finalRotation, double maxRotateSpeed, double maxDriveSpeed, double minDriveSpeed, boolean absolute)
     {
         _drive       = drive;
         
         _finalTranslation = finalPosition;
         _finalHeading = finalRotation;
+
+        _maxRotateSpeed = maxRotateSpeed;
+        _maxDriveSpeed = maxDriveSpeed;
+        _minDriveSpeed = minDriveSpeed;
 
         _absolute = absolute;
 
@@ -28,14 +36,18 @@ public class CmdDriveToPosition extends SwartdogCommand
     @Override
     public void initialize()
     {
-        if (_absolute)
+        Vector translation = _finalTranslation;
+
+        if (!_absolute)
         {
-            _finalTranslation.add(_drive.getOdometer());
+            translation = translation.add(_drive.getOdometer());
             _finalHeading += _drive.getHeading();
         }
 
-        _drive.translateInit(_finalTranslation, 0.5, 0, false);
-        _drive.rotateInit(_finalHeading, 0.5);
+        System.out.println(translation + " " + _drive.getOdometer());
+
+        _drive.translateInit(translation, _maxDriveSpeed, _minDriveSpeed, false);
+        _drive.rotateInit(_finalHeading, _maxRotateSpeed);
     }
 
     @Override

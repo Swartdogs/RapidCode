@@ -51,6 +51,5 @@ public abstract class Shooter extends SwartdogSubsystem
     public void setHoodPosition(double position)
     {
         _hoodPID.setSetpoint(position, getHoodPosition());
-        System.out.println(position);
     }
 }

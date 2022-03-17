@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Switch;
@@ -80,6 +81,23 @@ public abstract class Ballpath extends SwartdogSubsystem
         _lowerTrack.set(speed);
     }
 
+    public void shoot(ShootPosition position)
+    {
+        switch (position)
+        {
+            case FenderLowGoal:
+            case FenderLowGoalPosition1:
+                _lowerTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+                _upperTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+                break;
+
+            default:
+                _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+                _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+                break;
+        }
+    }
+
     public void shoot()
     {
         _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
@@ -129,7 +147,6 @@ public abstract class Ballpath extends SwartdogSubsystem
 
     public void setCargoCount(int count) 
     {
-        System.out.println("Current count: " + _cargoCount + " Setting to: " + count);
         if (count < 0)
         {
             _cargoCount = 0;
@@ -149,7 +166,5 @@ public abstract class Ballpath extends SwartdogSubsystem
     public void modifyCargoCount(int mod)
     {
         setCargoCount(getCargoCount() + mod);
-
-        System.out.println("Cargo count: " + getCargoCount());
     }
 }

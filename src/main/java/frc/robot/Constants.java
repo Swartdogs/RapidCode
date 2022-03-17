@@ -13,7 +13,7 @@ public final class Constants
     public static class Ballpath
     {
         public static final double BALLPATH_LOAD_SPEED  = 1.0;
-        public static final double BALLPATH_SHOOT_SPEED = 1.0;
+        public static final double BALLPATH_SHOOT_SPEED = 0.7;
         public static final int    MAX_CARGO_COUNT = 2;
     }
 
@@ -35,6 +35,8 @@ public final class Constants
         public static final double NEAR_LAUNCHPAD_SHOOTER_RPM    = 5086;
         public static final double FENDER_LOW_GOAL_HOOD_POSITION = 1700;
         public static final double FENDER_LOW_GOAL_SHOOTER_RPM   = 2500;
+        public static final double FENDER_LOW_GOAL_POSITION_1_HOOD_POSITION = 1200;
+        public static final double FENDER_LOW_GOAL_POSITION_1_SHOOTER_RPM   = 3000;
         public static final double FENDER_HOOD_POSITION          = 2000;
         public static final double FENDER_SHOOTER_RPM            = 4000;
         public static final double FLYWHEEL_SPEED                = 6379;
@@ -50,7 +52,8 @@ public final class Constants
         {
             NearLaunchpad, 
             Fender,
-            FenderLowGoal
+            FenderLowGoal,
+            FenderLowGoalPosition1
         }
 
         private static final Map<Double, Double> SHOOTER_SPEEDS = Map.of
