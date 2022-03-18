@@ -15,6 +15,8 @@ public abstract class Shooter extends SwartdogSubsystem
 
     protected PIDControl     _hoodPID;
 
+    private   double         _hoodSetpoint;
+
     @Override
     public void periodic()
     {
@@ -50,6 +52,12 @@ public abstract class Shooter extends SwartdogSubsystem
 
     public void setHoodPosition(double position)
     {
-        _hoodPID.setSetpoint(position, getHoodPosition());
+        _hoodSetpoint = position;
+        _hoodPID.setSetpoint(_hoodSetpoint, getHoodPosition());
+    }
+
+    public double getHoodSetpoint()
+    {
+        return _hoodSetpoint;
     }
 }

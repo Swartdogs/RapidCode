@@ -23,6 +23,6 @@ public class HardwareShooter extends Shooter
         _hoodPID.setCoefficient(Coefficient.D, 0,  0,     0);
         _hoodPID.setInputRange(Constants.Shooter.HOOD_MIN_POSITION, Constants.Shooter.HOOD_MAX_POSITION);
         _hoodPID.setOutputRange(-1, 1);
-        _hoodPID.setSetpointDeadband(5);
+        _hoodPID.setSetpointDeadband(3);
     }
 }

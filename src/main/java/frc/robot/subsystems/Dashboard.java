@@ -387,8 +387,8 @@ public class Dashboard extends SwartdogSubsystem
         // setHangerLatched(_hanger.isHangerLatched());
         // setHangerPosition(_hanger.getPosition());
 
-        // setShooterHoodPosition(_shooter.getHoodPosition());
-        // setShooterHoodTarget(_shooter.getHoodSetpoint());
+        setShooterHoodPosition(_shooter.getHoodPosition());
+        setShooterHoodTarget(_shooter.getHoodSetpoint());
         // setShooterRPM(_shooter.getShooterMotor());
         // setShooterOn(_shooter.isShooterOn());
     }

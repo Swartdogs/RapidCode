@@ -109,8 +109,8 @@ public class CmdShootManualTests {
 
         if (shooterRPM > 0 && initialCargoCount > 0)
         {
-            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(Constants.Ballpath.BALLPATH_SHOOT_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(Constants.Ballpath.BALLPATH_SHOOT_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
         }
 
         else

@@ -134,7 +134,7 @@ public class RobotContainer extends SubsystemBase
     {
         CmdShootManual       shootNearLaunchpad = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.NearLaunchpad);
         CmdShootManual       shootFender        = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.Fender);
-        CmdShootManual       shootFenderLowGoal = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.FenderLowGoalPosition1);
+        CmdShootManual       shootFenderLowGoal = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.FenderLowGoal);
         CmdShootWithOdometry shootWithOdometry  = new CmdShootWithOdometry(_drive, _shooter, _ballpath);
         
         // Driver joystick button bindings

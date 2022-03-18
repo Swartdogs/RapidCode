@@ -13,7 +13,7 @@ public final class Constants
     public static class Ballpath
     {
         public static final double BALLPATH_LOAD_SPEED  = 1.0;
-        public static final double BALLPATH_SHOOT_SPEED = 0.7;
+        public static final double BALLPATH_SHOOT_SPEED = 0.85;
         public static final int    MAX_CARGO_COUNT = 2;
     }
 
@@ -26,7 +26,7 @@ public final class Constants
     
     public static class Pickup
     {
-        public static final double PICKUP_SPEED = 0.5;
+        public static final double PICKUP_SPEED = 0.64;
     }
 
     public static class Shooter
