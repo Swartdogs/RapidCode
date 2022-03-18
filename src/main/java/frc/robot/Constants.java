@@ -6,10 +6,13 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.function.DoubleUnaryOperator;
 
+import frc.robot.subsystems.drive.Position;
 import frc.robot.subsystems.drive.Vector;
 
 public final class Constants
 {
+    public static final double PERIOD = 0.02;
+
     public static class Ballpath
     {
         public static final double BALLPATH_LOAD_SPEED  = 1.0;
@@ -125,24 +128,24 @@ public final class Constants
     
     public static class Drive
     {
-        public static final int    FL_INDEX             = 0;
-        public static final int    FR_INDEX             = 1;
-        public static final int    BL_INDEX             = 2;
-        public static final int    BR_INDEX             = 3;
+        public static final int      FL_INDEX             = 0;
+        public static final int      FR_INDEX             = 1;
+        public static final int      BL_INDEX             = 2;
+        public static final int      BR_INDEX             = 3;
 
-        public static final double FL_MOTOR_OFFSET      = 234;
-        public static final double FR_MOTOR_OFFSET      =  34;
-        public static final double BL_MOTOR_OFFSET      = -37;
-        public static final double BR_MOTOR_OFFSET      =  98;
+        public static final double   FL_MOTOR_OFFSET      = 234;
+        public static final double   FR_MOTOR_OFFSET      =  34;
+        public static final double   BL_MOTOR_OFFSET      = -37;
+        public static final double   BR_MOTOR_OFFSET      =  98;
         
-        public static final double MODULE_ROTATE_SCALE  = 360 / 0.92;
-        public static final double MODULE_ROTATE_OFFSET = (360 - MODULE_ROTATE_SCALE) / 2.0;
-        public static final double ODOMETRY_SCALE       = (48.75) /* inches */ / (55854.18) /* encoder counts */;
+        public static final double   MODULE_ROTATE_SCALE  = 360 / 0.92;
+        public static final double   MODULE_ROTATE_OFFSET = (360 - MODULE_ROTATE_SCALE) / 2.0;
+        public static final double   ODOMETRY_SCALE       = (48.75) /* inches */ / (55854.18) /* encoder counts */;
 
-        public static final double ALIGN_ROTATE_SPEED   = 0.7;
+        public static final double   ALIGN_ROTATE_SPEED   = 0.7;
 
-        public static final double FIELD_ANGLE          = 21;
-        public static final Vector FIELD_RESET_POSITION = new Vector(-18.47, -48.23);
+        public static final double   FIELD_ANGLE          = 21;
+        public static final Position FIELD_RESET_POSITION = new Position(-18.47, -48.23, FIELD_ANGLE);
     }
 
     public static class Testing

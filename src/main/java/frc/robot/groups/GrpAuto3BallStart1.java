@@ -9,15 +9,15 @@ import frc.robot.subsystems.drive.*;
 
 public class GrpAuto3BallStart1 extends SwartdogSequentialCommandGroup
 {
-    private static final double START_ANGLE      = -90;
-    private static final double SHOOT_ANGLE      = -75;
-    private static final double CARGO_1_ANGLE    = 135;
-    private static final double CARGO_2_ANGLE    = -150;
-
-    private static final Vector START_POSITION   = new Vector(90, 3);
-    private static final Vector CARGO_POSITION   = new Vector(47, -32);
-    private static final Vector SHOOT_POSITION   = new Vector(60, -24);
-    private static final Vector CARGO_2_POSITION = new Vector(80, -131);
+    private static final double   START_ANGLE      = -90;
+    private static final double   CARGO_1_ANGLE    = 135;
+    private static final double   CARGO_2_ANGLE    = -150;
+    private static final double   SHOOT_ANGLE      = -75;
+    
+    private static final Position START_POSITION   = new Position(90, 3, START_ANGLE);
+    private static final Position CARGO_1_POSITION = new Position(137, -29, CARGO_1_ANGLE);
+    private static final Position CARGO_2_POSITION = new Position(80, -131, CARGO_2_ANGLE);
+    private static final Position SHOOT_POSITION   = new Position(60, -24, SHOOT_ANGLE);
 
     public GrpAuto3BallStart1(Drive drive, Shooter shooter, Ballpath ballpath, Pickup pickup, SettableSwitch compressor)
     {
@@ -31,12 +31,12 @@ public class GrpAuto3BallStart1 extends SwartdogSequentialCommandGroup
             
             new CmdShootManual(shooter, ballpath, pickup, compressor, ShootPosition.FenderLowGoalPosition1),
             new CmdPickupDeploy(pickup, ballpath),
-            new CmdDriveToPosition(drive, START_POSITION.add(CARGO_POSITION), CARGO_1_ANGLE, 0.5, 0.5, 0, true),
+            new CmdDriveToPosition(drive, CARGO_1_POSITION, 0.5, 0.5, 0, true),
             new CmdWait(0.25),
-            new CmdDriveToPosition(drive, CARGO_2_POSITION, CARGO_2_ANGLE, 0.5, 0.5, 0, true),
+            new CmdDriveToPosition(drive, CARGO_2_POSITION, 0.5, 0.5, 0, true),
             new CmdPickupStow(pickup),
             new CmdWait(0.25),
-            new CmdDriveToPosition(drive, SHOOT_POSITION, SHOOT_ANGLE, 0.5, 0.5, 0, true),
+            new CmdDriveToPosition(drive, SHOOT_POSITION, 0.5, 0.5, 0, true),
             new CmdShootManual(shooter, ballpath, pickup, compressor, ShootPosition.FenderLowGoal)
            
         );

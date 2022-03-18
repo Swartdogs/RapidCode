@@ -14,13 +14,13 @@ import frc.robot.subsystems.drive.*;
 
 public class GrpAuto2BallStart1 extends SwartdogSequentialCommandGroup
 {
-    private static final double START_ANGLE = 90;
-    private static final double SHOOT_ANGLE = -90;
+    private static final double   START_ANGLE = 90;
+    private static final double   SHOOT_ANGLE = -90;
 
-    private static final Vector START_POSITION = new Vector(90, 3);
-    private static final Vector CARGO_POSITION = new Vector(42, -42);
-    private static final Vector SHOOT_POSITION = new Vector(-21, -15);
-    private static final Vector END_POSITION = new Vector(49, -42);
+    private static final Position START_POSITION = new Position(90, 3, START_ANGLE);
+    private static final Position CARGO_POSITION = new Position(132, -39, START_ANGLE);
+    private static final Position SHOOT_POSITION = new Position(69, -12, SHOOT_ANGLE);
+    private static final Position END_POSITION   = new Position(139, -39, SHOOT_ANGLE);
 
     public GrpAuto2BallStart1(Drive drive, Shooter shooter, Ballpath ballpath, Pickup pickup, SettableSwitch compressor)
     {
@@ -33,12 +33,12 @@ public class GrpAuto2BallStart1 extends SwartdogSequentialCommandGroup
             }),
             
             new CmdPickupDeploy(pickup, ballpath),
-            new CmdDriveToPosition(drive, START_POSITION.add(CARGO_POSITION), START_ANGLE, 0.5, 0.5, 0, true),
+            new CmdDriveToPosition(drive, CARGO_POSITION, 0.5, 0.5, 0, true),
             new CmdWait(0.5),
             new CmdPickupStow(pickup),
-            new CmdDriveToPosition(drive, START_POSITION.add(SHOOT_POSITION), SHOOT_ANGLE, 0.5, 0.5, 0, true),
+            new CmdDriveToPosition(drive, SHOOT_POSITION, 0.5, 0.5, 0, true),
             new CmdShootManual(shooter, ballpath, pickup, compressor, ShootPosition.FenderLowGoal),
-            new CmdDriveToPosition(drive, START_POSITION.add(END_POSITION), SHOOT_ANGLE, 0.5, 0.5, 0, true)
+            new CmdDriveToPosition(drive, END_POSITION, 0.5, 0.5, 0, true)
         );
     }
 }

@@ -257,6 +257,21 @@ public class DriveTests
     @Test
     public void testOdometry()
     {
+        for (int j = 0; j < 360; j += 30)
+        {
+            _drive.resetOdometer();
 
+            for (int i = 0; i < 4; i++)
+            {
+                _drive.getSwerveModule(i).getDriveMotor().getPositionSensor().set(12);
+                _drive.getSwerveModule(i).getPositionSensor().set(j);
+            }
+    
+            _drive.periodic();    
+
+            System.out.println(_drive.getOdometer());
+        }
+
+        return;
     }
 }

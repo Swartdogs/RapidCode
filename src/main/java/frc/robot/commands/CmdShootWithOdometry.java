@@ -40,7 +40,7 @@ public class CmdShootWithOdometry extends SwartdogCommand
 
             _target = target.getTheta();
 
-            _drive.rotateInit(_target, Constants.Drive.ALIGN_ROTATE_SPEED);
+            _drive.autoDriveInit(new Position(_drive.getOdometer(), _target), Constants.Drive.ALIGN_ROTATE_SPEED, 0, 0);
 
             _atSpeed = false;
         }

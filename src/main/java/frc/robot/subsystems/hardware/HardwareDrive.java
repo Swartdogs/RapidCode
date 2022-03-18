@@ -30,10 +30,10 @@ public class HardwareDrive extends Drive
         PositionSensor positionBLSensor = PositionSensor.potentiometer(2, Constants.Drive.MODULE_ROTATE_SCALE, Constants.Drive.MODULE_ROTATE_OFFSET);
         PositionSensor positionBRSensor = PositionSensor.potentiometer(3, Constants.Drive.MODULE_ROTATE_SCALE, Constants.Drive.MODULE_ROTATE_OFFSET);
 
-        SwerveModule fl                 = new HardwareSwerveModule(driveFLMotor, rotateFLMotor, positionFLSensor, -12.5,  12.0, Constants.Drive.FL_MOTOR_OFFSET, Constants.Drive.ODOMETRY_SCALE);
-        SwerveModule fr                 = new HardwareSwerveModule(driveFRMotor, rotateFRMotor, positionFRSensor,  12.5,  12.0, Constants.Drive.FR_MOTOR_OFFSET, Constants.Drive.ODOMETRY_SCALE);
-        SwerveModule bl                 = new HardwareSwerveModule(driveBLMotor, rotateBLMotor, positionBLSensor, -12.5, -12.0, Constants.Drive.BL_MOTOR_OFFSET, Constants.Drive.ODOMETRY_SCALE);
-        SwerveModule br                 = new HardwareSwerveModule(driveBRMotor, rotateBRMotor, positionBRSensor,  12.5, -12.0, Constants.Drive.BR_MOTOR_OFFSET, Constants.Drive.ODOMETRY_SCALE);
+        SwerveModule fl                 = new HardwareSwerveModule(driveFLMotor, rotateFLMotor, positionFLSensor, -12.5,  12.0, Constants.Drive.FL_MOTOR_OFFSET);
+        SwerveModule fr                 = new HardwareSwerveModule(driveFRMotor, rotateFRMotor, positionFRSensor,  12.5,  12.0, Constants.Drive.FR_MOTOR_OFFSET);
+        SwerveModule bl                 = new HardwareSwerveModule(driveBLMotor, rotateBLMotor, positionBLSensor, -12.5, -12.0, Constants.Drive.BL_MOTOR_OFFSET);
+        SwerveModule br                 = new HardwareSwerveModule(driveBRMotor, rotateBRMotor, positionBRSensor,  12.5, -12.0, Constants.Drive.BR_MOTOR_OFFSET);
 
         _swerveModules = new SwerveModule[] 
         { 
@@ -42,6 +42,11 @@ public class HardwareDrive extends Drive
             bl, 
             br 
         };
+
+        for (SwerveModule module : _swerveModules)
+        {
+            module.getDriveMotor().getPositionSensor().setScalingFunction(raw -> raw * Constants.Drive.ODOMETRY_SCALE);
+        }
 
         _translatePID = new PIDControl();
         _rotatePID = new PIDControl();

@@ -68,60 +68,10 @@ public class SwerveModuleTests
         return parameters;
     }
 
-    private static Stream<Arguments> odometryTestCases()
-    {
-        double initialRotations[] = 
-        {
-            0.0, 
-            1.0,
-            -0.0,
-            -1.0,
-            180.0,
-            -180.0,
-            90.0,
-            -90.0,
-            360.0,
-            -360.0,
-            270.0,
-            -270.0,
-            2.45,
-            -3.78,
-            525.0,
-            -771.5
-        };
-
-        double positions[] = 
-        {
-            0.0,
-            -100,
-            1000,
-            55.5,
-            121,
-            15.4,
-            525,
-            -6.7,
-            -88
-        };
-
-        Stream<Arguments> parameters = Stream.empty();
-
-        for (double initialRotation : initialRotations)
-        {
-            for (double initialPosition : positions) {
-                for (double finalPosition : positions) 
-                {
-                    parameters = Stream.concat(parameters, Stream.of(Arguments.of(initialRotation, initialPosition, finalPosition)));
-                }
-            }
-        }
-
-        return parameters;
-    }
-
     @BeforeEach
     public void init()
     {
-        _swerveModule = new MockSwerveModule(10, 10, 0, 1);
+        _swerveModule = new MockSwerveModule(10, 10, 0);
     }
 
     @ParameterizedTest
@@ -144,24 +94,5 @@ public class SwerveModuleTests
         assertFalse(Double.isNaN(_swerveModule.getRotateMotor().get()));
         assertEquals(moduleCommand.getR(), _swerveModule.getDriveSetpoint());
         assertEquals(moduleCommand.getTheta(), _swerveModule.getRotateSetpoint());
-    }
-
-    @ParameterizedTest
-    @MethodSource("odometryTestCases")
-    public void testOdometry(double initialRotation, double initialDrivePosition, double finalDrivePosition)
-    {
-        _swerveModule.getPositionSensor().set(initialRotation);
-        _swerveModule.getDriveMotor().getPositionSensor().set(initialDrivePosition);
-        _swerveModule.resetDrivePosition();
-        _swerveModule.getDriveMotor().getPositionSensor().set(finalDrivePosition);
-
-        Vector actualOffset = _swerveModule.getOffset();
-
-        Vector expectedOffset = new Vector();
-        expectedOffset.setR(finalDrivePosition - initialDrivePosition);
-        expectedOffset.setTheta(initialRotation);
-
-        assertEquals(expectedOffset.getX(), actualOffset.getX(), Constants.Testing.EPSILON);
-        assertEquals(expectedOffset.getY(), actualOffset.getY(), Constants.Testing.EPSILON);
     }
 }

@@ -12,7 +12,7 @@ import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockShooter;
 import frc.robot.subsystems.hardware.MockDrive;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.subsystems.drive.Position;
 
 public class CmdShootWithOdometryTests {
     private MockDrive    _drive;
@@ -35,7 +35,7 @@ public class CmdShootWithOdometryTests {
     @ValueSource(ints = { 0, 1, 2 })
     public void testStart (int initialCargoCount)
     {
-        _drive.resetOdometer(new Vector(10, 0));
+        _drive.resetOdometer(new Position(10, 0, 270));
         _drive.getGyro().set(270);                                          
         _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
         _ballpath.setCargoCount(initialCargoCount);
@@ -50,7 +50,7 @@ public class CmdShootWithOdometryTests {
     @ValueSource(ints = { 0, 1, 2 })
     public void testEnd (int initialCargoCount)
     {
-        _drive.resetOdometer(new Vector(120, 0));
+        _drive.resetOdometer(new Position(120, 0, 270));
         _drive.getGyro().set(270);                                          
         _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
         ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM);

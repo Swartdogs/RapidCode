@@ -15,11 +15,10 @@ public class HardwareSwerveModule extends SwerveModule
         PositionSensor rotateSensor,
         double x, 
         double y,
-        double relativeZero,
-        double distanceScaler
+        double relativeZero
     )
     {
-        super(x, y, relativeZero, distanceScaler);
+        super(x, y, relativeZero);
 
         _driveMotor = driveMotor;
         _rotateMotor = rotateMotor;

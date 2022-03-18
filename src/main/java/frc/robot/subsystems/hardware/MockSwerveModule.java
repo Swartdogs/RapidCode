@@ -8,9 +8,9 @@ import frc.robot.subsystems.drive.SwerveModule;
 
 public class MockSwerveModule extends SwerveModule 
 {
-    public MockSwerveModule(double x, double y, double relativeZero, double distanceScaler)
+    public MockSwerveModule(double x, double y, double relativeZero)
     {
-        super(x, y, relativeZero, distanceScaler);
+        super(x, y, relativeZero);
 
         _driveMotor     = new MockMotor();
         _rotateMotor    = new MockMotor();

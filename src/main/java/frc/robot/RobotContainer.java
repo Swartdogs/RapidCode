@@ -151,7 +151,7 @@ public class RobotContainer extends SubsystemBase
         _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                                            // Reset the gyroscope and odometer
         {
             _drive.setGyro(Constants.Drive.FIELD_ANGLE); 
-            _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION.clone()); 
+            _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION); 
         }));
         _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);                                                                 // Shoot without aiming from the Launchpad
         
