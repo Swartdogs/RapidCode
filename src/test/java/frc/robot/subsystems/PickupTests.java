@@ -1,4 +1,4 @@
-package frc.robot.subsystems.tests;
+package frc.robot.subsystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
-import frc.robot.subsystems.MockPickup;
+import frc.robot.subsystems.hardware.MockPickup;
 
 public class PickupTests
 {

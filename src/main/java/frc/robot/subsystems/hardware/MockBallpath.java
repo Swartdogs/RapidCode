@@ -1,7 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.hardware;
 
-import frc.robot.abstraction.MockMotor;
-import frc.robot.abstraction.MockSwitch;
+import frc.robot.abstraction.Motor.MockMotor;
+import frc.robot.abstraction.Switch.MockSwitch;
+import frc.robot.subsystems.Ballpath;
 
 public class MockBallpath extends Ballpath
 {

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Switch;
@@ -19,6 +20,9 @@ public abstract class Ballpath extends SwartdogSubsystem
     private State _currentPickupSensorState  = State.Off;
     private State _currentShooterSensorState = State.Off;
 
+    private State _lowerTrackState           = State.Off;
+    private State _upperTrackState           = State.Off;
+
     private int _cargoCount = 0;
 
     @Override
@@ -35,14 +39,16 @@ public abstract class Ballpath extends SwartdogSubsystem
     {
         double speed = 0.0;
 
+        _upperTrackState = state;
+
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_SPEED;
+                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
 
             default:
@@ -56,14 +62,16 @@ public abstract class Ballpath extends SwartdogSubsystem
     {
         double speed = 0.0;
 
+        _lowerTrackState = state;
+
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_SPEED;
+                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_SPEED;
+                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
                 break;
 
             default:
@@ -71,6 +79,44 @@ public abstract class Ballpath extends SwartdogSubsystem
         }
         
         _lowerTrack.set(speed);
+    }
+
+    public void shoot(ShootPosition position)
+    {
+        switch (position)
+        {
+            case Fender:
+                _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+                _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+                break;
+
+            default:
+                _lowerTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+                _upperTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+                break;
+        }
+    }
+
+    public void shoot()
+    {
+        _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+        _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+    }
+
+    public void stop()
+    {
+        _lowerTrack.set(0.0);
+        _upperTrack.set(0.0);
+    }
+
+    public State getUpperTrackState()
+    {
+        return _upperTrackState;
+    }
+
+    public State getLowerTrackState()
+    {
+        return _lowerTrackState;
     }
     
     public State getPickupSensorState()

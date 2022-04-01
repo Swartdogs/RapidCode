@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,11 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.abstraction.MockVelocitySensor;
-import frc.robot.commands.CmdShootWithOdometry;
-import frc.robot.subsystems.MockBallpath;
-import frc.robot.subsystems.MockShooter;
-import frc.robot.subsystems.drive.MockDrive;
+import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
+import frc.robot.subsystems.hardware.MockBallpath;
+import frc.robot.subsystems.hardware.MockShooter;
+import frc.robot.subsystems.hardware.MockDrive;
 import frc.robot.subsystems.drive.Vector;
 
 public class CmdShootWithOdometryTests {
@@ -36,7 +35,7 @@ public class CmdShootWithOdometryTests {
     @ValueSource(ints = { 0, 1, 2 })
     public void testStart (int initialCargoCount)
     {
-        _drive.resetOdometer(new Vector(120, 0));
+        _drive.resetOdometer(new Vector(10, 0));
         _drive.getGyro().set(270);                                          
         _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
         _ballpath.setCargoCount(initialCargoCount);
@@ -44,7 +43,7 @@ public class CmdShootWithOdometryTests {
         _command.initialize();
 
         assertTrue(_drive.rotateIsFinished());
-        assertEquals(initialCargoCount > 0 ? Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(initialCargoCount > 0 ? 4200 : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
     }
 
     @ParameterizedTest
@@ -65,7 +64,6 @@ public class CmdShootWithOdometryTests {
             _command.end(false);
         }
 
-        // Collin thinks we don't need to test stopping the rotation
         assertEquals(0, _shooter.getShooterMotor().get(),     Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
         assertEquals(0, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);

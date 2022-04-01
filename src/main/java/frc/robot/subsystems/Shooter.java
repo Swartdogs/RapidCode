@@ -8,17 +8,19 @@ import frc.robot.abstraction.SwartdogSubsystem;
 
 public abstract class Shooter extends SwartdogSubsystem
 {
-    protected Motor          _shooterMotor;
+    public Motor          _shooterMotor;
     protected Motor          _hoodMotor;
 
     protected PositionSensor _hoodSensor;
 
     protected PIDControl     _hoodPID;
 
+    private   double         _hoodSetpoint;
+
     @Override
     public void periodic()
     {
-        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));        
+        _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));      
     }
 
     public void setShooterMotorSpeed(double speed)
@@ -26,12 +28,20 @@ public abstract class Shooter extends SwartdogSubsystem
         _shooterMotor.set(speed);
     }
 
+    public double getShooterRPM()
+    {
+        return _shooterMotor.getVelocitySensor().get();
+    }
+
+    public double getShooterTargetRPM()
+    {
+        return _shooterMotor.get();
+    }
+
     public boolean isShooterReady()
     {
         double actual  = _shooterMotor.getVelocitySensor().get();
         double target  = _shooterMotor.get();
-
-        System.out.println(String.format("target: %d, actual: %d", (int)target, (int)actual));
 
         return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
                (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&
@@ -52,6 +62,12 @@ public abstract class Shooter extends SwartdogSubsystem
 
     public void setHoodPosition(double position)
     {
-        _hoodPID.setSetpoint(position, getHoodPosition());
+        _hoodSetpoint = position;
+        _hoodPID.setSetpoint(_hoodSetpoint, getHoodPosition());
+    }
+
+    public double getHoodSetpoint()
+    {
+        return _hoodSetpoint;
     }
 }

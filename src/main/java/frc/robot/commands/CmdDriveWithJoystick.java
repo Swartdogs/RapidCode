@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import frc.robot.abstraction.SwartdogCommand;
@@ -11,13 +12,15 @@ public class CmdDriveWithJoystick extends SwartdogCommand
     private DoubleSupplier  _driveInput;
     private DoubleSupplier  _strafeInput;
     private DoubleSupplier  _rotateInput;
+    private BooleanSupplier _isAbsolute;
 
-    public CmdDriveWithJoystick(Drive drive, DoubleSupplier driveInput, DoubleSupplier strafeInput, DoubleSupplier rotateInput)
+    public CmdDriveWithJoystick(Drive drive, DoubleSupplier driveInput, DoubleSupplier strafeInput, DoubleSupplier rotateInput, BooleanSupplier isAbsolute)
     {
         _drive       = drive;
         _driveInput  = driveInput;
         _strafeInput = strafeInput;
         _rotateInput = rotateInput;
+        _isAbsolute  = isAbsolute;
 
         addRequirements(_drive);
     }
@@ -25,7 +28,7 @@ public class CmdDriveWithJoystick extends SwartdogCommand
     @Override
     public void execute() 
     {
-        _drive.drive(_driveInput.getAsDouble(), _strafeInput.getAsDouble(), _rotateInput.getAsDouble());
+        _drive.drive(_driveInput.getAsDouble(), _strafeInput.getAsDouble(), _rotateInput.getAsDouble(), _isAbsolute.getAsBoolean());
     }
 
     @Override

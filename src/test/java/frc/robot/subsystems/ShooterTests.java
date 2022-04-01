@@ -1,4 +1,4 @@
-package frc.robot.subsystems.tests;
+package frc.robot.subsystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.MockShooter;
+import frc.robot.subsystems.hardware.MockShooter;
 
 import static frc.robot.Utils.clamp;
 

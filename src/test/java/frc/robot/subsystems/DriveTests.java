@@ -1,4 +1,4 @@
-package frc.robot.subsystems.drive.tests;
+package frc.robot.subsystems;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,8 +13,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.subsystems.drive.MockDrive;
-import frc.robot.subsystems.drive.MockSwerveModule;
+import frc.robot.subsystems.hardware.MockDrive;
+import frc.robot.subsystems.hardware.MockSwerveModule;
 import frc.robot.subsystems.drive.Vector;
 
 public class DriveTests 
@@ -166,8 +166,7 @@ public class DriveTests
             MockSwerveModule swerveModule = _drive.getSwerveModule(i);
             Vector expectedModuleCommand = new Vector(swerveModule.getX()-origin.getX(), swerveModule.getY()-origin.getY());
             expectedModuleCommand.translatePolarPosition(0, 90);
-            expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance);
-            expectedModuleCommand.add(translateVector);
+            expectedModuleCommand = expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance).add(translateVector);
 
             maxModuleSpeed = Math.max(maxModuleSpeed, Math.abs(expectedModuleCommand.getR()));
         }
@@ -177,9 +176,7 @@ public class DriveTests
             MockSwerveModule swerveModule = _drive.getSwerveModule(i);
             Vector expectedModuleCommand = new Vector(swerveModule.getX()-origin.getX(), swerveModule.getY()-origin.getY());
             expectedModuleCommand.translatePolarPosition(0, 90);
-            expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance);
-            expectedModuleCommand.add(translateVector);
-            expectedModuleCommand.divide(maxModuleSpeed);
+            expectedModuleCommand = expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance).add(translateVector).divide(maxModuleSpeed);
             double expectedRotateSetpoint = expectedModuleCommand.getTheta();
             double expectedDriveSetpoint = expectedModuleCommand.getR();
 
@@ -222,8 +219,7 @@ public class DriveTests
             MockSwerveModule swerveModule = _drive.getSwerveModule(i);
             Vector expectedModuleCommand = new Vector(swerveModule.getX()-origin.getX(), swerveModule.getY()-origin.getY());
             expectedModuleCommand.translatePolarPosition(0, 90);
-            expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance);
-            expectedModuleCommand.add(expectedTranslateVector);
+            expectedModuleCommand = expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance).add(expectedTranslateVector);
 
             maxModuleSpeed = Math.max(maxModuleSpeed, Math.abs(expectedModuleCommand.getR()));
         }
@@ -233,9 +229,7 @@ public class DriveTests
             MockSwerveModule swerveModule = _drive.getSwerveModule(i);
             Vector expectedModuleCommand = new Vector(swerveModule.getX()-origin.getX(), swerveModule.getY()-origin.getY());
             expectedModuleCommand.translatePolarPosition(0, 90);
-            expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance);
-            expectedModuleCommand.add(expectedTranslateVector);
-            expectedModuleCommand.divide(maxModuleSpeed);
+            expectedModuleCommand = expectedModuleCommand.multiply(rotate / expectedMaxModuleDistance).add(expectedTranslateVector).divide(maxModuleSpeed);
             double expectedRotateSetpoint = expectedModuleCommand.getTheta();
             double expectedDriveSetpoint = expectedModuleCommand.getR();
 

@@ -4,30 +4,41 @@ import frc.robot.Constants;
 import frc.robot.Constants.Shooter.ShootPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
+import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.subsystems.Ballpath;
+import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.Shooter;
 
 public class CmdShootManual extends SwartdogCommand 
 {
     private Shooter       _shooter;
     private Ballpath      _ballpath;
+    private Pickup        _pickup;
+    private SettableSwitch _compressor;
     private ShootPosition _position;
+    private boolean       _atSpeed;
 
-    public CmdShootManual(Shooter shooter, Ballpath ballpath, ShootPosition position) 
+    public CmdShootManual(Shooter shooter, Ballpath ballpath, Pickup pickup, SettableSwitch compressor, ShootPosition position) 
     {
-        _shooter  = shooter;
-        _ballpath = ballpath;
-        _position = position;
+        _shooter    = shooter;
+        _ballpath   = ballpath;
+        _pickup     = pickup;
+        _compressor = compressor;
+        _position   = position;
+        _atSpeed    = false;
 
-        addRequirements(_shooter, _ballpath);
+        addRequirements(_shooter);
     }
 
     @Override
     public void initialize() 
     {
+        _atSpeed = false;
+        
         if (_ballpath.getCargoCount() > 0) 
         {
-            
+            _compressor.set(State.Off);
+
             switch (_position)
             {
                 case NearLaunchpad:
@@ -39,6 +50,21 @@ public class CmdShootManual extends SwartdogCommand
                     _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_SHOOTER_RPM);
                     _shooter.setHoodPosition(Constants.Shooter.FENDER_HOOD_POSITION);
                     break;
+
+                case FenderLowGoal:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_LOW_GOAL_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.FENDER_LOW_GOAL_HOOD_POSITION);
+                    break;
+
+                case FenderLowGoalPosition1:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_LOW_GOAL_POSITION_1_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.FENDER_LOW_GOAL_POSITION_1_HOOD_POSITION);
+                    break;
+
+                case FenderPosition1:
+                    _shooter.setShooterMotorSpeed(Constants.Shooter.FENDER_POSITION_1_SHOOTER_RPM);
+                    _shooter.setHoodPosition(Constants.Shooter.FENDER_POSITION_1_HOOD_POSITION);
+                    break;
             }
         }
     }
@@ -46,20 +72,40 @@ public class CmdShootManual extends SwartdogCommand
     @Override
     public void execute() 
     {
+        /* 
+         * The "_atSpeed" variable is used to prevent a problem where the cargo would slow the wheel down,
+         * causing the ballpath to shut off while the cargo is contacting the wheel.
+         */
         if (_shooter.isShooterReady()) 
         {
-            _ballpath.setUpperTrackTo(State.On);
-            _ballpath.setLowerTrackTo(State.On);
+            _atSpeed = true;
         }
-        else 
-        {
-            _ballpath.setUpperTrackTo(State.Off);
-            _ballpath.setLowerTrackTo(State.Off);
-        }
-
+        
         if (_ballpath.hasShooterSensorTransitionedTo(State.Off))
         {
             _ballpath.modifyCargoCount(-1);
+
+            switch (_position)
+            {
+                case FenderLowGoal:
+                case FenderLowGoalPosition1:
+                    break;
+
+                default:
+                    _atSpeed = false;
+                    break;
+            } 
+        }
+
+        if (_atSpeed)
+        {
+            _ballpath.shoot(_position);
+            _pickup.startMotor();
+        }
+        else
+        {
+            _ballpath.stop();
+            _pickup.stopMotor();
         }
     }
 
@@ -67,8 +113,11 @@ public class CmdShootManual extends SwartdogCommand
     public void end(boolean interrupted) 
     {
         _shooter.setShooterMotorSpeed(0);
-        _ballpath.setUpperTrackTo(State.Off);
-        _ballpath.setLowerTrackTo(State.Off);
+        _ballpath.stop();
+        _pickup.stopMotor();
+        _compressor.set(State.On);
+
+        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
     }
 
     @Override

@@ -1,25 +1,35 @@
 package frc.robot.commands;
 
-import frc.robot.Constants;
 import frc.robot.abstraction.SwartdogCommand;
-import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.subsystems.Hanger;
 
 public class CmdHangerSetArmPosition extends SwartdogCommand
 {
-    private Hanger      _hanger;
-    private ExtendState _state;
+    private Hanger _hanger;
+    private double _position;
 
-    public CmdHangerSetArmPosition(Hanger hanger, ExtendState state)
+    public CmdHangerSetArmPosition(Hanger hanger, double position)
     {
-        _hanger = hanger;
-        _state  = state;
+        _hanger   = hanger;
+        _position = position;
     }
 
     @Override
     public void initialize()
     {
-        _hanger.setArmPosition(Constants.Hanger.HANGER_ARM_POSITION_LOOKUP.apply(_state));
+        _hanger.setArmPosition(_position);
+    }
+
+    @Override
+    public void execute()
+    {
+        _hanger.setArmMotorSpeed(_hanger.runArmPID());
+    }
+
+    @Override
+    public void end(boolean interrupted)
+    {
+        _hanger.setArmMotorSpeed(0);
     }
 
     @Override

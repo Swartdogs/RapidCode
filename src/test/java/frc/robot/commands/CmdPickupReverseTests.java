@@ -1,4 +1,4 @@
-package frc.robot.commands.tests;
+package frc.robot.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,31 +8,27 @@ import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
 import frc.robot.abstraction.Enumerations.ExtendState;
-import frc.robot.commands.CmdPickupDeploy;
-import frc.robot.subsystems.MockBallpath;
-import frc.robot.subsystems.MockPickup;
+import frc.robot.subsystems.hardware.MockPickup;
 
-public class CmdPickupDeployTests 
+public class CmdPickupReverseTests
 {
-    private MockPickup      _pickup;
-    private MockBallpath    _ballpath;
-    private CmdPickupDeploy _command;
+    private MockPickup _pickup;
+    private CmdPickupReverse _command;
 
     @BeforeEach
     public void init()
     {
-        _pickup   = new MockPickup();
-        _ballpath = new MockBallpath();
-        _command  = new CmdPickupDeploy(_pickup, _ballpath);
+        _pickup  = new MockPickup();
+        _command = new CmdPickupReverse(_pickup);
     }
 
     @Test
-    public void testDeploy()
+    public void testReverse()
     {
         _command.initialize();
 
         assertEquals(ExtendState.Extended, _pickup.getDeploySolenoid().get());
-        assertEquals(Constants.Pickup.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(-Constants.Pickup.PICKUP_SPEED, _pickup.getPickupMotor().get(), Constants.Testing.EPSILON);
     }
 
     @Test

@@ -12,35 +12,36 @@ public class CmdBallpathLoad extends SwartdogCommand
     private Ballpath _ballpath;
     private Pickup   _pickup;
     private int      _initialCargoCount;
+    private int      _timer;
 
     public CmdBallpathLoad(Ballpath ballpath, Pickup pickup)
     {
         _ballpath          = ballpath; 
         _pickup            = pickup;
         _initialCargoCount = 0;
+
+        addRequirements(_ballpath);
     }
 
     @Override
     public void initialize()
     {
         _initialCargoCount = _ballpath.getCargoCount();
+        _timer             = (int)(Constants.LOOPS_PER_SECOND * Constants.Ballpath.LOAD_TIMEOUT);
         
         if(_initialCargoCount == 0)
         {
             _ballpath.setLowerTrackTo(State.On);
             _ballpath.setUpperTrackTo(State.On);
         }
-
         
         _ballpath.modifyCargoCount(1);
-
-        System.out.println("loading, new cargo count: " + _initialCargoCount);
     }
 
     @Override
     public void execute()
     {
-        System.out.println(String.format("State: %s, transitioned: %b",_ballpath.getShooterSensorState(), _ballpath.hasShooterSensorTransitionedTo(State.On)));
+        _timer--;
     }
 
     @Override
@@ -53,12 +54,18 @@ public class CmdBallpathLoad extends SwartdogCommand
             _pickup.stow();
             _pickup.stopMotor();
         }
+
+        if (_timer < 0)
+        {
+            _ballpath.modifyCargoCount(-1);
+        }
     }
 
     @Override
     public boolean isFinished()
     {
         return (_ballpath.hasShooterSensorTransitionedTo(State.On)) || 
-               (_initialCargoCount > 0);
+               (_initialCargoCount > 0) ||
+               (_timer < 0);
     }
 }

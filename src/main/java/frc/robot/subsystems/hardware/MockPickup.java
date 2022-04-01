@@ -1,7 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.hardware;
 
-import frc.robot.abstraction.MockMotor;
-import frc.robot.abstraction.MockSolenoid;
+import frc.robot.abstraction.Motor.MockMotor;
+import frc.robot.abstraction.Solenoid.MockSolenoid;
+import frc.robot.subsystems.Pickup;
 
 public class MockPickup extends Pickup
 {

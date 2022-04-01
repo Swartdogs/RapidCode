@@ -1,29 +1,31 @@
 package frc.robot.commands;
 
+import frc.robot.Constants;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Hanger;
 
-public class CmdHangerSetWinchPosition extends SwartdogCommand
+public class CmdHangerWinchDownUntilReleased extends SwartdogCommand
 {
     private Hanger _hanger;
-    private double _position;
-    
-    public CmdHangerSetWinchPosition(Hanger hanger, double position)
+
+    private int    _timer;
+
+    public CmdHangerWinchDownUntilReleased(Hanger hanger)
     {
-        _hanger   = hanger; 
-        _position = position; 
+        _hanger = hanger;
     }
 
     @Override
     public void initialize()
     {
-        _hanger.setWinchPosition(_position);
+        _timer = (int)(Constants.LOOPS_PER_SECOND * Constants.Hanger.RESET_WAIT_TIME);
+        _hanger.setWinchMotorSpeed(-Constants.Hanger.RESET_SPEED);
     }
 
     @Override
     public void execute()
     {
-        _hanger.setWinchMotorSpeed(_hanger.runWinchPID());
+        _timer--;
     }
 
     @Override
@@ -35,6 +37,6 @@ public class CmdHangerSetWinchPosition extends SwartdogCommand
     @Override
     public boolean isFinished()
     {
-        return _hanger.winchAtPostition();
+        return _timer <= 0;
     }
 }
