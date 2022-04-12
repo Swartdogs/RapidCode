@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.RobotPosition;
+import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.Ballpath;
@@ -69,7 +71,7 @@ public class CmdBallpathEjectHigh extends SwartdogCommand
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
         _shooter.setShooterMotorSpeed(0);
-        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+        _shooter.setHoodPosition(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
     }
 
     @Override

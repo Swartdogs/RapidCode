@@ -46,7 +46,7 @@ public class CmdHangerSetWinchPositionTests
     @MethodSource("testCases")
     public void testHangerSetWinchPosition(double start, double target)
     {
-        _command = new CmdHangerSetWinchPosition(_hanger, target);
+        _command = new CmdHangerSetWinchPosition(_hanger, target, Constants.Hanger.WINCH_SPEED);
         
         _hanger.getWinchSensor().set(start);
         _command.initialize();
@@ -60,7 +60,7 @@ public class CmdHangerSetWinchPositionTests
     @MethodSource("testCases")
     public void testHangerWinchAtPosition(double start, double target)
     {
-        _command = new CmdHangerSetWinchPosition(_hanger, target);
+        _command = new CmdHangerSetWinchPosition(_hanger, target, Constants.Hanger.WINCH_SPEED);
 
         _hanger.getWinchSensor().set(start);
         _command.initialize();

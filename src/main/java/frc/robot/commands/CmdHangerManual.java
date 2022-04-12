@@ -20,13 +20,31 @@ public class CmdHangerManual extends SwartdogCommand
     @Override
     public void execute()
     {
-        _hanger.setWinchMotorSpeed(_command.getAsDouble() * Constants.Hanger.RESET_SPEED);
+        double speed = _command.getAsDouble() * Constants.Hanger.WINCH_SPEED;
+
+        if ((speed > 0 && _hanger.getWinchPosition() >= Constants.Hanger.MAX_WINCH_LENGTH) ||
+            (speed < 0 && _hanger.getWinchPosition() <= Constants.Hanger.MIN_WINCH_LENGTH))
+        {
+            speed = 0;   
+        }
+
+        // if (speed < 0)
+        // {
+        //     _hanger.useArmPID(false);
+        // }
+        // else
+        // {
+        //     _hanger.useArmPID(true);
+        // }
+
+        _hanger.setWinchMotorSpeed(speed);
     }
 
     @Override
     public void end(boolean interrupted)
     {
         _hanger.setWinchMotorSpeed(0);
+        // _hanger.useArmPID(true);
     }
 
     @Override

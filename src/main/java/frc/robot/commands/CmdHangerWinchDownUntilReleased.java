@@ -19,7 +19,7 @@ public class CmdHangerWinchDownUntilReleased extends SwartdogCommand
     public void initialize()
     {
         _timer = (int)(Constants.LOOPS_PER_SECOND * Constants.Hanger.RESET_WAIT_TIME);
-        _hanger.setWinchMotorSpeed(-Constants.Hanger.RESET_SPEED);
+        _hanger.setWinchMotorSpeed(-Constants.Hanger.WINCH_SPEED);
     }
 
     @Override

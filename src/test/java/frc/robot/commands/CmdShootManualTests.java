@@ -12,7 +12,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
-import frc.robot.Constants.Shooter.ShootPosition;
+import frc.robot.Constants.Shooter.RobotPosition;
+import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockShooter;
 import frc.robot.subsystems.hardware.MockPickup;
@@ -30,7 +31,7 @@ public class CmdShootManualTests {
     public static Stream<Arguments> testCases()
     {
         int[] cargoCounts = { 0, 1, 2 };
-        double[] shooterRPMs = { 0, Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM };
+        double[] shooterRPMs = { 0, RobotPosition.NearLaunchpad.getShooterRPM(TargetPosition.UpperHub) };
 
         Stream<Arguments> stream = Stream.of();
 
@@ -52,7 +53,7 @@ public class CmdShootManualTests {
         _ballpath   = new MockBallpath();
         _pickup     = new MockPickup();
         _compressor = new MockSwitch(State.On);
-        _command    = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, ShootPosition.NearLaunchpad);
+        _command    = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.NearLaunchpad, TargetPosition.UpperHub);
     }
 
     @ParameterizedTest
@@ -63,7 +64,7 @@ public class CmdShootManualTests {
 
         _command.initialize();
 
-        assertEquals(initialCargoCount > 0 ? Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
+        assertEquals(initialCargoCount > 0 ? RobotPosition.NearLaunchpad.getShooterRPM(TargetPosition.UpperHub) : 0, _shooter.getShooterMotor().get(), Constants.Testing.EPSILON);
         assertEquals(initialCargoCount == 0, _compressor.get() == State.On);
     }
 
@@ -102,15 +103,15 @@ public class CmdShootManualTests {
         _command.initialize();
 
         ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(shooterRPM);
-        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+        _shooter.getHoodSensor().set(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
 
         _shooter.periodic();
         _command.execute();
 
         if (shooterRPM > 0 && initialCargoCount > 0)
         {
-            assertEquals(Constants.Ballpath.BALLPATH_SHOOT_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
-            assertEquals(Constants.Ballpath.BALLPATH_SHOOT_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getUpperTrackMotor().get(), Constants.Testing.EPSILON);
+            assertEquals(Constants.Ballpath.BALLPATH_LOAD_SPEED, _ballpath.getLowerTrackMotor().get(), Constants.Testing.EPSILON);
         }
 
         else

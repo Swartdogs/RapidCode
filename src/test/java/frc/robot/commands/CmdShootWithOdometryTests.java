@@ -8,13 +8,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.RobotPosition;
+import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.VelocitySensor.MockVelocitySensor;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockShooter;
 import frc.robot.subsystems.hardware.MockDrive;
 import frc.robot.subsystems.drive.Vector;
 
-public class CmdShootWithOdometryTests {
+public class CmdShootWithOdometryTests 
+{
     private MockDrive    _drive;
     private MockShooter  _shooter;
     private MockBallpath _ballpath;
@@ -37,7 +40,7 @@ public class CmdShootWithOdometryTests {
     {
         _drive.resetOdometer(new Vector(10, 0));
         _drive.getGyro().set(270);                                          
-        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+        _shooter.getHoodSensor().set(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
         _ballpath.setCargoCount(initialCargoCount);
         
         _command.initialize();
@@ -51,9 +54,9 @@ public class CmdShootWithOdometryTests {
     public void testEnd (int initialCargoCount)
     {
         _drive.resetOdometer(new Vector(120, 0));
-        _drive.getGyro().set(270);                                          
-        _shooter.getHoodSensor().set(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
-        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(Constants.Shooter.NEAR_LAUNCHPAD_SHOOTER_RPM);
+        _drive.getGyro().set(270);
+        _shooter.getHoodSensor().set(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
+        ((MockVelocitySensor)_shooter.getShooterMotor().getVelocitySensor()).set(RobotPosition.NearLaunchpad.getShooterRPM(TargetPosition.UpperHub));
         _ballpath.setCargoCount(initialCargoCount);
         
         _command.initialize();

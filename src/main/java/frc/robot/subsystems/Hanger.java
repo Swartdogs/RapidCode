@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import PIDControl.PIDControl;
+import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
 import frc.robot.abstraction.Solenoid;
@@ -20,19 +21,39 @@ public abstract class Hanger extends SwartdogSubsystem
     protected PIDControl     _armPID;
     protected PIDControl     _winchPID;
 
+    private   double         _armTarget;
+
+    private   boolean        _useArmPID   = true;
+
     public void setArmPosition(double position) 
+    {        
+        _armTarget = position;
+    }
+
+    public double getArmTarget()
     {
-        _armPID.setSetpoint(position, getArmPosition());
+        return _armTarget;
+    }
+
+    public double getCurrentPositionTarget()
+    {
+        return getArmPosition() - getWinchAngle();
     }
     
-    public void setWinchPosition(double position) 
+    public void winchInit(double position, double speed)
     {
+        _winchPID.setOutputRange(-speed, speed);
         _winchPID.setSetpoint(position, getWinchPosition());
     }
 
-    public void resetWinchPosition(double position)
+    public void useArmPID(boolean use)
     {
-        _winchSensor.set(position);
+        _useArmPID = use;
+    }
+
+    public boolean useArmPID()
+    {
+        return _useArmPID;
     }
 
     public double runArmPID()
@@ -98,6 +119,32 @@ public abstract class Hanger extends SwartdogSubsystem
     @Override
     public void periodic()
     {
-        setArmMotorSpeed(runArmPID());
+        double winchAngle = getWinchAngle();
+
+        _armPID.setSetpoint(_armTarget + winchAngle, getArmPosition());
+
+        // System.out.println(String.format("Use PID: %b, Arm Target: %6.2f, Winch Angle: %6.2f, Arm Position: %6.2f, Winch Position: %8.4f", _useArmPID, _armTarget, winchAngle, _armSensor.get(), _winchSensor.get()));
+        // System.out.println(_useArmPID);
+
+        if (_useArmPID)
+        {
+            setArmMotorSpeed(runArmPID());
+        }
+        else
+        {
+            setArmMotorSpeed(0);
+        }
+    }
+
+    private double getWinchAngle()
+    {
+        double winchLength = _winchSensor.get();
+
+        return Math.toDegrees(Math.acos(clamp((winchLength * Constants.Hanger.WINCH_ANGLE_DENOMINATOR) + ((1.0 / winchLength) * Constants.Hanger.WINCH_FACTOR), -1, 1)));
+    }
+
+    private double clamp(double value, double min, double max)
+    {
+        return Math.max(min, Math.min(max, value));
     }
 }

@@ -55,8 +55,8 @@ public class HardwareDrive extends Drive
         _translatePID.setOutputRamp(0.1, 0.05);
         _translatePID.setSetpointDeadband(2);
 
-        _rotatePID.setCoefficient(Coefficient.P, 0, 0.9, 0);
-        _rotatePID.setCoefficient(Coefficient.I, Math.sin(Math.toRadians(20)), 0, 0.09);
+        _rotatePID.setCoefficient(Coefficient.P, 0, 0.8, 0);
+        _rotatePID.setCoefficient(Coefficient.I, Math.sin(Math.toRadians(20)), 0, 0.049);
         _rotatePID.setCoefficient(Coefficient.D, 0, 0, 0);
         _rotatePID.setInputRange(-1.0, 1.0);
         _rotatePID.setOutputRamp(0.1, 0.05);

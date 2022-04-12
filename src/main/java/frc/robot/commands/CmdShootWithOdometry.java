@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.Constants.Shooter.RobotPosition;
+import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.*;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.*;
@@ -85,7 +87,7 @@ public class CmdShootWithOdometry extends SwartdogCommand
         _ballpath.stop();
         _drive.drive(0, 0, 0);
 
-        _shooter.setHoodPosition(Constants.Shooter.NEAR_LAUNCHPAD_HOOD_POSITION);
+        _shooter.setHoodPosition(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
     }
 
     @Override

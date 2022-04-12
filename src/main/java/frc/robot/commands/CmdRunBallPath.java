@@ -2,18 +2,24 @@ package frc.robot.commands;
 
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
+import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.subsystems.Ballpath;
+import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.drive.Drive;
 
 public class CmdRunBallPath extends SwartdogCommand
 {
-    private Drive    _drive;
-    private Ballpath _ballpath;
+    private Drive          _drive;
+    private Ballpath       _ballpath;
+    private Pickup         _pickup;
+    private SettableSwitch _compressor;
 
-    public CmdRunBallPath(Drive drive, Ballpath ballpath)
+    public CmdRunBallPath(Drive drive, Ballpath ballpath, Pickup pickup, SettableSwitch compressor)
     {
-        _drive    = drive;
-        _ballpath = ballpath;
+        _drive      = drive;
+        _ballpath   = ballpath;
+        _pickup     = pickup;
+        _compressor = compressor;
 
         addRequirements(_drive, _ballpath);
     }
@@ -24,6 +30,17 @@ public class CmdRunBallPath extends SwartdogCommand
         _drive.drive(0, 0, 0);
         _ballpath.setUpperTrackTo(State.On);
         _ballpath.setLowerTrackTo(State.On);
+        _pickup.startMotor();
+        _compressor.set(State.Off);
+    }
+
+    @Override
+    public void execute()
+    {
+        if(_ballpath.hasShooterSensorTransitionedTo(State.Off))
+        {
+            _ballpath.modifyCargoCount(-1);
+        }
     }
 
     @Override
@@ -31,6 +48,8 @@ public class CmdRunBallPath extends SwartdogCommand
     {
         _ballpath.setUpperTrackTo(State.Off);
         _ballpath.setLowerTrackTo(State.Off);
+        _pickup.stopMotor();
+        _compressor.set(State.On);
     }
 
     @Override

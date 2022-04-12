@@ -7,17 +7,19 @@ public class CmdHangerSetWinchPosition extends SwartdogCommand
 {
     private Hanger _hanger;
     private double _position;
+    private double _winchSpeed;
     
-    public CmdHangerSetWinchPosition(Hanger hanger, double position)
+    public CmdHangerSetWinchPosition(Hanger hanger, double position, double winchSpeed)
     {
-        _hanger   = hanger; 
-        _position = position; 
+        _hanger     = hanger; 
+        _position   = position;
+        _winchSpeed = winchSpeed;
     }
 
     @Override
     public void initialize()
     {
-        _hanger.setWinchPosition(_position);
+        _hanger.winchInit(_position, _winchSpeed);
     }
 
     @Override

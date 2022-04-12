@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
 import frc.robot.Constants;
-import frc.robot.Constants.Shooter.ShootPosition;
+import frc.robot.Constants.Shooter.RobotPosition;
+import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Switch;
@@ -81,19 +82,17 @@ public abstract class Ballpath extends SwartdogSubsystem
         _lowerTrack.set(speed);
     }
 
-    public void shoot(ShootPosition position)
+    public void shoot(RobotPosition robotPosition, TargetPosition targetPosition)
     {
-        switch (position)
+        if (robotPosition == RobotPosition.Fender && targetPosition == TargetPosition.UpperHub)
         {
-            case Fender:
-                _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
-                _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
-                break;
-
-            default:
-                _lowerTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
-                _upperTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
-                break;
+            _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+            _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+        }
+        else
+        { 
+            _lowerTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+            _upperTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
         }
     }
 
