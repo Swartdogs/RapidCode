@@ -6,19 +6,14 @@ import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.SwartdogSequentialCommandGroup;
-import frc.robot.commands.CmdDriveRotate;
 import frc.robot.commands.CmdDriveToPosition;
-import frc.robot.commands.CmdPickupDeploy;
-import frc.robot.commands.CmdPickupStow;
 import frc.robot.commands.CmdShootManual;
-import frc.robot.commands.CmdShootWithVision;
-import frc.robot.commands.CmdWait;
 import frc.robot.commands.CmdWaitAuto;
 import frc.robot.subsystems.drive.Vector;
 
-public class GrpAuto2BallHighStart6 extends SwartdogSequentialCommandGroup
+public class GrpAuto1BallHighTaxi extends SwartdogSequentialCommandGroup
 {
-    public GrpAuto2BallHighStart6(SubsystemContainer subsystemContainer)
+    public GrpAuto1BallHighTaxi(SubsystemContainer subsystemContainer)
     {
         super
         (
@@ -30,12 +25,8 @@ public class GrpAuto2BallHighStart6 extends SwartdogSequentialCommandGroup
 
             new CmdWaitAuto(subsystemContainer),
             new CmdShootManual(subsystemContainer, RobotPosition.Fender, TargetPosition.UpperHub),
-            new CmdPickupDeploy(subsystemContainer),
-            new CmdDriveToPosition(subsystemContainer, Constants.Drive.FIELD_RESET_POSITION.add(new Vector(-60, -80)), -115, 0.5, 0.5, 0, true),
-            new CmdWait(1.5),
-            new CmdPickupStow(subsystemContainer),
-            new CmdDriveRotate(subsystemContainer, 21, 0.5, true),
-            new CmdShootWithVision(subsystemContainer)
+            new CmdDriveToPosition(subsystemContainer, new Vector(0, -120), 0, 0.2, 0.6, 0, false)
+            
         );
     }
 }

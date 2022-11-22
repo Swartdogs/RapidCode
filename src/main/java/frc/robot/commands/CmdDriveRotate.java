@@ -1,20 +1,25 @@
 package frc.robot.commands;
 
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogCommand;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.drive.Drive;
 
 public class CmdDriveRotate extends SwartdogCommand
 {
-    private Drive _drive;
+    private Drive    _drive;
+    private RobotLog _log;
 
-    private double _heading;
-    private double _maxRotateSpeed;
+    private double   _heading;
+    private double   _maxRotateSpeed;
 
-    private boolean _absolute;
+    private boolean  _absolute;
 
-    public CmdDriveRotate(Drive drive, double heading, double maxRotateSpeed, boolean absolute)
+    public CmdDriveRotate(SubsystemContainer subsystemContainer, double heading, double maxRotateSpeed, boolean absolute)
     {
-        _drive          = drive;
+        _drive          = subsystemContainer.getDrive();
+        _log            = subsystemContainer.getRobotLog();
+
         _heading        = heading;
         _maxRotateSpeed = maxRotateSpeed;
         _absolute       = absolute;
@@ -31,6 +36,8 @@ public class CmdDriveRotate extends SwartdogCommand
         }
         
         _drive.rotateInit(heading, _maxRotateSpeed);
+        
+        _log.log(String.format("Starting Drive Rotate; Target Heading: %6.2f, Current Heading: %6.2f, Max Speed: %5.2f", heading, _drive.getHeading(), _maxRotateSpeed));
     }
 
     @Override
@@ -43,6 +50,8 @@ public class CmdDriveRotate extends SwartdogCommand
     public void end(boolean interrupted)
     {
         _drive.drive(0, 0, 0);
+        
+        _log.log(String.format("Rotate Complete, Final Heading: %6.2f", _drive.getHeading()));
     }
 
     @Override

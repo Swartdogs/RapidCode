@@ -1,5 +1,8 @@
 package frc.robot.groups;
 
+import java.util.function.DoubleSupplier;
+
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 import frc.robot.commands.CmdHangerSetWinchPosition;
 import frc.robot.commands.CmdHangerWinchDownUntilReleased;
@@ -9,15 +12,15 @@ public class GrpHangerSetWinchPosition extends SwartdogSequentialCommandGroup
 {
     private Hanger _hanger;
 
-    public GrpHangerSetWinchPosition(Hanger hanger, double position, double winchSpeed)
+    public GrpHangerSetWinchPosition(SubsystemContainer subsystemContainer, double position, DoubleSupplier winchSpeed)
     {
         super
         (
-            new CmdHangerWinchDownUntilReleased(hanger),
-            new CmdHangerSetWinchPosition(hanger, position, winchSpeed)
+            new CmdHangerWinchDownUntilReleased(subsystemContainer),
+            new CmdHangerSetWinchPosition(subsystemContainer, position, winchSpeed)
         );
 
-        _hanger = hanger;
+        _hanger = subsystemContainer.getHanger();
     }
 
     @Override

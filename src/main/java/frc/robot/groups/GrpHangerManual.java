@@ -2,6 +2,7 @@ package frc.robot.groups;
 
 import java.util.function.DoubleSupplier;
 
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 import frc.robot.commands.CmdHangerManual;
 import frc.robot.commands.CmdHangerWinchDownUntilReleased;
@@ -11,15 +12,15 @@ public class GrpHangerManual extends SwartdogSequentialCommandGroup
 {
     private Hanger _hanger;
 
-    public GrpHangerManual(Hanger hanger, DoubleSupplier command)
+    public GrpHangerManual(SubsystemContainer subsystemContainer, DoubleSupplier command)
     {
         super
         (
-            new CmdHangerWinchDownUntilReleased(hanger),
-            new CmdHangerManual(hanger, command)
+            new CmdHangerWinchDownUntilReleased(subsystemContainer),
+            new CmdHangerManual(subsystemContainer, command)
         );
 
-        _hanger = hanger;
+        _hanger = subsystemContainer.getHanger();
     }
 
     @Override

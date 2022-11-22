@@ -1,28 +1,34 @@
 package frc.robot.commands;
 
-import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.Ballpath;
+import frc.robot.subsystems.Dashboard;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.Shooter;
 
 public class CmdBallpathEjectHigh extends SwartdogCommand
 {
-    private Ballpath _ballpath;
-    private Shooter  _shooter;
+    private Ballpath  _ballpath;
+    private Shooter   _shooter;
+    private Dashboard _dashboard;
+    private RobotLog  _log;
 
-    private boolean  _ejected;
-    private boolean  _loading;
+    private boolean   _ejected;
+    private boolean   _loading;
 
-    public CmdBallpathEjectHigh(Ballpath ballpath, Shooter shooter)
+    public CmdBallpathEjectHigh(SubsystemContainer subsystemContainer)
     {
-        _ballpath = ballpath;
-        _shooter  = shooter;
+        _ballpath  = subsystemContainer.getBallpath();
+        _shooter   = subsystemContainer.getShooter();
+        _dashboard = subsystemContainer.getDashboard();
+        _log       = subsystemContainer.getRobotLog();
 
-        _ejected = false;
-        _loading = false;
+        _ejected   = false;
+        _loading   = false;
     }
 
     @Override
@@ -34,8 +40,8 @@ public class CmdBallpathEjectHigh extends SwartdogCommand
         if (_ballpath.getCargoCount() > 0)
         {
             _ballpath.setUpperTrackTo(State.On);
-            _shooter.setShooterMotorSpeed(Constants.Shooter.EJECT_SPEED);
-            _shooter.setHoodPosition(Constants.Shooter.EJECT_HOOD_POSITION);
+            _shooter.setShooterMotorSpeed(_dashboard.getShooterEjectSpeed());
+            _shooter.setHoodPosition(_dashboard.getShooterEjectHoodPosition());
         }
     }
 
@@ -72,6 +78,8 @@ public class CmdBallpathEjectHigh extends SwartdogCommand
         _ballpath.setLowerTrackTo(State.Off);
         _shooter.setShooterMotorSpeed(0);
         _shooter.setHoodPosition(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
+
+        _log.log("Ejected Cargo (high), Current Count: " + _ballpath.getCargoCount());
     }
 
     @Override

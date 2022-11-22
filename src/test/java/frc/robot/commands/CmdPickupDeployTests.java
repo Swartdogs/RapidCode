@@ -7,7 +7,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.Enumerations.ExtendState;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockPickup;
 
@@ -22,7 +24,7 @@ public class CmdPickupDeployTests
     {
         _pickup   = new MockPickup();
         _ballpath = new MockBallpath();
-        _command  = new CmdPickupDeploy(_pickup, _ballpath);
+        _command  = new CmdPickupDeploy(new SubsystemContainer(null, _ballpath, null, null, _pickup, null, null, null, new RobotLog("")));
     }
 
     @Test

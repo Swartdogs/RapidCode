@@ -12,6 +12,8 @@ public abstract class Pickup extends SwartdogSubsystem
     protected Motor     _pickupMotor;
     protected Solenoid  _deploySolenoid;
 
+    private double      _pickupSpeed = Constants.Pickup.PICKUP_SPEED;
+
     private State       _motorState = State.Off;
 
     public void deploy()
@@ -31,7 +33,7 @@ public abstract class Pickup extends SwartdogSubsystem
 
     public void startMotor()
     {
-        _pickupMotor.set(Constants.Pickup.PICKUP_SPEED);
+        _pickupMotor.set(_pickupSpeed);
         _motorState = State.On;
     }
 
@@ -43,7 +45,7 @@ public abstract class Pickup extends SwartdogSubsystem
 
     public void reverseMotor()
     {
-        _pickupMotor.set(-Constants.Pickup.PICKUP_SPEED);
+        _pickupMotor.set(-_pickupSpeed);
         _motorState = State.Reverse;
     }
 
@@ -67,5 +69,10 @@ public abstract class Pickup extends SwartdogSubsystem
         }
 
         return state;
+    }
+
+    public void setPickupSpeed(double speed)
+    {
+        _pickupSpeed = speed;
     }
 }

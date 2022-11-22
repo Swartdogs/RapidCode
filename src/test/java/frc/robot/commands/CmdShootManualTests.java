@@ -12,8 +12,10 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.hardware.MockBallpath;
 import frc.robot.subsystems.hardware.MockShooter;
 import frc.robot.subsystems.hardware.MockPickup;
@@ -53,7 +55,7 @@ public class CmdShootManualTests {
         _ballpath   = new MockBallpath();
         _pickup     = new MockPickup();
         _compressor = new MockSwitch(State.On);
-        _command    = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.NearLaunchpad, TargetPosition.UpperHub);
+        _command    = new CmdShootManual(new SubsystemContainer(null, _ballpath, null, null, _pickup, _shooter, null, _compressor, new RobotLog("")), RobotPosition.NearLaunchpad, TargetPosition.UpperHub);
     }
 
     @ParameterizedTest

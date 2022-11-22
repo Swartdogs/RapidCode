@@ -8,7 +8,7 @@ import frc.robot.abstraction.SwartdogSubsystem;
 
 public abstract class Shooter extends SwartdogSubsystem
 {
-    public Motor          _shooterMotor;
+    protected Motor          _shooterMotor;
     protected Motor          _hoodMotor;
 
     protected PositionSensor _hoodSensor;
@@ -17,10 +17,31 @@ public abstract class Shooter extends SwartdogSubsystem
 
     private   double         _hoodSetpoint;
 
+    private   double         _shooterRPMThreshold = Constants.Shooter.SHOOTER_RPM_THRESHOLD;
+    private   double         _maxHoodPosition     = Constants.Shooter.HOOD_MAX_POSITION;
+    private   double         _minHoodPosition     = Constants.Shooter.HOOD_MIN_POSITION;
+
     @Override
     public void periodic()
     {
         _hoodMotor.set(_hoodPID.calculate(getHoodPosition()));      
+    }
+
+    public void setRPMThreshold(double newThreshold)
+    {
+        _shooterRPMThreshold = newThreshold;
+    }
+
+    public void setHoodMaxPosition(double newMax)
+    {
+        _maxHoodPosition = newMax;
+        _hoodPID.setInputRange(_minHoodPosition, _maxHoodPosition);
+    }
+
+    public void setHoodMinPosition(double newMin)
+    {
+        _minHoodPosition = newMin;
+        _hoodPID.setInputRange(_minHoodPosition, _maxHoodPosition);
     }
 
     public void setShooterMotorSpeed(double speed)
@@ -43,8 +64,8 @@ public abstract class Shooter extends SwartdogSubsystem
         double actual  = _shooterMotor.getVelocitySensor().get();
         double target  = _shooterMotor.get();
 
-        return (actual >= (1 - Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) && 
-               (actual <= (1 + Constants.Shooter.SHOOTER_RPM_THRESHOLD) * target) &&
+        return (actual >= (1 - _shooterRPMThreshold) * target) && 
+               (actual <= (1 + _shooterRPMThreshold) * target) &&
                (target > 0)                                                       &&
                (_hoodPID.atSetpoint());
     }

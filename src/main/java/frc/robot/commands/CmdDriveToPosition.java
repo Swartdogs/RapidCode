@@ -1,36 +1,50 @@
 package frc.robot.commands;
 
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogCommand;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.Vector;
 
 public class CmdDriveToPosition extends SwartdogCommand 
 {
-    private Drive   _drive;
+    private Drive    _drive;
+    private RobotLog _log;
     
-    private Vector  _finalTranslation;
-    private double  _finalHeading;
+    private Vector   _finalTranslation;
+    private double   _finalHeading;
 
-    private double _maxRotateSpeed;
-    private double _maxDriveSpeed;
-    private double _minDriveSpeed;
+    private double  _maxRotateSpeed;
+    private double  _maxDriveSpeed;
+    private double  _minDriveSpeed;
 
-    private boolean _absolute;
+    private double  _distanceThreshold;
+    private double  _maxCloseDriveSpeed;
 
-    public CmdDriveToPosition(Drive drive, Vector finalPosition, double finalRotation, double maxRotateSpeed, double maxDriveSpeed, double minDriveSpeed, boolean absolute)
+    private boolean  _absolute;
+
+    public CmdDriveToPosition(SubsystemContainer subsystemContainer, Vector finalPosition, double finalRotation, double maxRotateSpeed, double distanceThreshold, double maxDriveSpeed, double maxCloseDriveSpeed, double minDriveSpeed, boolean absolute)
     {
-        _drive       = drive;
+        _drive              = subsystemContainer.getDrive();
+        _log                = subsystemContainer.getRobotLog();
         
-        _finalTranslation = finalPosition;
-        _finalHeading = finalRotation;
+        _finalTranslation   = finalPosition;
+        _finalHeading       = finalRotation;
 
-        _maxRotateSpeed = maxRotateSpeed;
-        _maxDriveSpeed = maxDriveSpeed;
-        _minDriveSpeed = minDriveSpeed;
+        _maxRotateSpeed     = maxRotateSpeed;
+        _distanceThreshold  = distanceThreshold;
+        _maxDriveSpeed      = maxDriveSpeed;
+        _maxCloseDriveSpeed = maxCloseDriveSpeed;
+        _minDriveSpeed      = minDriveSpeed;
 
-        _absolute = absolute;
+        _absolute           = absolute;
 
         addRequirements(_drive);
+    }
+
+    public CmdDriveToPosition(SubsystemContainer subsystemContainer, Vector finalPosition, double finalRotation, double maxRotateSpeed, double maxDriveSpeed, double minDriveSpeed, boolean absolute)
+    {
+        this(subsystemContainer, finalPosition, finalRotation, maxRotateSpeed, 0, maxDriveSpeed, maxDriveSpeed, minDriveSpeed, absolute);
     }
 
     @Override
@@ -44,8 +58,10 @@ public class CmdDriveToPosition extends SwartdogCommand
             _finalHeading += _drive.getHeading();
         }
         
-        _drive.translateInit(translation, _maxDriveSpeed, _minDriveSpeed, false);
+        _drive.translateInit(translation, _distanceThreshold, _maxDriveSpeed, _maxCloseDriveSpeed, _minDriveSpeed, false);
         _drive.rotateInit(_finalHeading, _maxRotateSpeed);
+
+        _log.log(String.format("Starting Drive to Position; Target Position: %s, Current Position: %s, Target Rotation: %6.2f, Current Rotation: %6.2f", translation.toString(), _drive.getOdometer().toString(), _finalHeading, _drive.getHeading()));
     }
 
     @Override
@@ -61,6 +77,8 @@ public class CmdDriveToPosition extends SwartdogCommand
     public void end(boolean interrupted)
     {
         _drive.drive(0, 0, 0);
+
+        _log.log(String.format("Drive to Position complete; Current Position: %s, Current Rotation: %6.2f", _drive.getOdometer().toString(), _drive.getHeading()));
     }
 
     @Override

@@ -1,22 +1,21 @@
 package frc.robot.groups;
 
-import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Hanger.ArmPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.SwartdogSequentialCommandGroup;
-import frc.robot.subsystems.Hanger;
 
 public class GrpHangerStow extends SwartdogSequentialCommandGroup
 {
-    public GrpHangerStow(Hanger hanger)
+    public GrpHangerStow(SubsystemContainer subsystemContainer)
     {
         super
         (
-            new GrpHangerSetWinchPosition(hanger, ArmPosition.Stow.getPosition().getR(), Constants.Hanger.WINCH_SPEED),
+            new GrpHangerSetWinchPosition(subsystemContainer, ArmPosition.Stow.getPosition().getR(), subsystemContainer.getDashboard()::getHangerWinchSpeed),
             SwartdogCommand.run(() -> 
             {
-                hanger.useArmPID(true);
-                hanger.setArmPosition(ArmPosition.Stow.getPosition().getTheta());
+                subsystemContainer.getHanger().useArmPID(true);
+                subsystemContainer.getHanger().setArmPosition(ArmPosition.Stow.getPosition().getTheta());
             })
         );
     }

@@ -10,6 +10,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.hardware.MockDrive;
 
 public class CmdDriveWithJoystickTests
@@ -39,7 +41,7 @@ public class CmdDriveWithJoystickTests
     @MethodSource("testCases")
     public void testDriveWithJoy(double drive, double strafe, double rotate, double speed, double flModule, double frModule, double blModule, double brModule)
     {
-        _command = new CmdDriveWithJoystick(_drive, () -> drive, () -> strafe, () -> rotate, () -> true);
+        _command = new CmdDriveWithJoystick(new SubsystemContainer(_drive, null, null, null, null, null, null, null, new RobotLog("")), () -> drive, () -> strafe, () -> rotate, () -> true);
         _command.execute();
 
         assertEquals(speed, Math.abs(_drive.getSwerveModule(0).getDriveMotor().get()), Constants.Testing.EPSILON);

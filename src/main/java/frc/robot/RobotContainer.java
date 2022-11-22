@@ -17,56 +17,66 @@ import frc.robot.subsystems.hardware.*;
 
 import static frc.robot.Constants.Assignments.*;
 
+import java.util.Calendar;
+
 public class RobotContainer extends SubsystemBase
 {
     private static final boolean TEST_MODE = false;
 
-    private UsbCamera      _driverCamera;
-    private VideoSink      _server;
+    private UsbCamera          _driverCamera;
+    private VideoSink          _server;
 
-    private Joystick       _driveJoystick;
-    private Joystick       _coDriveJoystick;
-    private Joystick       _buttonBox;
+    private Joystick           _driveJoystick;
+    private Joystick           _coDriveJoystick;
+    private Joystick           _buttonBox;
 
-    private Drive          _drive;
-    private Ballpath       _ballpath;
-    private Hanger         _hanger;
-    private Pickup         _pickup;
-    private Shooter        _shooter;
-    private SettableSwitch _compressor;
-    private Dashboard      _dashboard;
+    private Drive              _drive;
+    private Ballpath           _ballpath;
+    private Hanger             _hanger;
+    private Pickup             _pickup;
+    private Shooter            _shooter;
+    private Vision             _vision;
+    private SettableSwitch     _compressor;
+    private Dashboard          _dashboard;
+    private RobotLog           _robotLog;
+    private SubsystemContainer _subsystemContainer;
 
-    private State          _lastConfirmState    = State.Off;
-    private State          _currentConfirmState = State.Off;
+    private State              _lastConfirmState    = State.Off;
+    private State              _currentConfirmState = State.Off;
 
     public RobotContainer()
     {
-        _driveJoystick   = Joystick.joystick(DRIVE_JOYSTICK);
-        _coDriveJoystick = Joystick.joystick(CO_DRIVE_JOYSTICK);
-        _buttonBox       = Joystick.joystick(BUTTON_BOX);
+        _driveJoystick      = Joystick.joystick(DRIVE_JOYSTICK);
+        _coDriveJoystick    = Joystick.joystick(CO_DRIVE_JOYSTICK);
+        _buttonBox          = Joystick.joystick(BUTTON_BOX);
 
-        _drive           = new HardwareDrive();
-        _ballpath        = new HardwareBallpath();
-        _hanger          = new HardwareHanger();
-        _pickup          = new HardwarePickup();
-        _shooter         = new HardwareShooter();
-        _compressor      = SettableSwitch.compressor(PNEUMATICS_MODULE_CAN_ID, MODULE_TYPE);
-        _dashboard       = new Dashboard(_drive, _ballpath, _hanger, _pickup, _shooter);
+        _drive              = new HardwareDrive();
+        _ballpath           = new HardwareBallpath();
+        _hanger             = new HardwareHanger();
+        _pickup             = new HardwarePickup();
+        _shooter            = new HardwareShooter();
+        _vision             = new HardwareVision();
+        _compressor         = SettableSwitch.compressor(PNEUMATICS_MODULE_CAN_ID, MODULE_TYPE);
+        _dashboard          = new Dashboard(_drive, _ballpath, _hanger, _pickup, _shooter, _vision);
+        _robotLog           = new RobotLog(String.format("/home/lvuser/Log_%d.txt", Calendar.getInstance().getTime().getTime()));
+        _subsystemContainer = new SubsystemContainer(_drive, _ballpath, _dashboard, _hanger, _pickup, _shooter, _vision, _compressor, _robotLog);
 
-        _driverCamera    = CameraServer.startAutomaticCapture(0);
-        _server          = CameraServer.getServer();
+        _driverCamera       = CameraServer.startAutomaticCapture(0);
+        _server             = CameraServer.getServer();
 
         configureControls();
         configureDefaultCommands();
         configureAutonomous();
 
+        configureCommonControls();
+
         if (TEST_MODE)
         {
-            configureTestCode();
+            configureTestControls();
         }
         else
         {
-            configureButtonBindings();
+            configureNormalControls();
         }
     }
 
@@ -78,19 +88,23 @@ public class RobotContainer extends SubsystemBase
 
         if(_ballpath.hasPickupSensorTransitionedTo(State.On))
         {
-            CommandScheduler.getInstance().schedule(false, new CmdBallpathLoad(_ballpath, _pickup));
+            CommandScheduler.getInstance().schedule(false, new CmdBallpathLoad(_subsystemContainer));
         }
     }
 
     private void configureControls()
     {
-        _driveJoystick.setXDeadband(0.05);
-        _driveJoystick.setYDeadband(0.05);
-        _driveJoystick.setZDeadband(0.15);
+        _driveJoystick.getXAxis().setDeadband(0.05);
+        _driveJoystick.getYAxis().setDeadband(0.05);
+        _driveJoystick.getZAxis().setDeadband(0.15);
 
-        _driveJoystick.setSquareX(true);
-        _driveJoystick.setSquareY(true);
-        _driveJoystick.setSquareZ(false);
+        _driveJoystick.getXAxis().setMotionThreshold(0.058);
+        _driveJoystick.getYAxis().setMotionThreshold(0.058);
+        _driveJoystick.getZAxis().setMotionThreshold(0.058);
+
+        _driveJoystick.getXAxis().setExponent(4);
+        _driveJoystick.getYAxis().setExponent(4);
+        _driveJoystick.getZAxis().setExponent(16);
     }
 
     private void configureDefaultCommands()
@@ -99,65 +113,13 @@ public class RobotContainer extends SubsystemBase
         (
             new CmdDriveWithJoystick
             (
-                _drive,
+                _subsystemContainer,
                 () -> _driveJoystick.getY(),
                 () -> _driveJoystick.getX(),
-                () -> Math.pow(_driveJoystick.getZ(), 3) * 0.85,
+                () -> _driveJoystick.getZ(),
                 () -> _driveJoystick.getButton(1).get() != State.On
             )
         );
-    }
-
-    private void configureButtonBindings()
-    {
-
-        CmdShootManual       shootNearLaunchpad          = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.NearLaunchpad, TargetPosition.UpperHub);
-        CmdShootManual       shootFender                 = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.Fender, TargetPosition.UpperHub);
-        CmdShootManual       shootFenderLowGoal          = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.Fender, TargetPosition.LowerHub);
-        CmdShootManual       shootTarmac                 = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.Tarmac, TargetPosition.UpperHub);
-        CmdShootManual       shootTarmacLowGoal          = new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.Tarmac, TargetPosition.LowerHub);
-
-        CmdBallpathEjectHigh ballpathEjectHigh           = new CmdBallpathEjectHigh(_ballpath, _shooter);
-        CmdBallpathEjectLow  ballpathEjectLow            = new CmdBallpathEjectLow(_ballpath, _pickup);
-
-        // Driver joystick button bindings
-        _driveJoystick.getButton( 2).cancelWhenActivated(shootNearLaunchpad);                                                           // Cancel shooting
-        _driveJoystick.getButton( 2).cancelWhenActivated(shootFender);                                                                  // Cancel shooting
-        _driveJoystick.getButton( 2).cancelWhenActivated(shootFenderLowGoal);                                                           // Cancel shooting
-        _driveJoystick.getButton( 2).cancelWhenActivated(shootTarmac);                                                  // Cancel shooting
-        _driveJoystick.getButton( 2).cancelWhenActivated(shootTarmacLowGoal); 
-        
-        _driveJoystick.getButton( 7).whenActivated(shootFenderLowGoal);                                                                 // Shoot using odometry-based aiming
-        _driveJoystick.getButton( 8).whenActivated(shootFender);                                                                        // Shoot without aiming from the Fender into the high goal
-        _driveJoystick.getButton( 9).whenActivated(shootTarmacLowGoal);                                                        // Shoot from the edge of the tarmac
-        _driveJoystick.getButton(10).whenActivated(shootTarmac);
-        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                                            // Reset the gyroscope and odometer
-        {
-            _drive.setGyro(Constants.Drive.FIELD_ANGLE);
-            _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION.clone());
-        }));
-        _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);                                                                 // Shoot without aiming from the Launchpad
-
-        // Co-Driver joystick button bindings
-        _coDriveJoystick.getButton( 1).whileActive(new GrpHangerManual(_hanger, () -> _coDriveJoystick.getY()));
-        _coDriveJoystick.getButton( 2).whenActivated(new GrpHangerStow(_hanger));
-        _coDriveJoystick.getButton( 3).whenActivated(new CmdPickupStow(_pickup));                                        // Stow the pickup
-        _coDriveJoystick.getButton( 4).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1), true));   // Manually decrement cargo count
-        _coDriveJoystick.getButton( 5).whenActivated(new CmdPickupDeploy(_pickup, _ballpath));                           // Deploy the pickup
-        _coDriveJoystick.getButton( 6).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1), true));    // Manually increment cargo count
-        _coDriveJoystick.getButton( 7).whenActivated(ballpathEjectLow);
-        _coDriveJoystick.getButton( 8).whenActivated(ballpathEjectHigh);
-        _coDriveJoystick.getButton( 9).whenActivated(ballpathEjectLow); 
-        _coDriveJoystick.getButton(10).whenActivated(ballpathEjectHigh);                      
-        _coDriveJoystick.getButton(11).whenActivated(ballpathEjectLow);
-        _coDriveJoystick.getButton(12).whenActivated(ballpathEjectHigh);
-
-        //Button Box Bindings
-        _buttonBox.getButton(1).whileActive(new CmdHangerModifyArmPosition(_hanger, -Constants.Hanger.ARM_ADJUST_ANGLE));
-        _buttonBox.getButton(2).whileActive(new CmdHangerModifyArmPosition(_hanger, Constants.Hanger.ARM_ADJUST_ANGLE));
-        _buttonBox.getButton(3).whenActivated(new GrpHangerSetPosition(_hanger, _shooter, _ballpath, _pickup, _compressor, ArmPosition.MidRung, Constants.Hanger.PREP_SPEED));
-        _buttonBox.getButton(4).whenActivated(new GrpHangerSetPosition(_hanger, _shooter, _ballpath, _pickup, _compressor, ArmPosition.LowRung, Constants.Hanger.PREP_SPEED));
-        _buttonBox.getButton(5).whenActivated(new GrpHangerHang(_hanger, _pickup, _shooter, _ballpath, _compressor, () -> _lastConfirmState != State.On && _currentConfirmState == State.On), false);
     }
 
     private void configureAutonomous()
@@ -167,44 +129,98 @@ public class RobotContainer extends SubsystemBase
         _drive.setGyro(Constants.Drive.FIELD_ANGLE);
 
         _dashboard.addDefaultAutonomous("Nothing", null);
-        _dashboard.addAutonomous("Shoot low only", new CmdShootManual(_shooter, _ballpath, _pickup, _compressor, RobotPosition.Fender, TargetPosition.LowerHub));
-        _dashboard.addAutonomous("Position 1: 2 Ball; Lower Hub", new GrpAuto2BallStart1(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 1: 2 Ball; Upper Hub", new GrpAuto2BallHighStart1(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 1: 3 Ball; Lower Hub", new GrpAuto3BallStart1(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 1: 3 Ball; Upper Hub", new GrpAuto3BallHighStart1(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 1: 4 Ball; Upper Hub", new GrpAuto4BallStart1(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 2: 2 Ball; Lower Hub", new GrpAuto2BallStart2(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 2: 2 Ball; Upper Hub", new GrpAuto2BallHighStart2(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 5: 2 Ball; Lower Hub", new GrpAuto2BallStart5(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 5: 2 Ball; Upper Hub", new GrpAuto2BallHighStart5(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 6: 2 Ball; Lower Hub", new GrpAuto2BallStart6(_drive, _shooter, _ballpath, _pickup, _compressor));
-        _dashboard.addAutonomous("Position 6: 2 Ball; Upper Hub", new GrpAuto2BallHighStart6(_drive, _shooter, _ballpath, _pickup, _compressor));
+        _dashboard.addAutonomous("Shoot low only", new CmdShootManual(_subsystemContainer, RobotPosition.Fender, TargetPosition.LowerHub));
+        _dashboard.addAutonomous("Any Fender: Upper Hub; Taxi", new GrpAuto1BallHighTaxi(_subsystemContainer));
+        _dashboard.addAutonomous("Any Fender: Taxi; Upper Hub", new GrpAuto1BallHighTaxiFirst(_subsystemContainer));
+        _dashboard.addAutonomous("Position 1: 2 Ball; Lower Hub", new GrpAuto2BallStart1(_subsystemContainer));
+        _dashboard.addAutonomous("Position 1: 2 Ball; Upper Hub", new GrpAuto2BallHighStart1(_subsystemContainer));
+        _dashboard.addAutonomous("Position 1: 3 Ball; Lower Hub", new GrpAuto3BallStart1(_subsystemContainer));
+        _dashboard.addAutonomous("Position 1: 3 Ball; Upper Hub", new GrpAuto3BallHighStart1(_subsystemContainer));
+        _dashboard.addAutonomous("Position 1: 4 Ball; Upper Hub", new GrpAuto4BallStart1(_subsystemContainer));
+        _dashboard.addAutonomous("Position 2: 2 Ball; Lower Hub", new GrpAuto2BallStart2(_subsystemContainer));
+        _dashboard.addAutonomous("Position 2: 2 Ball; Upper Hub", new GrpAuto2BallHighStart2(_subsystemContainer));
+        _dashboard.addAutonomous("Position 5: 2 Ball; Lower Hub", new GrpAuto2BallStart5(_subsystemContainer));
+        _dashboard.addAutonomous("Position 5: 2 Ball; Upper Hub", new GrpAuto2BallHighStart5(_subsystemContainer));
+        _dashboard.addAutonomous("Position 6: 2 Ball; Lower Hub", new GrpAuto2BallStart6(_subsystemContainer));
+        _dashboard.addAutonomous("Position 6: 2 Ball; Upper Hub", new GrpAuto2BallHighStart6(_subsystemContainer));
     }
 
-    private void configureTestCode()
+    private void configureCommonControls()
     {
-        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                                            // Reset the gyroscope and odometer
+        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                          // Reset the odometer/gyro
         {
             _drive.setGyro(Constants.Drive.FIELD_ANGLE);
             _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION.clone());
         }));
 
+        _coDriveJoystick.getButton(3).whenActivated(new CmdPickupStow(_subsystemContainer));                          // Stow the pickup
+        _coDriveJoystick.getButton(4).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1), true)); // Manually decrement cargo count
+        _coDriveJoystick.getButton(5).whenActivated(new CmdPickupDeploy(_subsystemContainer));                        // Deploy the pickup
+        _coDriveJoystick.getButton(6).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1), true));  // Manually increment cargo count
+    }
+
+    private void configureNormalControls()
+    {
+        CmdShootManual       shootNearLaunchpad          = new CmdShootManual(_subsystemContainer, RobotPosition.NearLaunchpad, TargetPosition.UpperHub);
+        CmdShootManual       shootFender                 = new CmdShootManual(_subsystemContainer, RobotPosition.Fender,        TargetPosition.UpperHub);
+        CmdShootManual       shootFenderLowGoal          = new CmdShootManual(_subsystemContainer, RobotPosition.Fender,        TargetPosition.LowerHub);
+        CmdShootManual       shootTarmac                 = new CmdShootManual(_subsystemContainer, RobotPosition.Tarmac,        TargetPosition.UpperHub);
+        CmdShootManual       shootTarmacLowGoal          = new CmdShootManual(_subsystemContainer, RobotPosition.Tarmac,        TargetPosition.LowerHub);
+        CmdShootWithVision   shootWithVision             = new CmdShootWithVision(_subsystemContainer);
+
+        CmdBallpathEjectHigh ballpathEjectHigh           = new CmdBallpathEjectHigh(_subsystemContainer);
+        CmdBallpathEjectLow  ballpathEjectLow            = new CmdBallpathEjectLow(_subsystemContainer);
+
+        // Driver joystick button bindings
+        /* Button 1 defined in default commands */
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootNearLaunchpad); // Cancel shooting
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootFender);        // Cancel shooting
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootFenderLowGoal); // Cancel shooting
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootTarmac);        // Cancel shooting
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootTarmacLowGoal); // Cancel shooting
+        _driveJoystick.getButton( 2).cancelWhenActivated(shootWithVision);    // Cancel shooting
+        
+        _driveJoystick.getButton( 5).whenActivated(shootWithVision);          // Shoot with vision, maybe
+
+        _driveJoystick.getButton( 7).whenActivated(shootFenderLowGoal);       // Shoot from the fender into the low goal
+        _driveJoystick.getButton( 8).whenActivated(shootFender);              // Shoot from the fender into the high goal
+        _driveJoystick.getButton( 9).whenActivated(shootTarmacLowGoal);       // Shoot from the edge of the tarmac into te low goal
+        _driveJoystick.getButton(10).whenActivated(shootTarmac);              // Shoot from the edge of the tarmac into the high goal
+        /* Button 11 defined in common controls */
+        _driveJoystick.getButton(12).whenActivated(shootNearLaunchpad);       // Shoot from the near launchapd into the high goal
+
+        // Co-Driver joystick button bindings
+        _coDriveJoystick.getButton( 1).whileActive(new GrpHangerManual(_subsystemContainer, () -> _coDriveJoystick.getY()));
+        _coDriveJoystick.getButton( 2).whenActivated(new GrpHangerStow(_subsystemContainer));
+        /* Buttons 3-6 defined in common controls*/
+        _coDriveJoystick.getButton( 7).whenActivated(ballpathEjectLow);
+        _coDriveJoystick.getButton( 8).whenActivated(ballpathEjectHigh);
+        _coDriveJoystick.getButton( 9).whenActivated(ballpathEjectLow); 
+        _coDriveJoystick.getButton(10).whenActivated(ballpathEjectHigh);                      
+        _coDriveJoystick.getButton(11).whenActivated(ballpathEjectLow);
+        _coDriveJoystick.getButton(12).whenActivated(ballpathEjectHigh);
+
+        //Button Box Bindings
+        _buttonBox.getButton(1).whileActive(new CmdHangerModifyArmPosition(_subsystemContainer, () -> -_dashboard.getHangerArmAdjustAngle()));
+        _buttonBox.getButton(2).whileActive(new CmdHangerModifyArmPosition(_subsystemContainer, _dashboard::getHangerArmAdjustAngle));
+        _buttonBox.getButton(3).whenActivated(new GrpHangerSetPosition(_subsystemContainer, ArmPosition.MidRung, _dashboard::getHangerPrepSpeed));
+        _buttonBox.getButton(4).whenActivated(new GrpHangerSetPosition(_subsystemContainer, ArmPosition.LowRung, _dashboard::getHangerPrepSpeed));
+        _buttonBox.getButton(5).whenActivated(new GrpHangerHang(_subsystemContainer, () -> _lastConfirmState != State.On && _currentConfirmState == State.On), false);
+        /* Button 6 used for hanger confirm */
+    }
+
+    private void configureTestControls()
+    {
         _shooter.setDefaultCommand
         (
             new CmdShooterDefault
             (
-                _shooter,
+                _subsystemContainer,
                 () -> ((_coDriveJoystick.getThrottle() * -1) + 1) / 2
             )
         );
 
-        _coDriveJoystick.getButton(2).whileActive(new CmdRunBallPath(_drive, _ballpath, _pickup, _compressor));
-        _coDriveJoystick.getButton(3).whenActivated(new CmdPickupStow(_pickup));                                        // Stow the pickup
-        _coDriveJoystick.getButton(4).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1), true));   // Manually decrement cargo count
-        _coDriveJoystick.getButton(5).whenActivated(new CmdPickupDeploy(_pickup, _ballpath));                           // Deploy the pickup
-        _coDriveJoystick.getButton(6).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1), true));    // Manually increment cargo count
-        _coDriveJoystick.getButton(7).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 10)));
-        _coDriveJoystick.getButton(9).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 10)));
+        _coDriveJoystick.getButton(2).whileActive(new CmdRunBallPath(_subsystemContainer));
 
         _buttonBox.getButton(3).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 50)));
         _buttonBox.getButton(4).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 50)));
@@ -219,23 +235,32 @@ public class RobotContainer extends SubsystemBase
 
     public void setGameMode(GameMode gameMode)
     {
+        _robotLog.setGameMode(gameMode);
+
         switch (gameMode)
         {
             case Init:
                 _shooter.setHoodPosition(RobotPosition.NearLaunchpad.getHoodPosition(TargetPosition.UpperHub));
 
                 _server.setSource(_driverCamera);
-                _dashboard.addCamera(_driverCamera);
                 _hanger.setArmPosition(ArmPosition.Stow.getPosition().getTheta());
                 break;
 
             case Autonomous:
                 _ballpath.setCargoCount(1);
+                _vision.init();
                 break;
+
+            case Teleop:
+                _vision.init();
 
             case Disabled:
                 _pickup.stopMotor();
                 _pickup.stow();
+
+                _robotLog.save();
+                _robotLog.close();
+
                 break;
 
             default:

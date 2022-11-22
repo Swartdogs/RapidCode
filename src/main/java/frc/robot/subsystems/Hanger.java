@@ -123,9 +123,6 @@ public abstract class Hanger extends SwartdogSubsystem
 
         _armPID.setSetpoint(_armTarget + winchAngle, getArmPosition());
 
-        // System.out.println(String.format("Use PID: %b, Arm Target: %6.2f, Winch Angle: %6.2f, Arm Position: %6.2f, Winch Position: %8.4f", _useArmPID, _armTarget, winchAngle, _armSensor.get(), _winchSensor.get()));
-        // System.out.println(_useArmPID);
-
         if (_useArmPID)
         {
             setArmMotorSpeed(runArmPID());

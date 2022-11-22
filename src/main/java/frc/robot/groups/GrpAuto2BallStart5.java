@@ -1,16 +1,16 @@
 package frc.robot.groups;
 
+import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.SwartdogSequentialCommandGroup;
-import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.commands.CmdDriveToPosition;
 import frc.robot.commands.CmdPickupDeploy;
 import frc.robot.commands.CmdPickupStow;
 import frc.robot.commands.CmdShootManual;
 import frc.robot.commands.CmdWait;
-import frc.robot.subsystems.*;
+import frc.robot.commands.CmdWaitAuto;
 import frc.robot.subsystems.drive.*;
 
 public class GrpAuto2BallStart5 extends SwartdogSequentialCommandGroup
@@ -23,23 +23,24 @@ public class GrpAuto2BallStart5 extends SwartdogSequentialCommandGroup
     private static final Vector CARGO_POSITION = new Vector(-88, -139);
     private static final Vector SHOOT_POSITION = new Vector(-20,  -64);
 
-    public GrpAuto2BallStart5(Drive drive, Shooter shooter, Ballpath ballpath, Pickup pickup, SettableSwitch compressor)
+    public GrpAuto2BallStart5(SubsystemContainer subsystemContainer)
     {
 
         super
         (
             SwartdogCommand.run(() -> 
             {
-                drive.resetOdometer(START_POSITION);
-                drive.setGyro(START_ANGLE);
+                subsystemContainer.getDrive().resetOdometer(START_POSITION);
+                subsystemContainer.getDrive().setGyro(START_ANGLE);
             }),
 
-            new CmdPickupDeploy(pickup, ballpath),
-            new CmdDriveToPosition(drive, CARGO_POSITION, CARGO_ANGLE, 0.5, 0.5, 0, true),
+            new CmdWaitAuto(subsystemContainer),
+            new CmdPickupDeploy(subsystemContainer),
+            new CmdDriveToPosition(subsystemContainer, CARGO_POSITION, CARGO_ANGLE, 0.5, 0.5, 0, true),
             new CmdWait(1.5),
-            new CmdPickupStow(pickup),
-            new CmdDriveToPosition(drive, SHOOT_POSITION, SHOOT_ANGLE, 0.5, 0.5, 0, true),
-            new CmdShootManual(shooter, ballpath, pickup, compressor, RobotPosition.Fender, TargetPosition.LowerHub)
+            new CmdPickupStow(subsystemContainer),
+            new CmdDriveToPosition(subsystemContainer, SHOOT_POSITION, SHOOT_ANGLE, 0.5, 0.5, 0, true),
+            new CmdShootManual(subsystemContainer, RobotPosition.Fender, TargetPosition.LowerHub)
         ); 
     }
 }

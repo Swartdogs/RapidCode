@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.abstraction.Switch.SettableSwitch;
@@ -14,12 +15,12 @@ public class CmdRunBallPath extends SwartdogCommand
     private Pickup         _pickup;
     private SettableSwitch _compressor;
 
-    public CmdRunBallPath(Drive drive, Ballpath ballpath, Pickup pickup, SettableSwitch compressor)
+    public CmdRunBallPath(SubsystemContainer subsystemContainer)
     {
-        _drive      = drive;
-        _ballpath   = ballpath;
-        _pickup     = pickup;
-        _compressor = compressor;
+        _drive      = subsystemContainer.getDrive();
+        _ballpath   = subsystemContainer.getBallpath();
+        _pickup     = subsystemContainer.getPickup();
+        _compressor = subsystemContainer.getCompressor();
 
         addRequirements(_drive, _ballpath);
     }

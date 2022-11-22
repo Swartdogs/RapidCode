@@ -1,0 +1,292 @@
+{
+  "tabPane": [
+    {
+      "title": "Settings",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 32.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              9,
+              5
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Drive",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Drive/DriveFLModuleOffset",
+                  "_title": "FL Module Offset"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Drive/DriveFRModuleOffset",
+                  "_title": "FR Module Offset"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Drive/DriveBLModuleOffset",
+                  "_title": "BL Module Offset"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Drive/DriveBRModuleOffset",
+                  "_title": "BR Module Offset"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Dashboard",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 32.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "0,0": {
+            "size": [
+              10,
+              7
+            ],
+            "content": {
+              "_type": "Grid Layout",
+              "_title": "Drive",
+              "Layout/Number of columns": 2,
+              "Layout/Number of rows": 3,
+              "Layout/Label position": "TOP",
+              "_children": {
+                "1,0": {
+                  "_type": "List Layout",
+                  "_title": "FR Module",
+                  "Layout/Label position": "LEFT",
+                  "_children": [
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/FR Distance",
+                      "_title": "Distance"
+                    },
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/FR Rotation",
+                      "_title": "Rotation"
+                    }
+                  ]
+                },
+                "0,0": {
+                  "_type": "List Layout",
+                  "_title": "FL Module",
+                  "Layout/Label position": "LEFT",
+                  "_children": [
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/FL Distance",
+                      "_title": "Distance"
+                    },
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/FL Rotation",
+                      "_title": "Rotation"
+                    }
+                  ]
+                },
+                "1,1": {
+                  "_type": "List Layout",
+                  "_title": "BR Module",
+                  "Layout/Label position": "LEFT",
+                  "_children": [
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/BR Distance",
+                      "_title": "Distance"
+                    },
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/BR Rotation",
+                      "_title": "Rotation"
+                    }
+                  ]
+                },
+                "0,1": {
+                  "_type": "List Layout",
+                  "_title": "BL Module",
+                  "Layout/Label position": "LEFT",
+                  "_children": [
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/BL Distance",
+                      "_title": "Distance"
+                    },
+                    {
+                      "_type": "Text View",
+                      "_source0": "network_table:///Drive/BL Rotation",
+                      "_title": "Rotation"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "22,0": {
+            "size": [
+              7,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Pickup",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Pickup/Deploy State",
+                  "_title": "Deploy State"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Pickup/Motor State",
+                  "_title": "Motor State"
+                }
+              ]
+            }
+          },
+          "29,0": {
+            "size": [
+              7,
+              3
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Ballpath",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Ballpath/Ballpath Lower Track",
+                  "_title": "Lower Track"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Ballpath/Ballpath Upper Track",
+                  "_title": "Upper Track"
+                }
+              ]
+            }
+          },
+          "29,3": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Hanger",
+              "Layout/Label position": "LEFT",
+              "_children": []
+            }
+          },
+          "10,4": {
+            "size": [
+              12,
+              13
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": false,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
+            }
+          },
+          "10,0": {
+            "size": [
+              12,
+              4
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_title": "Autonomous"
+            }
+          },
+          "22,3": {
+            "size": [
+              7,
+              4
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "Shooter",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Shooter/Hood Position",
+                  "_title": "Hood Position"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///Shooter/Hood Target",
+                  "_title": "Hood Target"
+                }
+              ]
+            }
+          },
+          "22,7": {
+            "size": [
+              14,
+              5
+            ],
+            "content": {
+              "_type": "Simple Dial",
+              "_source0": "network_table:///Ballpath/Cargo Count",
+              "_title": "Cargo Count",
+              "Range/Min": 0.0,
+              "Range/Max": 2.0,
+              "Visuals/Show value": true
+            }
+          },
+          "0,7": {
+            "size": [
+              10,
+              4
+            ],
+            "content": {
+              "_type": "Number Bar",
+              "_source0": "network_table:///Drive/Gyro",
+              "_title": "Gyro",
+              "Range/Min": -180.0,
+              "Range/Max": 180.0,
+              "Range/Center": 0.0,
+              "Visuals/Num tick marks": 9,
+              "Visuals/Show text": true
+            }
+          }
+        }
+      }
+    }
+  ],
+  "windowGeometry": {
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1056.0
+  }
+}

@@ -1,5 +1,7 @@
 package frc.robot.subsystems.hardware;
 
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
 import frc.robot.Constants;
@@ -13,7 +15,12 @@ public class HardwareShooter extends Shooter
 {
     public HardwareShooter()
     {
-        _shooterMotor = Motor.compose(Motor.falconFlywheel(LOW_SHOOTER_CAN_ID, Constants.Shooter.FLYWHEEL_SPEED), Motor.falconFlywheel(HIGH_SHOOTER_CAN_ID, Constants.Shooter.FLYWHEEL_SPEED));
+        TalonFX highShooter = new TalonFX(HIGH_SHOOTER_CAN_ID);
+        TalonFX lowShooter  = new TalonFX(LOW_SHOOTER_CAN_ID);
+
+        lowShooter.follow(highShooter);
+
+        _shooterMotor = Motor.fromFalconFlywheel(highShooter, 24.0 / 26.0);
         _hoodMotor    = Motor.invert(Motor.talonSRX(SHOOTER_HOOD_CAN_ID));
         
         _hoodSensor   = PositionSensor.analogInput(HOOD_POSITION_AIO_PORT);

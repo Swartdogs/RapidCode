@@ -24,6 +24,9 @@ public abstract class Ballpath extends SwartdogSubsystem
     private State _lowerTrackState           = State.Off;
     private State _upperTrackState           = State.Off;
 
+    private double _loadSpeed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
+    private double _shootSpeed = Constants.Ballpath.BALLPATH_SHOOT_SPEED;
+
     private int _cargoCount = 0;
 
     @Override
@@ -45,11 +48,11 @@ public abstract class Ballpath extends SwartdogSubsystem
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
+                speed = _loadSpeed;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
+                speed = -_loadSpeed;
                 break;
 
             default:
@@ -68,11 +71,11 @@ public abstract class Ballpath extends SwartdogSubsystem
         switch (state)
         {
             case On:
-                speed = Constants.Ballpath.BALLPATH_LOAD_SPEED;
+                speed = _loadSpeed;
                 break;
             
             case Reverse:
-                speed = -Constants.Ballpath.BALLPATH_LOAD_SPEED;
+                speed = -_loadSpeed;
                 break;
 
             default:
@@ -86,20 +89,20 @@ public abstract class Ballpath extends SwartdogSubsystem
     {
         if (robotPosition == RobotPosition.Fender && targetPosition == TargetPosition.UpperHub)
         {
-            _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
-            _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+            _lowerTrack.set(_shootSpeed);
+            _upperTrack.set(_shootSpeed);
         }
         else
         { 
-            _lowerTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
-            _upperTrack.set(Constants.Ballpath.BALLPATH_LOAD_SPEED);
+            _lowerTrack.set(_loadSpeed);
+            _upperTrack.set(_loadSpeed);
         }
     }
 
     public void shoot()
     {
-        _lowerTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
-        _upperTrack.set(Constants.Ballpath.BALLPATH_SHOOT_SPEED);
+        _lowerTrack.set(_shootSpeed);
+        _upperTrack.set(_shootSpeed);
     }
 
     public void stop()
@@ -164,5 +167,15 @@ public abstract class Ballpath extends SwartdogSubsystem
     public void modifyCargoCount(int mod)
     {
         setCargoCount(getCargoCount() + mod);
+    }
+
+    public void setLoadSpeed(double speed)
+    {
+        _loadSpeed = speed;
+    }
+
+    public void setShootSpeed(double speed)
+    {
+        _shootSpeed = speed;
     }
 }

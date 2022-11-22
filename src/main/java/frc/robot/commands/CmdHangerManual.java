@@ -3,17 +3,23 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
+import frc.robot.subsystems.RobotLog;
 import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Hanger;
 
 public class CmdHangerManual extends SwartdogCommand
 {
-    private Hanger _hanger;
+    private Hanger         _hanger;
+    private RobotLog       _log;
+
     private DoubleSupplier _command;
 
-    public CmdHangerManual(Hanger hanger, DoubleSupplier command)
+    public CmdHangerManual(SubsystemContainer subsystemContainer, DoubleSupplier command)
     {
-        _hanger = hanger;
+        _hanger  = subsystemContainer.getHanger();
+        _log     = subsystemContainer.getRobotLog();
+
         _command = command;
     }
 
@@ -28,15 +34,6 @@ public class CmdHangerManual extends SwartdogCommand
             speed = 0;   
         }
 
-        // if (speed < 0)
-        // {
-        //     _hanger.useArmPID(false);
-        // }
-        // else
-        // {
-        //     _hanger.useArmPID(true);
-        // }
-
         _hanger.setWinchMotorSpeed(speed);
     }
 
@@ -44,7 +41,8 @@ public class CmdHangerManual extends SwartdogCommand
     public void end(boolean interrupted)
     {
         _hanger.setWinchMotorSpeed(0);
-        // _hanger.useArmPID(true);
+
+        _log.log(String.format("Winched Manually; Final Winch Position: %6.2f", _hanger.getWinchPosition()));
     }
 
     @Override

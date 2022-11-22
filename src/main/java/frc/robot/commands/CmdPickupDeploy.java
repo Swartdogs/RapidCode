@@ -2,18 +2,21 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.Ballpath;
 import frc.robot.Constants;
+import frc.robot.SubsystemContainer;
 import frc.robot.abstraction.SwartdogCommand;
-import frc.robot.subsystems.Pickup;
+import frc.robot.subsystems.*;
 
 public class CmdPickupDeploy extends SwartdogCommand
 {
     private Pickup _pickup;
     private Ballpath _ballpath;
+    private RobotLog _log;
 
-    public CmdPickupDeploy(Pickup pickup, Ballpath ballpath)
+    public CmdPickupDeploy(SubsystemContainer subsystemContainer)
     {
-        _pickup = pickup;
-        _ballpath = ballpath;
+        _pickup   = subsystemContainer.getPickup();
+        _ballpath = subsystemContainer.getBallpath();
+        _log      = subsystemContainer.getRobotLog();
     }
 
     @Override
@@ -23,6 +26,7 @@ public class CmdPickupDeploy extends SwartdogCommand
         {
             _pickup.deploy();
             _pickup.startMotor();
+            _log.log("Deploying Pickup");
         }
     }
 
