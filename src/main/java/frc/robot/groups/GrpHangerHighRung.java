@@ -2,12 +2,12 @@ package frc.robot.groups;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Hanger.ArmPosition;
-import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 import frc.robot.commands.CmdWaitForCondition;
 
-public class GrpHangerHighRung extends SwartdogSequentialCommandGroup
+public class GrpHangerHighRung extends SequentialCommandGroup
 {
     public GrpHangerHighRung(SubsystemContainer subsystemContainer, BooleanSupplier confirm)
     {

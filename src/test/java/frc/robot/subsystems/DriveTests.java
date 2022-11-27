@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import frc.robot.Constants;
 import frc.robot.subsystems.hardware.MockDrive;
 import frc.robot.subsystems.hardware.MockSwerveModule;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.drive.Vector;
 
 public class DriveTests 
 {

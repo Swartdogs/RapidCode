@@ -1,13 +1,15 @@
 package frc.robot.groups;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.*;
 import frc.robot.commands.*;
-import frc.robot.subsystems.drive.*;
+import frc.robot.drive.commands.CmdDriveToPosition;
+import frc.robot.drive.*;
 
-public class GrpAuto3BallStart1 extends SwartdogSequentialCommandGroup
+public class GrpAuto3BallStart1 extends SequentialCommandGroup
 {
     private static final double START_ANGLE      = -90;
     private static final double SHOOT_ANGLE      = -60;
@@ -23,7 +25,7 @@ public class GrpAuto3BallStart1 extends SwartdogSequentialCommandGroup
     {
         super
         (
-            SwartdogCommand.run(() -> 
+            new InstantCommand(() -> 
             {
                 subsystemContainer.getDrive().resetOdometer(START_POSITION);
                 subsystemContainer.getDrive().setGyro(START_ANGLE);

@@ -2,13 +2,13 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.SubsystemContainer;
 import frc.robot.subsystems.RobotLog;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Hanger;
 
-public class CmdHangerManual extends SwartdogCommand
+public class CmdHangerManual extends CommandBase
 {
     private Hanger         _hanger;
     private RobotLog       _log;

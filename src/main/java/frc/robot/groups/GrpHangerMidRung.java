@@ -1,10 +1,10 @@
 package frc.robot.groups;
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Hanger.ArmPosition;
-import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 
-public class GrpHangerMidRung extends SwartdogSequentialCommandGroup
+public class GrpHangerMidRung extends SequentialCommandGroup
 {
 
     public GrpHangerMidRung(SubsystemContainer subsystemContainer)

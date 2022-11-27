@@ -1,12 +1,12 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.Ballpath;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.*;
 
-public class CmdPickupDeploy extends SwartdogCommand
+public class CmdPickupDeploy extends CommandBase
 {
     private Pickup _pickup;
     private Ballpath _ballpath;

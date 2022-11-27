@@ -6,8 +6,8 @@ import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
 import frc.robot.abstraction.PositionSensor.IMUAxis;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.SwerveModule;
+import frc.robot.drive.Drive;
+import frc.robot.drive.SwerveModule;
 
 import static frc.robot.Constants.Assignments.*;
 

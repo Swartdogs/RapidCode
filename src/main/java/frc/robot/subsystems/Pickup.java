@@ -1,13 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.Solenoid;
-import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.abstraction.Enumerations.State;
 
-public abstract class Pickup extends SwartdogSubsystem
+public abstract class Pickup extends SubsystemBase
 {
     protected Motor     _pickupMotor;
     protected Solenoid  _deploySolenoid;

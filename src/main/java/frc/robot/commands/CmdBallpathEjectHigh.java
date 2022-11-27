@@ -1,16 +1,16 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.Ballpath;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.Shooter;
 
-public class CmdBallpathEjectHigh extends SwartdogCommand
+public class CmdBallpathEjectHigh extends CommandBase
 {
     private Ballpath  _ballpath;
     private Shooter   _shooter;

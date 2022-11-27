@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 
 import PIDControl.PIDControl;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
-import frc.robot.abstraction.SwartdogSubsystem;
 
-public abstract class Shooter extends SwartdogSubsystem
+public abstract class Shooter extends SubsystemBase
 {
     protected Motor          _shooterMotor;
     protected Motor          _hoodMotor;

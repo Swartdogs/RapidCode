@@ -1,16 +1,16 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.drive.*;
+import frc.robot.drive.*;
 import frc.robot.abstraction.Switch.SettableSwitch;
 
-public class CmdShootWithVision extends SwartdogCommand
+public class CmdShootWithVision extends CommandBase
 {
     private Drive          _drive;
     private Vision         _vision;

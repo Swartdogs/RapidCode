@@ -1,14 +1,14 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
 import frc.robot.abstraction.Motor;
-import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Switch;
 import frc.robot.abstraction.Enumerations.State;
 
-public abstract class Ballpath extends SwartdogSubsystem
+public abstract class Ballpath extends SubsystemBase
 {
     protected Motor _lowerTrack;
     protected Motor _upperTrack;

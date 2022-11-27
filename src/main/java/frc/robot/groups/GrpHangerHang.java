@@ -2,21 +2,22 @@ package frc.robot.groups;
 
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.SwartdogCommand;
-import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.commands.CmdWaitForCondition;
 
-public class GrpHangerHang extends SwartdogSequentialCommandGroup
+public class GrpHangerHang extends SequentialCommandGroup
 {
     public GrpHangerHang(SubsystemContainer subsystemContainer, BooleanSupplier confirm)
     {
         super
         (
-            SwartdogCommand.run(() -> {
+            new InstantCommand(() -> 
+            {
                 subsystemContainer.getShooter().setShooterMotorSpeed(0);
                 subsystemContainer.getBallpath().stop();
                 subsystemContainer.getPickup().stopMotor();

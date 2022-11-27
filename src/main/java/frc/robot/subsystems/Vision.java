@@ -3,12 +3,12 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 
 import PIDControl.PIDControl;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.abstraction.NetworkTableDouble;
-import frc.robot.abstraction.SwartdogSubsystem;
 import frc.robot.abstraction.Enumerations.State;
 
-public abstract class Vision extends SwartdogSubsystem
+public abstract class Vision extends SubsystemBase
 {
     protected NetworkTableDouble _xPosition;
     protected NetworkTableDouble _yPosition;

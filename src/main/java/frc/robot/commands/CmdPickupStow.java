@@ -1,10 +1,10 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.*;
 
-public class CmdPickupStow extends SwartdogCommand
+public class CmdPickupStow extends CommandBase
 {
     private Pickup _pickup;
     private RobotLog _log;

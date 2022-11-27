@@ -2,12 +2,12 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.subsystems.Hanger;
 import frc.robot.subsystems.RobotLog;
 
-public class CmdHangerSetWinchPosition extends SwartdogCommand
+public class CmdHangerSetWinchPosition extends CommandBase
 {
     private Hanger         _hanger;
     private double         _position;

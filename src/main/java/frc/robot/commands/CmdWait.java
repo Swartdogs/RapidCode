@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
-import frc.robot.abstraction.SwartdogCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class CmdWait extends SwartdogCommand 
+public class CmdWait extends CommandBase 
 {
     private double _delay;
     private int    _counter;

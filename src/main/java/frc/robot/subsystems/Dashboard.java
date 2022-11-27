@@ -7,14 +7,16 @@ import java.util.function.Consumer;
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.abstraction.*;
 import frc.robot.abstraction.Enumerations.ExtendState;
 import frc.robot.abstraction.Enumerations.State;
-import frc.robot.subsystems.drive.Drive;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.drive.Drive;
+import frc.robot.drive.Vector;
 
-public class Dashboard extends SwartdogSubsystem
+public class Dashboard extends SubsystemBase
 {
     // Subsystems
     private Drive                            _drive;
@@ -63,7 +65,7 @@ public class Dashboard extends SwartdogSubsystem
     private double                           _shooterEjectSpeed;
     private double                           _shooterEjectHoodPosition;
 
-    private SendableChooser<SwartdogCommand> _autoChooser;
+    private SendableChooser<CommandBase> _autoChooser;
     private SendableChooser<Double>          _autoDelayChooser;
 
     public Dashboard(Drive drive, Ballpath ballpath, Hanger hanger, Pickup pickup, Shooter shooter, Vision vision)
@@ -145,7 +147,7 @@ public class Dashboard extends SwartdogSubsystem
         initializeDoubleSetting(Constants.Settings.VISION_ROTATE_DEADBAND,  "Vision", Constants.Vision.ROTATE_DEADBAND,  _vision::setRotateDeadband);
 
         // Autonomous
-        _autoChooser = new SendableChooser<SwartdogCommand>();
+        _autoChooser = new SendableChooser<CommandBase>();
         _autoDelayChooser = new SendableChooser<Double>();
 
         _autoDelayChooser.setDefaultOption("0", 0.0);
@@ -159,17 +161,17 @@ public class Dashboard extends SwartdogSubsystem
         SmartDashboard.putData(_autoDelayChooser);
     }
 
-    public void addDefaultAutonomous(String name, SwartdogCommand command)
+    public void addDefaultAutonomous(String name, CommandBase command)
     {
         _autoChooser.setDefaultOption(name, command);
     }
 
-    public void addAutonomous(String name, SwartdogCommand command)
+    public void addAutonomous(String name, CommandBase command)
     {
         _autoChooser.addOption(name, command);
     }
 
-    public SwartdogCommand getSelectedAutonomous()
+    public CommandBase getSelectedAutonomous()
     {
         return _autoChooser.getSelected();
     }

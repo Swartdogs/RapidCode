@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogCommand;
 
-public class CmdWaitAuto extends SwartdogCommand 
+public class CmdWaitAuto extends CommandBase 
 {
     private SubsystemContainer _subsystemContainer;
 

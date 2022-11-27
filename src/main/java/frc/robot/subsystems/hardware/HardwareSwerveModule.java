@@ -4,7 +4,7 @@ import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
 import frc.robot.abstraction.Motor;
 import frc.robot.abstraction.PositionSensor;
-import frc.robot.subsystems.drive.SwerveModule;
+import frc.robot.drive.SwerveModule;
 
 public class HardwareSwerveModule extends SwerveModule 
 {

@@ -6,11 +6,11 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.GameMode;
-import frc.robot.abstraction.SwartdogSubsystem;
 
-public class RobotLog extends SwartdogSubsystem
+public class RobotLog extends SubsystemBase
 {
     private static final String TIME_LINE           = "-".repeat(Constants.RobotLog.NUM_DIGITS_IN_TIME + 2);
 

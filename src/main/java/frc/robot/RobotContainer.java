@@ -12,7 +12,8 @@ import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.commands.*;
 import frc.robot.groups.*;
 import frc.robot.subsystems.*;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.drive.Drive;
+import frc.robot.drive.commands.CmdDriveWithJoystick;
 import frc.robot.subsystems.hardware.*;
 
 import static frc.robot.Constants.Assignments.*;
@@ -147,16 +148,16 @@ public class RobotContainer extends SubsystemBase
 
     private void configureCommonControls()
     {
-        _driveJoystick.getButton(11).whenActivated(SwartdogCommand.run(() ->                                          // Reset the odometer/gyro
+        _driveJoystick.getButton(11).whenActivated(new InstantCommand(() ->                                          // Reset the odometer/gyro
         {
             _drive.setGyro(Constants.Drive.FIELD_ANGLE);
             _drive.resetOdometer(Constants.Drive.FIELD_RESET_POSITION.clone());
         }));
 
         _coDriveJoystick.getButton(3).whenActivated(new CmdPickupStow(_subsystemContainer));                          // Stow the pickup
-        _coDriveJoystick.getButton(4).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(-1), true)); // Manually decrement cargo count
+        _coDriveJoystick.getButton(4).whenActivated(new InstantCommand(() -> _ballpath.modifyCargoCount(-1))); // Manually decrement cargo count
         _coDriveJoystick.getButton(5).whenActivated(new CmdPickupDeploy(_subsystemContainer));                        // Deploy the pickup
-        _coDriveJoystick.getButton(6).whenActivated(SwartdogCommand.run(() -> _ballpath.modifyCargoCount(1), true));  // Manually increment cargo count
+        _coDriveJoystick.getButton(6).whenActivated(new InstantCommand(() -> _ballpath.modifyCargoCount(1)));  // Manually increment cargo count
     }
 
     private void configureNormalControls()
@@ -222,10 +223,10 @@ public class RobotContainer extends SubsystemBase
 
         _coDriveJoystick.getButton(2).whileActive(new CmdRunBallPath(_subsystemContainer));
 
-        _buttonBox.getButton(3).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 50)));
-        _buttonBox.getButton(4).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 50)));
-        _buttonBox.getButton(5).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 10)));
-        _buttonBox.getButton(6).whenActivated(SwartdogCommand.run(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 10)));
+        _buttonBox.getButton(3).whenActivated(new InstantCommand(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 50)));
+        _buttonBox.getButton(4).whenActivated(new InstantCommand(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 50)));
+        _buttonBox.getButton(5).whenActivated(new InstantCommand(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() + 10)));
+        _buttonBox.getButton(6).whenActivated(new InstantCommand(() -> _shooter.setHoodPosition(_shooter.getHoodPosition() - 10)));
     }
 
     public Command getAutonomousCommand()

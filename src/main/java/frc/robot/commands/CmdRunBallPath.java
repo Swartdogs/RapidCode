@@ -1,14 +1,14 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.subsystems.Ballpath;
 import frc.robot.subsystems.Pickup;
-import frc.robot.subsystems.drive.Drive;
+import frc.robot.drive.Drive;
 
-public class CmdRunBallPath extends SwartdogCommand
+public class CmdRunBallPath extends CommandBase
 {
     private Drive          _drive;
     private Ballpath       _ballpath;

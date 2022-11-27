@@ -1,9 +1,9 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.SwartdogCommand;
 import frc.robot.abstraction.Enumerations.State;
 import frc.robot.abstraction.Switch.SettableSwitch;
 import frc.robot.subsystems.Ballpath;
@@ -11,7 +11,7 @@ import frc.robot.subsystems.Pickup;
 import frc.robot.subsystems.RobotLog;
 import frc.robot.subsystems.Shooter;
 
-public class CmdShootManual extends SwartdogCommand 
+public class CmdShootManual extends CommandBase 
 {
     private Shooter        _shooter;
     private Ballpath       _ballpath;

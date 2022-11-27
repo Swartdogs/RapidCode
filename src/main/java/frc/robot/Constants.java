@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import java.util.function.DoubleUnaryOperator;
 
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.drive.Vector;
 
 public final class Constants
 {

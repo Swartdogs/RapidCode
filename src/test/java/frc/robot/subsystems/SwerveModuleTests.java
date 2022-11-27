@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.hardware.MockSwerveModule;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.drive.Vector;
 
 public class SwerveModuleTests 
 {

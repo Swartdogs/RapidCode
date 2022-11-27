@@ -4,7 +4,7 @@ import PIDControl.PIDControl;
 import PIDControl.PIDControl.Coefficient;
 import frc.robot.abstraction.Motor.MockMotor;
 import frc.robot.abstraction.PositionSensor.MockPositionSensor;
-import frc.robot.subsystems.drive.SwerveModule;
+import frc.robot.drive.SwerveModule;
 
 public class MockSwerveModule extends SwerveModule 
 {

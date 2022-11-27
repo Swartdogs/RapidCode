@@ -1,26 +1,26 @@
 package frc.robot.groups;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
 import frc.robot.SubsystemContainer;
 import frc.robot.Constants.Shooter.RobotPosition;
 import frc.robot.Constants.Shooter.TargetPosition;
-import frc.robot.abstraction.SwartdogCommand;
-import frc.robot.abstraction.SwartdogSequentialCommandGroup;
-import frc.robot.commands.CmdDriveToPosition;
 import frc.robot.commands.CmdPickupDeploy;
 import frc.robot.commands.CmdPickupStow;
 import frc.robot.commands.CmdShootManual;
 import frc.robot.commands.CmdWait;
 import frc.robot.commands.CmdWaitAuto;
-import frc.robot.subsystems.drive.Vector;
+import frc.robot.drive.commands.CmdDriveToPosition;
+import frc.robot.drive.Vector;
 
-public class GrpAuto2BallStart6 extends SwartdogSequentialCommandGroup
+public class GrpAuto2BallStart6 extends SequentialCommandGroup
 {
     public GrpAuto2BallStart6(SubsystemContainer subsystemContainer)
     {
         super
         (
-            SwartdogCommand.run(() -> 
+            new InstantCommand(() -> 
             {
                 subsystemContainer.getDrive().resetOdometer(Constants.Drive.FIELD_RESET_POSITION);
                 subsystemContainer.getDrive().setGyro(Constants.Drive.FIELD_ANGLE);

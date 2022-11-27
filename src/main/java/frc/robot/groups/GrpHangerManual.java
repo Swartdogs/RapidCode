@@ -2,13 +2,13 @@ package frc.robot.groups;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.SubsystemContainer;
-import frc.robot.abstraction.SwartdogSequentialCommandGroup;
 import frc.robot.commands.CmdHangerManual;
 import frc.robot.commands.CmdHangerWinchDownUntilReleased;
 import frc.robot.subsystems.Hanger;
 
-public class GrpHangerManual extends SwartdogSequentialCommandGroup
+public class GrpHangerManual extends SequentialCommandGroup
 {
     private Hanger _hanger;
 

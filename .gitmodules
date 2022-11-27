@@ -2,7 +2,7 @@
 	path = src/main/java/frc/robot/abstraction
 	url = https://github.com/Swartdogs/Hardware-Abstraction.git
 [submodule "src/main/java/frc/robot/subsystems/drive"]
-	path = src/main/java/frc/robot/subsystems/drive
+	path = src/main/java/frc/robot/drive
 	url = https://github.com/Swartdogs/SwerveDrive.git
 [submodule "src/main/java/PIDControl"]
 	path = src/main/java/PIDControl
